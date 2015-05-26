@@ -9,26 +9,31 @@ abstract class Book {
     private int TotalQuantity;
     private int AvaliableQuantity;
 
-    public Book() {
-
-        RegisterBook();
-    }
-
     public void RegisterBook () {
 
         Scanner scan = new Scanner(System.in);
 
         System.out.println("Title: ");
-        this.Title = scan.nextLine();
+        String Title = scan.nextLine();
         System.out.println("Author: ");
-        this.Author = scan.nextLine();
+        String Author = scan.nextLine();
         System.out.println("Year: ");
-        this.Year = scan.nextInt();
+        int Year = scan.nextInt();
         System.out.println("Total Quantity: ");
-        this.TotalQuantity = scan.nextInt();
+        int TotalQuantity = scan.nextInt();
         System.out.println("Avaliable Quantity: ");
-        this.AvaliableQuantity = scan.nextInt();
+        int AvaliableQuantity = scan.nextInt();
 
+        this.RegisterBook(Title, Author, Year, TotalQuantity, AvaliableQuantity);
+
+    }
+
+    public void RegisterBook (String Title, String Author, int Year, int TotalQuantity, int AvaliableQuantity) {
+        this.Title = Title;
+        this.Author = Author;
+        this.Year = Year;
+        this.TotalQuantity = TotalQuantity;
+        this.AvaliableQuantity = AvaliableQuantity;
     }
 
     public String getTitle() {
