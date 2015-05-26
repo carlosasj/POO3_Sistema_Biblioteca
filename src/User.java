@@ -1,4 +1,5 @@
 abstract class User {
+    
 	private String Name;
 	public Loan[] Loans;
 	private int TotalLoans;
