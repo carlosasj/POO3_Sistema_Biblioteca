@@ -2,8 +2,10 @@ import java.util.Scanner;
 
 abstract class Book {
 
+    private int ID;
     private String Title;
     private String Author;
+    private String Editor;
     private int Year;
 
     private int TotalQuantity;
