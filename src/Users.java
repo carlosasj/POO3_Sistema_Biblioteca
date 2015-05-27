@@ -1,47 +1,47 @@
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
+import java.util.LinkedList;
+import java.util.List;
 
-public class Users implements Database {
-	public BufferedReader br = null;
+public class Users extends Database implements FileInterface {
+
     public int ID;
-    public List<User> users;
+    private List<User> users;
 
-    public Users () {
+    public Users (String filename) {
 
+        this.path = "users.csv";
         this.users = new LinkedList<User>();
+        this.OpenFile(filename);
     }
 
-	public void OpenFile(String path){
-		try {
-			br = new BufferedReader(new FileReader("users.csv"));
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
-	}
+    public void AddUser (String type, int ID, String name) {
+        User user;
+        switch (type) {
+            case "Tea":
+                user = new Teacher(ID, name);
+                break;
+            case "Stu":
+                user = new Student(ID, name);
+                break;
+            case "Com":
+                user = new Comunity(ID, name);
+                break;
+        }
+        this.users.add(user);
+    }
 
     public void ReadFile() {
 
-        private String line = "";
+        private String line = null;
         private String splitBy = ",";
 
         while ((line = br.readLine()) != null) {
+            
             String[] userData = line.split(splitBy);
+            this.AddUser(userData[0], Integer.parseInt(userData[1], userData[2]));
 
-            User user;
-            switch (userData[0]) {
-                case "Tea":
-                    user = new Teacher(Integer.parseInt(userData[1]), userData[2]);
-                    break;
-                case "Stu":
-                    user = new Student(Integer.parseInt(userData[1]), userData[2]);
-                    break;
-                case "Com":
-                    user = new Comunity(Integer.parseInt(userData[1]), userData[2]);
-                    break;
-            }
-            this.users.add(user);
         }
 
     }
+
+	public void WriteFile() {}
 }
