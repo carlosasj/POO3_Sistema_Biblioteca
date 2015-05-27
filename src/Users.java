@@ -1,27 +1,18 @@
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
+import java.util.LinkedList;
+import java.util.List;
 
-public class Users extends Database {
-	public BufferedReader br = null;
+public class Users extends Database implements FileInterface {
     public int ID;
+	private List<User> users;
 
     public Users () {
-
-        List<User> users = new LinkedList<User>();
+		this.path = "users.csv";
+        users = new LinkedList<User>();
     }
-
-	public void OpenFile(String path){
-		try {
-			br = new BufferedReader(new FileReader("users.csv"));
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
-	}
 
     public void ReadFile() {
 
-        private String line = "";
+        private String line = null;
         private String splitBy = ",";
 
         while ((line = br.readLine()) != null) {
@@ -43,4 +34,6 @@ public class Users extends Database {
         }
 
     }
+
+	public void WriteFile() {}
 }

@@ -2,8 +2,8 @@ abstract class User {
 
     public String Type;
     public int ID;
-	private String Name;
-	private int MaxLoans;
+	public String Name;
+	public int MaxLoans;
 
 	public String getName(){
 		return Name;

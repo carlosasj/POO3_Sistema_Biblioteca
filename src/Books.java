@@ -26,5 +26,5 @@ public class Books extends Database implements FileInterface {
 		}
 	}
 
-	public void WriteFile(){};
+	public void WriteFile(){}
 }
