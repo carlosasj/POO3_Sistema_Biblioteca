@@ -29,6 +29,19 @@ public class Books extends Database implements FileInterface {
         this.books.add(book);
     }
 
+    public void AddBook(String type, String title, String author, String editor, int year, int totalquantity, int avaliablequantity){
+        Book book = null;
+
+        if(type.equals("Tex")){
+            book = new Text(this.nextID, title, author, editor, year, totalquantity, avaliablequantity);
+        } else {
+            book = new General(this.nextID, title, author, editor, year, totalquantity, avaliablequantity);
+        }
+
+        this.nextID++;
+
+        this.books.add(book);
+    }
     public void RegisterBook () {
 
         Scanner scan = new Scanner(System.in);
@@ -52,8 +65,7 @@ public class Books extends Database implements FileInterface {
         String confirm = scan.nextLine();
 
         if (confirm.equals("s")) {
-            this.AddBook(Type, this.nextID, Title, Author, Editor, Year, TotalQuantity, AvaliableQuantity);
-            this.nextID++;
+            this.AddBook(Type, Title, Author, Editor, Year, TotalQuantity, AvaliableQuantity);
         }
     }
 

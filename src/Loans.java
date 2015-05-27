@@ -10,6 +10,7 @@ public class Loans extends Database implements FileInterface {
 
     public Loans (String filename) {
 
+        this.nextID = 0;
         this.path = "loans.csv";
         this.loans = new LinkedList<Loan>();
         this.OpenFile(filename);
@@ -18,8 +19,18 @@ public class Loans extends Database implements FileInterface {
     public void AddLoan(int id, int bookid, int userid, String date, String expirationdate) {
 
         Loan l = new Loan(id, bookid, userid, date, expirationdate);
+
+        this.loans.add(l);
     }
 
+    public void AddLoan(int bookid, int userid, String date, String expirationdate) {
+
+        Loan l = new Loan(this.nextID, bookid, userid, date, expirationdate);
+
+        this.nextID++;
+        this.loans.add(l);
+
+    }
     public void ReadFile() throws IOException {
 
         BufferedReader br = new BufferedReader(new FileReader(this.path));

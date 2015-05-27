@@ -23,8 +23,7 @@ public class Users extends Database implements FileInterface {
         System.out.println("Name: ");
         String Name = scan.nextLine();
 
-        this.AddUser(Type, this.nextID, Name);
-        this.nextID++;
+        this.AddUser(Type, Name);
     }
 
     public void AddUser (String type, int ID, String name) {
@@ -40,6 +39,23 @@ public class Users extends Database implements FileInterface {
 
         }
 
+        this.users.add(user);
+    }
+
+    public void AddUser (String type, String name) {
+        User user = null;
+        if (type.equals("Tea")) {
+            user = new Teacher(this.nextID, name);
+
+        } else if (type.equals("Stu")) {
+            user = new Student(this.nextID, name);
+
+        } else if (type.equals("Com")) {
+            user = new Comunity(this.nextID, name);
+
+        }
+
+        this.nextID++;
         this.users.add(user);
     }
 
