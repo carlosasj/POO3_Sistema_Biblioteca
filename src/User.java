@@ -1,3 +1,5 @@
+import java.util.Scanner;
+
 abstract class User {
 
     public String Type;
@@ -5,12 +7,16 @@ abstract class User {
 	public String Name;
 	public int MaxLoans;
 
+    public void RegisterUser () {
+
+        Scanner scan = new Scanner(System.in);
+
+        System.out.println("Name: ");
+        String Name = scan.nextLine();
+    }
+
 	public String getName(){
 		return Name;
-	}
-
-	public int getTotalLoans(){
-		return TotalLoans;
 	}
 
 	public void newLoan(Loan l){
@@ -26,6 +32,6 @@ abstract class User {
 	}
 
     public boolean SetDataUser(int ID) {
-
+        return false;
     }
 }

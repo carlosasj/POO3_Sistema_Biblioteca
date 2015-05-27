@@ -2,17 +2,22 @@ import java.util.Scanner;
 
 abstract class Book {
 
-    private String Title;
-    private String Author;
-    private int Year;
+    public String Type;
+    public int ID;
+    public String Title;
+    public String Author;
+    public String Editor;
+    public int Year;
 
-    private int TotalQuantity;
-    private int AvaliableQuantity;
+    public int TotalQuantity;
+    public int AvaliableQuantity;
 
     public void RegisterBook () {
 
         Scanner scan = new Scanner(System.in);
 
+        System.out.println("Type: ");
+        String Type = scan.nextLine();
         System.out.println("Title: ");
         String Title = scan.nextLine();
         System.out.println("Author: ");
@@ -44,6 +49,8 @@ abstract class Book {
         return this.Author;
     }
 
+    public String getEditor() { return  this.Editor; }
+
     public int getYear() {
         return this.Year;
     }
@@ -55,4 +62,5 @@ abstract class Book {
     public int getAvaliableQuantity() {
         return this.AvaliableQuantity;
     }
+
 }
