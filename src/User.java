@@ -1,9 +1,9 @@
 abstract class User {
-    
-	private String Name;
-	public Loan[] Loans;
-	private int TotalLoans;
-	private int MaxLoans;
+
+    public String Type;
+    public int ID;
+	public String Name;
+	public int MaxLoans;
 
 	public String getName(){
 		return Name;
@@ -25,4 +25,7 @@ abstract class User {
 
 	}
 
+    public boolean SetDataUser(int ID) {
+
+    }
 }
