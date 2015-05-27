@@ -30,7 +30,7 @@ public class Loan {
     public void RegisterLoan (int BookID, int UserID, String Date, String ExpirationDate) {
         this.BookID = BookID;
         this.UserID = UserID;
-        this.Date = UserID;
+        this.Date = Date;
         this.ExpirationDate = ExpirationDate;
     }
 
