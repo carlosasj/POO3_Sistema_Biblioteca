@@ -2,16 +2,17 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 
-public class Users implements File {
+public class Users implements Database {
 	public BufferedReader br = null;
     public int ID;
+    public List<User> users;
 
     public Users () {
 
-        List<User> users = new LinkedList<User>();
+        this.users = new LinkedList<User>();
     }
 
-	public void OpenFile(){
+	public void OpenFile(String path){
 		try {
 			br = new BufferedReader(new FileReader("users.csv"));
 		} catch (FileNotFoundException e) {

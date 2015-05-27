@@ -1,7 +1,11 @@
 public class Teacher extends User {
 
+    public void RegisterTeacher () {
 
-    public Teacher (int id, String name) {
+
+    }
+
+    public void RegisterTeacher (int id, String name) {
 
         this.Type = "Tea";
         this.ID = id;

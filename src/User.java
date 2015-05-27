@@ -5,6 +5,14 @@ abstract class User {
 	private String Name;
 	private int MaxLoans;
 
+    public void RegisterUser () {
+
+        Scanner scan = new Scanner(System.in);
+
+        System.out.println("Name: ");
+        String Name = scan.nextLine();
+    }
+
 	public String getName(){
 		return Name;
 	}

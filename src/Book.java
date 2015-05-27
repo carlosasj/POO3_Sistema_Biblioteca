@@ -2,9 +2,11 @@ import java.util.Scanner;
 
 abstract class Book {
 
-    private String Title;
-    private String Author;
-    private int Year;
+    public int ID;
+    public String Title;
+    public String Author;
+    public String Editor;
+    public int Year;
 
     private int TotalQuantity;
     private int AvaliableQuantity;
@@ -55,6 +57,5 @@ abstract class Book {
     public int getAvaliableQuantity() {
         return this.AvaliableQuantity;
     }
-
-
+    
 }
