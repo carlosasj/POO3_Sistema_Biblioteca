@@ -13,7 +13,7 @@ public class Books extends Database implements FileInterface {
 		this.OpenFile(filename);
 	}
 
-    public void AddBook(String type, int id, String title, String author, String editor, int year){
+    public void AddBook(String type, int id, String title, String author, String editor, int year, int totalquantity, int avaliablequantity){
         Book book = null;
         
         if(type.equals("Tex")){
@@ -32,7 +32,7 @@ public class Books extends Database implements FileInterface {
 		try {
 			while ((line = br.readLine()) != null){
 				String[] readed = line.split(splitSign);
-                this.AddBook(readed[0], Integer.parseInt(readed[1]), readed[2], readed[3], readed[4], Integer.parseInt(readed[5]));
+                this.AddBook(readed[0], Integer.parseInt(readed[1]), readed[2], readed[3], readed[4], Integer.parseInt(readed[5]), Integer.parseInt(readed[6]), Integer.parseInt(readed[7]));
 			}
 		} catch (IOException e) {
 			System.out.println("Erro na leitura do arquivo.");

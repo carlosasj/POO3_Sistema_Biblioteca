@@ -9,8 +9,8 @@ abstract class Book {
     public String Editor;
     public int Year;
 
-    private int TotalQuantity;
-    private int AvaliableQuantity;
+    public int TotalQuantity;
+    public int AvaliableQuantity;
 
     public void RegisterBook () {
 
