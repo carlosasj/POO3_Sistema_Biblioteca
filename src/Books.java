@@ -27,7 +27,7 @@ public class Books extends Database implements FileInterface {
     }
 
 	public void ReadFile(){
-		String line = null;
+		String line;
 		String splitSign = ",";
 
 		try {
