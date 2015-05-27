@@ -42,27 +42,41 @@ public class Books extends Database implements FileInterface {
 	}
 
 	public void WriteFile() throws IOException {
+        String SEPARATOR = ",";
+        String ENDLINE = "\n";
+        String HEADER = "Type,ID,Title,Author,Editor,Year,TotalQuantity,AvaliableQuantity";
 
-        BufferedWriter bw = new BufferedWriter(new FileWriter(this.path));
+        fw.append(Integer.valueOf(this.nextID).toString());
+        fw.flush();
+        fw.append(HEADER);
+        fw.flush();
 
-        for (int i = 0; i < this.books.size(); i++) {
-            bw.write(this.books.get(i).Type);
-            bw.write(",");
-            bw.write(this.books.get(i).ID);
-            bw.write(",");
-            bw.write(this.books.get(i).getTitle());
-            bw.write(",");
-            bw.write(this.books.get(i).getAuthor());
-            bw.write(",");
-            bw.write(this.books.get(i).getEditor());
-            bw.write(",");
-            bw.write(this.books.get(i).getYear());
-            bw.write(",");
-            bw.write(this.books.get(i).getTotalQuantity());
-            bw.write(",");
-            bw.write(this.books.get(i).getAvaliableQuantity());
-            bw.write("\n");
+        for (Book b : books) {
+            fw.append(b.Type);
+            fw.append(SEPARATOR);
 
+            fw.append(b.ID);
+            fw.append(SEPARATOR);
+
+            fw.append(b.getTitle());
+            fw.append(SEPARATOR);
+
+            fw.append(b.getAuthor());
+            fw.append(SEPARATOR);
+
+            fw.append(b.getEditor());
+            fw.append(SEPARATOR);
+
+            fw.append(b.getYear());
+            fw.append(SEPARATOR);
+
+            fw.append(b.getTotalQuantity());
+            fw.append(SEPARATOR);
+
+            fw.append(b.getAvaliableQuantity());
+            fw.append(ENDLINE);
+
+            fw.flush();
         }
     }
 }
