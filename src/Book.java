@@ -2,6 +2,7 @@ import java.util.Scanner;
 
 abstract class Book {
 
+    public String Type;
     public int ID;
     public String Title;
     public String Author;
@@ -15,6 +16,8 @@ abstract class Book {
 
         Scanner scan = new Scanner(System.in);
 
+        System.out.println("Type: ");
+        String Type = scan.nextLine();
         System.out.println("Title: ");
         String Title = scan.nextLine();
         System.out.println("Author: ");
@@ -45,6 +48,8 @@ abstract class Book {
     public String getAuthor() {
         return this.Author;
     }
+
+    public String getEditor() { return  this.Editor; }
 
     public int getYear() {
         return this.Year;

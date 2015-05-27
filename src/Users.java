@@ -1,7 +1,4 @@
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -44,9 +41,21 @@ public class Users extends Database implements FileInterface {
             String[] userData = line.split(splitBy);
             this.AddUser(userData[0], Integer.parseInt(userData[1]), userData[2]);
         }
-
     }
 
-    
-	public void WriteFile() {}
+	public void WriteFile() throws IOException {
+
+        for(int i = 0; i < this.users.size(); i++) {
+
+            BufferedWriter bw = new BufferedWriter(new FileWriter(this.path));
+            bw.write(this.users.get(i).Type);
+            bw.write(",");
+            bw.write(this.users.get(i).ID);
+            bw.write(",");
+            bw.write(this.users.get(i).getName());
+            bw.write(",");
+            bw.write(this.users.get(i).MaxLoans);
+            bw.write("\n");
+        }
+    }
 }
