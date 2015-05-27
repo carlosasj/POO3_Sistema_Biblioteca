@@ -1,10 +1,13 @@
 import java.io.*;
+import java.util.LinkedList;
+import java.util.List;
 
 public class Books extends Database implements FileInterface {
-	// Lista de livros
+	private List<Book> books;
 
 	Books (String filename){
 		this.path = "books.csv";
+		this.books = new LinkedList<Book>();
 		this.OpenFile(filename);
 	}
 
