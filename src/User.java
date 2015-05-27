@@ -1,3 +1,5 @@
+import java.util.Scanner;
+
 abstract class User {
 
     public String Type;
@@ -17,10 +19,6 @@ abstract class User {
 		return Name;
 	}
 
-	public int getTotalLoans(){
-		return TotalLoans;
-	}
-
 	public void newLoan(Loan l){
 
 	}
@@ -34,6 +32,6 @@ abstract class User {
 	}
 
     public boolean SetDataUser(int ID) {
-
+        return false;
     }
 }

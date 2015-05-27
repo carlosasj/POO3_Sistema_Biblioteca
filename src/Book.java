@@ -57,8 +57,5 @@ abstract class Book {
     public int getAvaliableQuantity() {
         return this.AvaliableQuantity;
     }
-<<<<<<< HEAD
-    
-=======
->>>>>>> carlos
+
 }
