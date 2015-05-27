@@ -26,5 +26,12 @@ abstract public class Database {
 		}
 	}
 
-	public void CloseFile(){}
+	public void CloseFile(){
+		try {
+			br.close();
+			fw.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 }
