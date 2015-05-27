@@ -1,10 +1,10 @@
 import java.io.*;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Scanner;
 
 public class Users extends Database implements FileInterface {
 
-    public int ID;
     private List<User> users;
 
     public Users (String filename) {
@@ -12,6 +12,19 @@ public class Users extends Database implements FileInterface {
         this.path = "users.csv";
         this.users = new LinkedList<User>();
         this.OpenFile(filename);
+    }
+
+    public void RegisterUser () {
+
+        Scanner scan = new Scanner(System.in);
+
+        System.out.println("Type: ");
+        String Type = scan.nextLine();
+        System.out.println("Name: ");
+        String Name = scan.nextLine();
+
+        this.AddUser(Type, this.nextID, Name);
+        this.nextID++;
     }
 
     public void AddUser (String type, int ID, String name) {
@@ -36,10 +49,19 @@ public class Users extends Database implements FileInterface {
         String line = null;
         String splitBy = ",";
 
+        if ((line = br.readLine()) != null) {
+            this.nextID = Integer.parseInt(line);
+            br.readLine();
+        }
+
         while ((line = br.readLine()) != null) {
             
             String[] userData = line.split(splitBy);
-            this.AddUser(userData[0], Integer.parseInt(userData[1]), userData[2]);
+            String type = userData[0];
+            int id = Integer.parseInt(userData[1]);
+            String name = userData[2];
+
+            this.AddUser(type, id, name);
         }
     }
 

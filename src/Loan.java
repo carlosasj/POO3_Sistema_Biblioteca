@@ -2,12 +2,20 @@ import java.util.Scanner;
 
 public class Loan {
 
-    private int BookID;
-    private int UserID;
+    public int ID;
+    public int BookID;
+    public int UserID;
 
-    private String Date;
-    private String ExpirationDate;
+    public String Date;
+    public String ExpirationDate;
 
+    public Loan (int id, int bookid, int userid, String date, String expirationdate) {
+        this.ID = id;
+        this.BookID = bookid;
+        this.UserID = userid;
+        this.Date = date;
+        this.ExpirationDate = expirationdate;
+    }
     /*
     public void RegisterLoan () {
 

@@ -5,6 +5,7 @@ public class Comunity extends User {
         this.Type = "Com";
         this.ID = id;
         this.Name = name;
+        this.MaxDays = 15;
         this.MaxLoans = 2;
 
     }

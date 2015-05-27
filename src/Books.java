@@ -62,8 +62,10 @@ public class Books extends Database implements FileInterface {
 		String splitSign = ",";
 
 		try {
-            if ((line = br.readLine()) != null)
+            if ((line = br.readLine()) != null) {
                 this.nextID = Integer.parseInt(line);
+                br.readLine();
+            }
 
 			while ((line = br.readLine()) != null){
 				String[] readed = line.split(splitSign);
@@ -83,7 +85,6 @@ public class Books extends Database implements FileInterface {
 		}
 
         //System.out.printf("Type: %s \nID: %d \nTitle: %s \nAuthor: %s \nEditor: %s \nYear: %d \nTotal: %d \nAvaliable: %d", books.get(0).Type, this.nextID, books.get(0).Title, books.get(0).Author, books.get(0).Editor, books.get(0).Year, books.get(0).TotalQuantity, books.get(0).AvaliableQuantity);
-
 	}
 
 	public void WriteFile() throws IOException {

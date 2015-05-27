@@ -5,6 +5,7 @@ public class Teacher extends User {
         this.Type = "Tea";
         this.ID = id;
         this.Name = name;
+        this.MaxDays = 60;
         this.MaxLoans = 6;
 
     }
