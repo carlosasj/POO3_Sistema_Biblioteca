@@ -5,15 +5,8 @@ abstract class User {
     public String Type;
     public int ID;
 	public String Name;
+    public int MaxDays;
 	public int MaxLoans;
-
-    public void RegisterUser () {
-
-        Scanner scan = new Scanner(System.in);
-
-        System.out.println("Name: ");
-        String Name = scan.nextLine();
-    }
 
 	public String getName(){
 		return Name;

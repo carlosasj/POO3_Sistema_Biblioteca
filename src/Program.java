@@ -5,5 +5,6 @@ public class Program {
 		b.OpenFile(null);
 		b.ReadFile();
 		b.AddBook("Tex",10,"O fabuloso livro de teste","Jhon Doe","Editora Teste",2015,10,8);
+		b.WriteFile();
 	}
 }

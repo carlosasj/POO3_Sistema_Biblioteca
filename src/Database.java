@@ -5,6 +5,7 @@ abstract public class Database {
 	public FileWriter fw = null;
 	public String path = null;
 
+    public int nextID;
 
 	public void OpenFile(String filename) {
 		if (filename != null) { path = filename; }

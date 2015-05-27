@@ -5,6 +5,7 @@ public class Student extends User {
         this.Type = "Stu";
         this.ID = id;
         this.Name = name;
+        this.MaxDays = 15;
         this.MaxLoans = 4;
 
     }
