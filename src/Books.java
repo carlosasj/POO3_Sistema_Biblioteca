@@ -1,21 +1,11 @@
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 
-public class Books implements Database {
-	BufferedReader br = null;
+public class Books extends Database implements FileInterface {
+	// Lista de livros
 
-	public void OpenFile(String path){
-		if (path == null) {
-			path = "/books.csv";
-		}
-
-		try {
-			br = new BufferedReader(new FileReader(path));
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
+	Books (String filename){
+		this.path = "books.csv";
+		this.OpenFile(filename);
 	}
 
 	public void ReadFile(){
@@ -25,14 +15,16 @@ public class Books implements Database {
 		try {
 			while ((line = br.readLine()) != null){
 				String[] readed = line.split(splitSign);
-
-				for (String s : readed){
-					System.out.println(s);
-				}
-				System.out.println("-- End\n");
+				// Cria objeto Book
+				// Escreve os valores nele
+				// Adiciona na LinkedList
+				// Usar um método para fazer isso.
 			}
 		} catch (IOException e) {
+			System.out.println("Erro na leitura do arquivo.");
 			e.printStackTrace();
 		}
 	}
+
+	public void WriteFile(){};
 }
