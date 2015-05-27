@@ -2,7 +2,7 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 
-public class Users implements Database {
+public class Users extends Database {
 	public BufferedReader br = null;
     public int ID;
 
