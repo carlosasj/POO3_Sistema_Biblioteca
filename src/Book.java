@@ -56,5 +56,4 @@ abstract class Book {
         return this.AvaliableQuantity;
     }
 
-
 }
