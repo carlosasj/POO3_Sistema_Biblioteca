@@ -2,12 +2,12 @@ import java.util.Scanner;
 
 public class Loan {
 
-    public int ID;
-    public int BookID;
-    public int UserID;
+    private int ID;
+    private int BookID;
+    private int UserID;
 
-    public String Date;
-    public String ExpirationDate;
+    private String Date;
+    private String ExpirationDate;
 
     public Loan (int id, int bookid, int userid, String date, String expirationdate) {
         this.ID = id;
@@ -41,6 +41,8 @@ public class Loan {
         this.Date = Date;
         this.ExpirationDate = ExpirationDate;
     }
+
+    public int getID () { return this.ID; }
 
     public int getBookID () { return this.BookID; }
 
