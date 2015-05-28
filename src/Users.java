@@ -71,7 +71,7 @@ public class Users extends Database implements FileInterface {
         }
 
         while ((line = br.readLine()) != null) {
-            
+
             String[] userData = line.split(splitBy);
             String type = userData[0];
             int id = Integer.parseInt(userData[1]);
