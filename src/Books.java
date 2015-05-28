@@ -42,6 +42,7 @@ public class Books extends Database implements FileInterface {
 
         this.books.add(book);
     }
+
     public void RegisterBook () {
 
         Scanner scan = new Scanner(System.in);
@@ -70,22 +71,23 @@ public class Books extends Database implements FileInterface {
         }
     }
 
-	public void ReadFile(){
+	public void ReadFile() throws IOException{
+
 		String line;
 		String splitSign = ",";
 
 		try {
-
+            line = br.readLine();
+            System.out.print(line);
+            line = br.readLine();
+            System.out.print(line);
             if ((line = br.readLine()) != null) {
-                System.out.println("IF");
                 this.nextID = Integer.parseInt(line);
                 br.readLine();
             }
 
 			while ((line = br.readLine()) != null){
-                System.out.println("While...");
 				String[] readed = line.split(splitSign);
-                System.out.println("\tCheck 1");
                 String type = readed[0];
                 int id = Integer.parseInt(readed[1]);
                 String title = readed[2];
@@ -94,16 +96,14 @@ public class Books extends Database implements FileInterface {
                 int year = Integer.parseInt(readed[5]);
                 int totalquantity = Integer.parseInt(readed[6]);
                 int avaliablequantity = Integer.parseInt(readed[7]);
-                System.out.println("\tCheck 2");
                 this.AddBook(type, id, title, author, editor, year, totalquantity, avaliablequantity);
 
-                System.out.printf("New Book:\nType: %s \nID: %d \nTitle: %s \nAuthor: %s \nEditor: %s \nYear: %d \nTotal: %d \nAvaliable: %d", books.get(0).Type, this.nextID, books.get(0).Title, books.get(0).Author, books.get(0).Editor, books.get(0).Year, books.get(0).TotalQuantity, books.get(0).AvaliableQuantity);
+               // System.out.printf("New Book:\nType: %s \nID: %d \nTitle: %s \nAuthor: %s \nEditor: %s \nYear: %d \nTotal: %d \nAvaliable: %d", books.get(0).Type, this.nextID, books.get(0).Title, books.get(0).Author, books.get(0).Editor, books.get(0).Year, books.get(0).TotalQuantity, books.get(0).AvaliableQuantity);
             }
         } catch (IOException e) {
             System.out.println("Erro na leitura do arquivo.");
             e.printStackTrace();
         }
-
 	}
 
 	public void WriteFile() {

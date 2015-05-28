@@ -1,5 +1,7 @@
+import java.io.IOException;
+
 public class Program {
-	public static void main (String[] args){
+	public static void main (String[] args) throws IOException {
 
 		Books b = new Books(null);
 		b.OpenFile("books.csv");

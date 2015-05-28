@@ -3,6 +3,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Scanner;
+import static java.lang.System.out;
 
 public class Loans extends Database implements FileInterface {
 
@@ -23,14 +25,22 @@ public class Loans extends Database implements FileInterface {
         this.loans.add(l);
     }
 
-    public void AddLoan(int bookid, int userid, String date, String expirationdate) {
+    public void RegisterLoan(){
 
-        Loan l = new Loan(this.nextID, bookid, userid, date, expirationdate);
+        Scanner scan = new Scanner(System.in);
+
+        out.println("ID do Livro: ");
+        int bookid = scan.nextInt();
+        out.println("ID do Usuário: ");
+        int userid = scan.nextInt();
+        out.println("Data[dd/mm/aaaa]: ");
+        String date = scan.nextLine();
+
+        this.AddLoan(this.nextID, bookid, userid, date, );
 
         this.nextID++;
-        this.loans.add(l);
-
     }
+
     public void ReadFile() throws IOException {
 
         BufferedReader br = new BufferedReader(new FileReader(this.path));
@@ -52,10 +62,9 @@ public class Loans extends Database implements FileInterface {
             String expirationdate = loanData[4];
 
             this.AddLoan(id, bookid, userid, date, expirationdate);
-
         }
-
     }
+
     public void WriteFile() throws IOException {
 
     }
