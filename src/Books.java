@@ -1,8 +1,8 @@
-import javax.swing.text.EditorKit;
 import java.io.*;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
+import static java.lang.System.out;
 
 public class Books extends Database implements FileInterface {
 
@@ -17,7 +17,8 @@ public class Books extends Database implements FileInterface {
 		this.OpenFile(filename);
 	}
 
-    public void AddBook(String type, int id, String title, String author, String editor, int year, int totalquantity, int avaliablequantity){
+    // Para uso apenas dentro do método ReadFile()
+    private void AddBook(String type, int id, String title, String author, String editor, int year, int totalquantity, int avaliablequantity){
         Book book = null;
         
         if(type.equals("Tex")){
@@ -46,22 +47,22 @@ public class Books extends Database implements FileInterface {
 
         Scanner scan = new Scanner(System.in);
 
-        System.out.print("Type:\t");
+        out.print("Type:\t");
         String Type = scan.nextLine();
-        System.out.print("Title:\t");
+        out.print("Title:\t");
         String Title = scan.nextLine();
-        System.out.print("Author:\t");
+        out.print("Author:\t");
         String Author = scan.nextLine();
-        System.out.print("Editor:\t");
+        out.print("Editor:\t");
         String Editor = scan.nextLine();
-        System.out.print("Year:\t");
+        out.print("Year:\t");
         int Year = scan.nextInt();
-        System.out.print("Total Quantity:\t");
+        out.print("Total Quantity:\t");
         int TotalQuantity = scan.nextInt();
-        System.out.print("Avaliable Quantity:\t");
+        out.print("Avaliable Quantity:\t");
         int AvaliableQuantity = scan.nextInt();
 
-        System.out.println("Deseja inserir cadastro do livro?[s/n]");
+        out.println("Deseja inserir cadastro do livro?[s/n]");
         String confirm = scan.nextLine();
 
         this.AddBook(Type, this.nextID, Title, Author, Editor, Year, TotalQuantity, AvaliableQuantity);
@@ -71,21 +72,19 @@ public class Books extends Database implements FileInterface {
     }
 
 	public void ReadFile(){
+        this.OpenReader();
 		String line;
 		String splitSign = ",";
 
 		try {
 
             if ((line = br.readLine()) != null) {
-                System.out.println("IF");
                 this.nextID = Integer.parseInt(line);
                 br.readLine();
             }
 
 			while ((line = br.readLine()) != null){
-                System.out.println("While...");
 				String[] readed = line.split(splitSign);
-                System.out.println("\tCheck 1");
                 String type = readed[0];
                 int id = Integer.parseInt(readed[1]);
                 String title = readed[2];
@@ -94,19 +93,24 @@ public class Books extends Database implements FileInterface {
                 int year = Integer.parseInt(readed[5]);
                 int totalquantity = Integer.parseInt(readed[6]);
                 int avaliablequantity = Integer.parseInt(readed[7]);
-                System.out.println("\tCheck 2");
                 this.AddBook(type, id, title, author, editor, year, totalquantity, avaliablequantity);
 
-                System.out.printf("New Book:\nType: %s \nID: %d \nTitle: %s \nAuthor: %s \nEditor: %s \nYear: %d \nTotal: %d \nAvaliable: %d", books.get(0).Type, this.nextID, books.get(0).Title, books.get(0).Author, books.get(0).Editor, books.get(0).Year, books.get(0).TotalQuantity, books.get(0).AvaliableQuantity);
+                //out.printf("New Book:\nType: %s \nID: %d \nTitle: %s \nAuthor: %s \nEditor: %s \nYear: %d \nTotal: %d \nAvaliable: %d", books.get(0).Type, this.nextID, books.get(0).Title, books.get(0).Author, books.get(0).Editor, books.get(0).Year, books.get(0).TotalQuantity, books.get(0).AvaliableQuantity);
             }
         } catch (IOException e) {
-            System.out.println("Erro na leitura do arquivo.");
+            out.println("Erro na leitura do arquivo.");
             e.printStackTrace();
         }
 
 	}
 
 	public void WriteFile() {
+        OpenWriter();
+        try {
+            this.fw = new FileWriter(this.path);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         String SEPARATOR = ",";
         String ENDLINE = "\n";
         String HEADER = "Type,ID,Title,Author,Editor,Year,TotalQuantity,AvaliableQuantity";
@@ -148,7 +152,7 @@ public class Books extends Database implements FileInterface {
                 fw.flush();
             }
         } catch (IOException e){
-            System.out.println("Erro na escrita do arquivo.");
+            out.println("Erro na escrita do arquivo.");
             e.printStackTrace();
         }
     }

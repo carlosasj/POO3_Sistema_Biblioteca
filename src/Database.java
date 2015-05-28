@@ -1,6 +1,8 @@
 import java.io.*;
+import static java.lang.System.out;
 
 abstract public class Database {
+	private File file = null;
 	public BufferedReader br = null;
 	public FileWriter fw = null;
 	public String path = null;
@@ -10,26 +12,40 @@ abstract public class Database {
 	public void OpenFile(String filename) {
 		if (filename != null) { path = filename; }
 
-		// Try open the file and create the BufferedReader and FileWriter
-		try {
-			br = new BufferedReader(new FileReader(path));
-			fw = new FileWriter(path);
-		} catch (IOException e) {
+		// Try open the file
+		file = new File(path);
+		if (!file.exists()){
 			try {
-				new File(path).createNewFile();
-				br = new BufferedReader(new FileReader(path));
-				fw = new FileWriter(path);
-			} catch (IOException g) {
-				System.out.println("Problemas na Criação e/ou leitura do arquivo.");
-				System.out.println("Verifique se você tem permissão para ler e/ou criar arquivos.");
+				file.createNewFile();
+			} catch (IOException e) {
+				out.println("Erro ao criar o arquivo.");
+				e.printStackTrace();
 			}
+		}
+	}
+
+	public void OpenReader() {
+		try {
+			br = new BufferedReader(new FileReader(file));
+		} catch (FileNotFoundException e) {
+			out.println("Erro ao criar o Buffered Reader");
+			e.printStackTrace();
+		}
+	}
+
+	public void OpenWriter() {
+		try {
+			fw = new FileWriter(file);
+		} catch (IOException e) {
+			out.println("Erro ao criar o File Writer");
+			e.printStackTrace();
 		}
 	}
 
 	public void CloseFile(){
 		try {
-			br.close();
 			fw.close();
+			br.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
