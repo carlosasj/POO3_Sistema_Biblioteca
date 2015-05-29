@@ -1,5 +1,7 @@
 import java.util.Scanner;
 
+import static java.lang.System.out;
+
 public class Loan {
 
     private int ID;
@@ -7,6 +9,7 @@ public class Loan {
     private int UserID;
 
     private String Date;
+    private String ReturnDate;
     private String ExpirationDate;
 
     public Loan (int id, int bookid, int userid, String date, String expirationdate) {
@@ -14,8 +17,26 @@ public class Loan {
         this.BookID = bookid;
         this.UserID = userid;
         this.Date = date;
+        this.ReturnDate = date; // -1
         this.ExpirationDate = expirationdate;
     }
+
+    public Loan (int id) {
+        Scanner scan = new Scanner(System.in);
+        String inputStr;
+        int inputInt;
+
+        this.ID = id;
+
+        out.println("Primeiro, pesquise o usuário");
+/*
+        this.BookID = bookid;
+        this.UserID = userid;
+        this.Date = date;
+        this.ReturnDate = date; // -1
+        this.ExpirationDate = expirationdate;*/
+    }
+
     /*
     public void RegisterLoan () {
 

@@ -57,10 +57,9 @@ public class Loans extends Database implements FileInterface {
             String expirationdate = loanData[4];
 
             this.AddLoan(id, bookid, userid, date, expirationdate);
-
         }
-
     }
+
     public void WriteFile() throws IOException {
         OpenWriter();
         String SEPARATOR = ",";
