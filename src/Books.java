@@ -20,7 +20,6 @@ public class Books extends Database implements FileInterface {
 		this.OpenFile(filename);
 	}
 
-    // Para uso apenas dentro do metodo ReadFile()
     private void AddBook(String type, int id, String title, String author, String editor, int year, int totalquantity, int avaliablequantity){
         Book book = null;
         
@@ -33,19 +32,6 @@ public class Books extends Database implements FileInterface {
         this.books.add(book);
     }
 
-    public void AddBook(String type, String title, String author, String editor, int year, int totalquantity, int avaliablequantity){
-        Book book = null;
-
-        if(type.equals("Tex")){
-            book = new Text(this.nextID, title, author, editor, year, totalquantity, avaliablequantity);
-        } else {
-            book = new General(this.nextID, title, author, editor, year, totalquantity, avaliablequantity);
-        }
-
-        this.nextID++;
-
-        this.books.add(book);
-    }
     public void RegisterBook () {
 
         Scanner scan = new Scanner(System.in);
@@ -68,19 +54,20 @@ public class Books extends Database implements FileInterface {
         out.println("Deseja inserir cadastro do livro? [s|n]");
         String confirm = scan.nextLine();
 
-        this.AddBook(Type, this.nextID, Title, Author, Editor, Year, TotalQuantity, AvaliableQuantity);
         if (confirm.toLowerCase().equals("s") || confirm.equals("\n")) {
-            this.AddBook(Type, Title, Author, Editor, Year, TotalQuantity, AvaliableQuantity);
+            this.AddBook(Type, this.nextID, Title, Author, Editor, Year, TotalQuantity, AvaliableQuantity);
+            this.nextID++;
         }
     }
 
 	public void ReadFile(){
+
         this.OpenReader();
+
 		String line;
 		String splitSign = ",";
 
 		try {
-
             if ((line = br.readLine()) != null) {
                 this.nextID = Integer.parseInt(line);
                 br.readLine();
@@ -96,13 +83,14 @@ public class Books extends Database implements FileInterface {
                 int year = Integer.parseInt(readed[5]);
                 int totalquantity = Integer.parseInt(readed[6]);
                 int avaliablequantity = Integer.parseInt(readed[7]);
+
+
                 this.AddBook(type, id, title, author, editor, year, totalquantity, avaliablequantity);
             }
         } catch (IOException e) {
             out.println("Erro na leitura do arquivo.");
             e.printStackTrace();
         }
-
 	}
 
     public Book SearchBook(){
@@ -116,13 +104,13 @@ public class Books extends Database implements FileInterface {
             String input = scan.nextLine();
 
             // ----- Saida -----
-            if (input.equals("exit") || input.equals("\'exit\'")){  // Nunca confie na inteligência do usuário
+            if (input.equals("exit") || input.equals("\'exit\'")){  // Nunca confie na inteligï¿½ncia do usuï¿½rio
                 out.println("Encerrando a busca.");
                 result = null;
                 endSearch = true;
             }
             // ----- Ajuda -----
-            else if (input.equals("help") || input.equals("\'help\'")) {  // Nunca confie na inteligência do usuário
+            else if (input.equals("help") || input.equals("\'help\'")) {  // Nunca confie na inteligï¿½ncia do usuï¿½rio
                 out.println("Para pesquisar voce pode usar alguns comandos:");
                 out.println(splitSign + "id <id do livro>");
                 out.println(splitSign + "type <text|general>");
@@ -270,11 +258,6 @@ public class Books extends Database implements FileInterface {
 
 	public void WriteFile() {
         OpenWriter();
-        try {
-            this.fw = new FileWriter(this.path);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
         final String SEPARATOR = ",";
         final String ENDLINE = "\n";
         final String HEADER = "Type,ID,Title,Author,Editor,Year,TotalQuantity,AvaliableQuantity";

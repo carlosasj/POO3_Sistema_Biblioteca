@@ -1,11 +1,7 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 import static java.lang.System.out;
 
@@ -28,14 +24,37 @@ public class Loans extends Database implements FileInterface {
         this.loans.add(l);
     }
 
-    public void AddLoan(int bookid, int userid, String date, String expirationdate) {
+    public void RegisterLoan(){
 
-        Loan l = new Loan(this.nextID, bookid, userid, date, expirationdate);
+        Scanner scan = new Scanner(System.in);
+
+        out.println("ID do Livro: ");
+        int bookid = scan.nextInt();
+
+        Book b = null;
+
+        out.println("ID do Usuário: ");
+        int userid = scan.nextInt();
+
+        User u = null;
+
+        //this.AddLoan(this.nextID, bookid, userid, date);
 
         this.nextID++;
-        this.loans.add(l);
+    }
+
+    public boolean VerifyUser() {
+        /*
+        * FALTA IMPLEMENTAR ESSA BUSCA!
+        * */
+
+        return false;
+    }
+
+    public void RegisterReturn() {
 
     }
+
     public void ReadFile() throws IOException {
 
         BufferedReader br = new BufferedReader(new FileReader(this.path));
@@ -59,8 +78,6 @@ public class Loans extends Database implements FileInterface {
             this.AddLoan(id, bookid, userid, date, expirationdate);
         }
     }
-
-
 
     public void WriteFile() throws IOException {
         OpenWriter();
