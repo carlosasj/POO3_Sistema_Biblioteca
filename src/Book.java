@@ -1,5 +1,3 @@
-import java.util.Scanner;
-
 abstract class Book {
 
     public String Type;
@@ -12,27 +10,22 @@ abstract class Book {
     public int TotalQuantity;
     public int AvaliableQuantity;
 
-
-    public String getTitle() {
-        return this.Title;
+    public void Print(){
+        System.out.printf(
+            "Type:\t\t%s\nID:\t\t\t%d\nTitle:\t\t%s\nAuthor:\t\t%s\nEditor:\t\t%s\nYear:\t\t%d\nTotal:\t\t%d\nAvaliable:\t%d\n",
+             Type,        ID,          Title,        Author,        Editor,        Year,       TotalQuantity, AvaliableQuantity);
     }
 
-    public String getAuthor() {
-        return this.Author;
-    }
+    public String getTitle() { return this.Title; }
 
-    public String getEditor() { return  this.Editor; }
+    public String getAuthor() { return this.Author; }
 
-    public int getYear() {
-        return this.Year;
-    }
+    public String getEditor() { return this.Editor; }
 
-    public int getTotalQuantity() {
-        return this.TotalQuantity;
-    }
+    public int getYear() { return this.Year; }
 
-    public int getAvaliableQuantity() {
-        return this.AvaliableQuantity;
-    }
+    public int getTotalQuantity() { return this.TotalQuantity; }
+
+    public int getAvaliableQuantity() { return this.AvaliableQuantity; }
 
 }
