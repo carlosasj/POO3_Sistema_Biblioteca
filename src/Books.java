@@ -17,7 +17,7 @@ public class Books extends Database implements FileInterface {
 		this.OpenFile(filename);
 	}
 
-    // Para uso apenas dentro do m�todo ReadFile()
+    // Para uso apenas dentro do metodo ReadFile()
     private void AddBook(String type, int id, String title, String author, String editor, int year, int totalquantity, int avaliablequantity){
         Book book = null;
         
@@ -26,20 +26,6 @@ public class Books extends Database implements FileInterface {
         } else {
             book = new General(id, title, author, editor, year, totalquantity, avaliablequantity);
         }
-
-        this.books.add(book);
-    }
-
-    public void AddBook(String type, String title, String author, String editor, int year, int totalquantity, int avaliablequantity){
-        Book book = null;
-
-        if(type.equals("Tex")){
-            book = new Text(this.nextID, title, author, editor, year, totalquantity, avaliablequantity);
-        } else {
-            book = new General(this.nextID, title, author, editor, year, totalquantity, avaliablequantity);
-        }
-
-        this.nextID++;
 
         this.books.add(book);
     }
@@ -64,11 +50,14 @@ public class Books extends Database implements FileInterface {
         int AvaliableQuantity = scan.nextInt();
 
         out.println("Deseja inserir cadastro do livro?[s/n]");
-        String confirm = scan.nextLine();
+        int confirm = scan.nextInt();
 
-        this.AddBook(Type, this.nextID, Title, Author, Editor, Year, TotalQuantity, AvaliableQuantity);
-        if (confirm.equals("s")) {
-            this.AddBook(Type, Title, Author, Editor, Year, TotalQuantity, AvaliableQuantity);
+        out.printf("%d", confirm);
+
+        if (confirm == 0) {
+            out.print("\nif\n");
+            this.AddBook(Type, this.nextID, Title, Author, Editor, Year, TotalQuantity, AvaliableQuantity);
+            this.nextID++;
         }
     }
 
@@ -99,6 +88,8 @@ public class Books extends Database implements FileInterface {
                 int year = Integer.parseInt(readed[5]);
                 int totalquantity = Integer.parseInt(readed[6]);
                 int avaliablequantity = Integer.parseInt(readed[7]);
+
+
                 this.AddBook(type, id, title, author, editor, year, totalquantity, avaliablequantity);
 
                 //out.printf("New Book:\nType: %s \nID: %d \nTitle: %s \nAuthor: %s \nEditor: %s \nYear: %d \nTotal: %d \nAvaliable: %d", books.get(0).Type, this.nextID, books.get(0).Title, books.get(0).Author, books.get(0).Editor, books.get(0).Year, books.get(0).TotalQuantity, books.get(0).AvaliableQuantity);
@@ -111,11 +102,7 @@ public class Books extends Database implements FileInterface {
 
 	public void WriteFile() {
         OpenWriter();
-        try {
-            this.fw = new FileWriter(this.path);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
         String SEPARATOR = ",";
         String ENDLINE = "\n";
         String HEADER = "Type,ID,Title,Author,Editor,Year,TotalQuantity,AvaliableQuantity";

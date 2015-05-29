@@ -9,12 +9,12 @@ public class Loan {
     public String Date;
     public String ExpirationDate;
 
-    public Loan (int id, int bookid, int userid, String date, String expirationdate) {
+    public Loan (int id, int bookid, int userid, String date/*, String expirationdate*/) {
         this.ID = id;
         this.BookID = bookid;
         this.UserID = userid;
         this.Date = date;
-        this.ExpirationDate = expirationdate;
+        //this.ExpirationDate = expirationdate;
     }
     /*
     public void RegisterLoan () {
@@ -35,7 +35,7 @@ public class Loan {
     }
     */
 
-    public void RegisterLoan (int BookID, int UserID, String Date, String ExpirationDate) {
+    public void RegisterLoan (int BookID, int UserID, String Date/*, String ExpirationDate*/) {
         this.BookID = BookID;
         this.UserID = UserID;
         this.Date = Date;

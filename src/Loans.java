@@ -18,9 +18,9 @@ public class Loans extends Database implements FileInterface {
         this.OpenFile(filename);
     }
 
-    public void AddLoan(int id, int bookid, int userid, String date, String expirationdate) {
+    public void AddLoan(int id, int bookid, int userid, String date/*, String expirationdate*/) {
 
-        Loan l = new Loan(id, bookid, userid, date, expirationdate);
+        Loan l = new Loan(id, bookid, userid, date/*, expirationdate*/);
 
         this.loans.add(l);
     }
@@ -36,7 +36,7 @@ public class Loans extends Database implements FileInterface {
         out.println("Data[dd/mm/aaaa]: ");
         String date = scan.nextLine();
 
-        this.AddLoan(this.nextID, bookid, userid, date, );
+        this.AddLoan(this.nextID, bookid, userid, date);
 
         this.nextID++;
     }
@@ -61,7 +61,7 @@ public class Loans extends Database implements FileInterface {
             String date = loanData[3];
             String expirationdate = loanData[4];
 
-            this.AddLoan(id, bookid, userid, date, expirationdate);
+            this.AddLoan(id, bookid, userid, date/*, expirationdate*/);
         }
     }
 
