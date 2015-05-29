@@ -38,7 +38,7 @@ public class Books extends Database implements FileInterface {
 
         if(type.equals("Tex")){
             book = new Text(this.nextID, title, author, editor, year, totalquantity, avaliablequantity);
-        } else {
+        } else if(type.equals("Gen")){
             book = new General(this.nextID, title, author, editor, year, totalquantity, avaliablequantity);
         }
 
@@ -52,6 +52,11 @@ public class Books extends Database implements FileInterface {
 
         out.print("Type:\t");
         String Type = scan.nextLine();
+        while (!Type.equals("Tex") && !Type.equals("Gen")){
+            out.println("Tipo InvÃ¡lido!");
+            out.print("Type:\t");
+            String Type = scan.nextLine();
+        }
         out.print("Title:\t");
         String Title = scan.nextLine();
         out.print("Author:\t");
@@ -116,13 +121,13 @@ public class Books extends Database implements FileInterface {
             String input = scan.nextLine();
 
             // ----- Saida -----
-            if (input.equals("exit") || input.equals("\'exit\'")){  // Nunca confie na inteligência do usuário
+            if (input.equals("exit") || input.equals("\'exit\'")){  // Nunca confie na inteligï¿½ncia do usuï¿½rio
                 out.println("Encerrando a busca.");
                 result = null;
                 endSearch = true;
             }
             // ----- Ajuda -----
-            else if (input.equals("help") || input.equals("\'help\'")) {  // Nunca confie na inteligência do usuário
+            else if (input.equals("help") || input.equals("\'help\'")) {  // Nunca confie na inteligï¿½ncia do usuï¿½rio
                 out.println("Para pesquisar voce pode usar alguns comandos:");
                 out.println(splitSign + "id <id do livro>");
                 out.println(splitSign + "type <text|general>");
@@ -151,7 +156,7 @@ public class Books extends Database implements FileInterface {
                 for (String cmd : splited){                 // Para cada comando...
                     try {
                         String[] command = cmd.split(" ", 2);   // Separa o comando do parametro
-                        command[1] = command[1].trim();         // Retira espaços antes e depois
+                        command[1] = command[1].trim();         // Retira espaï¿½os antes e depois
                         filtered = this.FilterBook(command[0], command[1], filtered, true);    // Filtra
                     } catch (ArrayIndexOutOfBoundsException e){
                         out.printf("\n\t! (Comando \"%s\" faltando argumentos; Ignorado)\n", cmd);
