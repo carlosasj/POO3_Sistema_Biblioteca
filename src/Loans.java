@@ -60,6 +60,8 @@ public class Loans extends Database implements FileInterface {
         }
     }
 
+
+
     public void WriteFile() throws IOException {
         OpenWriter();
         String SEPARATOR = ",";

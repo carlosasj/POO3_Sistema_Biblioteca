@@ -152,7 +152,7 @@ public class Books extends Database implements FileInterface {
                     try {
                         String[] command = cmd.split(" ", 2);   // Separa o comando do parametro
                         command[1] = command[1].trim();         // Retira espaços antes e depois
-                        filtered = this.FilterBook(command[0], command[1], filtered, true);    // Filtra
+                        filtered = this.Filter(command[0], command[1], filtered, true);    // Filtra
                     } catch (ArrayIndexOutOfBoundsException e){
                         out.printf("\n\t! (Comando \"%s\" faltando argumentos; Ignorado)\n", cmd);
                     }
@@ -207,17 +207,17 @@ public class Books extends Database implements FileInterface {
     }
 
     public Book FindByID(int id){
-        Stream<Book> filtered = this.FilterBook("id", Integer.valueOf(id).toString(), false);
+        Stream<Book> filtered = this.Filter("id", Integer.valueOf(id).toString(), false);
         return filtered.collect(Collectors.toList()).get(0);
     }
 
-    public Stream<Book> FilterBook(String field, String param, Boolean printMsg) {    // Aplica o filtro num stream com todos os livros
+    public Stream<Book> Filter(String field, String param, Boolean printMsg) {    // Aplica o filtro num stream com todos os livros
         Stream<Book> filtered = books.stream();
-        this.FilterBook(field, param, filtered, printMsg);
+        this.Filter(field, param, filtered, printMsg);
         return filtered;
     }
 
-    public Stream<Book> FilterBook(String field, String param, Stream<Book> filtered, Boolean printMsg) {  // Aplica o filtro num stream personalizado
+    public Stream<Book> Filter(String field, String param, Stream<Book> filtered, Boolean printMsg) {  // Aplica o filtro num stream personalizado
         if (printMsg) out.printf("\n\t%s = %s", field, param);
 
         switch (field){
@@ -275,9 +275,9 @@ public class Books extends Database implements FileInterface {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        String SEPARATOR = ",";
-        String ENDLINE = "\n";
-        String HEADER = "Type,ID,Title,Author,Editor,Year,TotalQuantity,AvaliableQuantity";
+        final String SEPARATOR = ",";
+        final String ENDLINE = "\n";
+        final String HEADER = "Type,ID,Title,Author,Editor,Year,TotalQuantity,AvaliableQuantity";
 
         try {
             fw.append(Integer.valueOf(this.nextID).toString());
