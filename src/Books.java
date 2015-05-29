@@ -69,10 +69,6 @@ public class Books extends Database implements FileInterface {
 		String splitSign = ",";
 
 		try {
-            line = br.readLine();
-            System.out.print(line);
-            line = br.readLine();
-            System.out.print(line);
             if ((line = br.readLine()) != null) {
                 this.nextID = Integer.parseInt(line);
                 br.readLine();

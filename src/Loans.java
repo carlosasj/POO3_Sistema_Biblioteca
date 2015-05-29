@@ -2,11 +2,8 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
+
 import static java.lang.System.out;
 
 import static java.lang.System.out;
@@ -36,15 +33,29 @@ public class Loans extends Database implements FileInterface {
 
         out.println("ID do Livro: ");
         int bookid = scan.nextInt();
+
+        Book b = null;
+
         out.println("ID do Usuário: ");
         int userid = scan.nextInt();
-        out.println("Data[dd/mm/aaaa]: ");
-        String date = scan.nextLine();
 
+        User u = null;
 
         //this.AddLoan(this.nextID, bookid, userid, date);
 
         this.nextID++;
+    }
+
+    public boolean VerifyUser() {
+        /*
+        * FALTA IMPLEMENTAR ESSA BUSCA!
+        * */
+
+        return false;
+    }
+
+    public void RegisterReturn() {
+
     }
 
     public void ReadFile() throws IOException {
