@@ -1,3 +1,5 @@
+package Time;
+
 import java.util.GregorianCalendar;
 import java.util.Scanner;
 
@@ -5,7 +7,7 @@ import static java.lang.System.out;
 
 public class TimeMachine {
 
-    public static GregorianCalendar currentDate;
+    private static GregorianCalendar currentDate;
 
     public static void setDate() {
 
@@ -22,6 +24,10 @@ public class TimeMachine {
         int year = Integer.parseInt(date[2]);
         //Armazena em um calendar a data digitada pelo usuario
         GregorianCalendar loanDate = new GregorianCalendar(year, month, day);
+    }
+
+    public static GregorianCalendar CurrentDate(){
+        return currentDate;
     }
 
 }

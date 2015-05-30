@@ -13,20 +13,16 @@ abstract public class Book {
     protected int AvaliableQuantity;
 
     public String getType() { return this.Type; }
-
     public int getID() { return this.ID; }
-
     public String getTitle() { return this.Title; }
-
     public String getAuthor() { return this.Author; }
-
     public String getEditor() { return this.Editor; }
-
     public int getYear() { return this.Year; }
-
     public int getTotalQuantity() { return this.TotalQuantity; }
-
     public int getAvaliableQuantity() { return this.AvaliableQuantity; }
+
+    public void goLoan() { this.AvaliableQuantity--; }
+    public void backLoan() { this.AvaliableQuantity++; }
 
     public void Print(){
         System.out.printf(

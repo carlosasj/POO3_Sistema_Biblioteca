@@ -2,6 +2,7 @@ package Database;
 
 import Book.Book;
 import Loan.Loan;
+import Time.TimeMachine;
 import User.User;
 
 import java.io.IOException;
@@ -31,7 +32,21 @@ public class Loans extends Database {
     }
 
     public void RegisterLoan(){
+        out.println("--- Novo Emprestimo ---");
+        out.println("Primeiro, selecione o usuario.");
+        User user = Users.getInstance().Search();
+        // Verifica se o usuario nao esta bloqueado para emprestimo
+        // Verifica se o usuario tem menos emprestimos do que maximo permitido
 
+        out.println("Agora selecione o livro");
+        Book book = Books.getInstance().Search();
+        // Verifica se existe o livro para ser emprestado
+
+        GregorianCalendar date = (GregorianCalendar) TimeMachine.CurrentDate().clone();
+        GregorianCalendar expirationdate = (GregorianCalendar) TimeMachine.CurrentDate().clone();
+        expirationdate.add(Calendar.DAY_OF_MONTH, user.getMaxDays());
+
+        this.AddLoan(book.getID(), user.getID(), date, expirationdate);
     }
 
     // Utilizado no ReadFile
@@ -55,6 +70,7 @@ public class Loans extends Database {
     private void AddLoan(int loanid, int bookid, int userid, GregorianCalendar date, GregorianCalendar expirationdate) {
         Loan l = new Loan(loanid, bookid, userid, date, expirationdate);
         this.loans.add(l);
+        Books.getInstance().FindByID(bookid).goLoan();
     }
 
     protected void AddLoan(int bookid, int userid, GregorianCalendar date, GregorianCalendar expirationdate) {
@@ -129,4 +145,8 @@ public class Loans extends Database {
             e.printStackTrace();
         }
     }
+
+    
+
+
 }
