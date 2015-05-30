@@ -6,7 +6,6 @@ import User.User;
 
 import java.io.IOException;
 import java.util.*;
-
 import static java.lang.System.out;
 
 public class Loans extends Database {
@@ -38,34 +37,16 @@ public class Loans extends Database {
         //this.loans.add(l);
     }
 
-    public void RegisterLoan(){
+    public void AddLoan(int bookid, int userid, GregorianCalendar date, GregorianCalendar expirationdate) {
 
-        Scanner scan = new Scanner(System.in);
-
-        out.println("ID do Livro: ");
-        int bookid = scan.nextInt();
+        Loan l = new Loan(this.nextID, bookid, userid, date, expirationdate);
 
         Book b = null;
 
-        out.println("ID do Usuario: ");
-        int userid = scan.nextInt();
-
-        User u = null;
-
-        //this.AddLoan(this.nextID, bookid, userid, date);
+        this.loans.add(l);
 
         this.nextID++;
-    }
-
-    public boolean VerifyUser() {
-        /*
-        * FALTA IMPLEMENTAR ESSA BUSCA!
-        * */
-
-        return false;
-    }
-
-    public void RegisterReturn() {
+        this.loans.add(l);
 
     }
 
