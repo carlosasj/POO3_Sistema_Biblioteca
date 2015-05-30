@@ -20,7 +20,7 @@ public class Loans extends Database implements FileInterface {
         this.OpenFile(filename);
     }
 
-    private void AddLoan(int id, int bookid, int userid, String date, String expirationdate) {
+    private void AddLoan(int id, int bookid, int userid, GregorianCalendar date, GregorianCalendar expirationdate) {
 
         Loan l = new Loan(id, bookid, userid, date, expirationdate);
 
