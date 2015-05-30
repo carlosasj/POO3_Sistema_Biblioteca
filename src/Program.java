@@ -10,7 +10,7 @@ public class Program {
 		//b.AddBook("Tex","O fabuloso livro de teste","Jhon Doe","Editora Teste",2015,10,8);
 		//b.AddBook("Tex","O fabuloso livro de teste 2","Jhon Doe","Editora Teste",2015,10,8);
 		//b.RegisterBook();
-		b.SearchBook();
+		b.Search();
 
 		b.WriteFile();
 		b.CloseFile();

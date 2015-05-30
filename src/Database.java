@@ -4,7 +4,6 @@ import static java.lang.System.out;
 abstract public class Database {
 	private File file = null;
 	public BufferedReader br = null;
-   // public InputStreamReader is = null;
 	public FileWriter fw = null;
 	public String path = null;
 

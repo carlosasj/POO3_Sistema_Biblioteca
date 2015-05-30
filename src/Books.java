@@ -20,9 +20,8 @@ public class Books extends Database implements FileInterface {
 		this.OpenFile(filename);
 	}
 
-    // Para uso apenas dentro do metodo ReadFile()
     private void AddBook(String type, int id, String title, String author, String editor, int year, int totalquantity, int avaliablequantity){
-        Book book = null;
+        Book book;
         
         if(type.equals("Tex")){
             book = new Text(id, title, author, editor, year, totalquantity, avaliablequantity);
@@ -37,27 +36,65 @@ public class Books extends Database implements FileInterface {
 
         Scanner scan = new Scanner(System.in);
 
+        out.println("Cadastro de livro:");
+        out.print("ID:\t\t" + this.nextID);
+
         out.print("Type:\t");
-        String Type = scan.nextLine();
+        String type = scan.nextLine().toLowerCase();
+        while (!type.equals("text") && !type.equals("general")){
+            out.println("Tipo Invalido!");
+            out.print("Type <text|general>:\t");
+            type = scan.nextLine().toLowerCase();
+        }
+
         out.print("Title:\t");
         String Title = scan.nextLine();
+
         out.print("Author:\t");
         String Author = scan.nextLine();
+
         out.print("Editor:\t");
         String Editor = scan.nextLine();
+
         out.print("Year:\t");
-        int Year = Integer.parseInt(scan.nextLine());
+        int Year = -1;
+        while (Year == -1) {
+            try {
+                Year = Integer.parseInt(scan.nextLine());
+            } catch (NumberFormatException e){
+                out.println("Ano Inválido");
+                Year = -1;
+            }
+        }
+
         out.print("Total Quantity:\t");
-        int TotalQuantity = Integer.parseInt(scan.nextLine());
-        out.print("Avaliable Quantity:\t");
-        int AvaliableQuantity = Integer.parseInt(scan.nextLine());
+        int TotalQuantity = -1;
+        while (TotalQuantity == -1) {
+            try {
+                TotalQuantity = Integer.parseInt(scan.nextLine());
+            } catch (NumberFormatException e){
+                out.println("Quantidade Inválida");
+                Year = -1;
+            }
+        }
 
         out.println("Deseja inserir cadastro do livro? [s|n]");
         String confirm = scan.nextLine();
 
         if (confirm.toLowerCase().equals("s") || confirm.equals("\n")) {
-            this.AddBook(Type, this.nextID, Title, Author, Editor, Year, TotalQuantity, AvaliableQuantity);
+            switch (type){
+                case "text":
+                    type = "Tex";
+                    break;
+                case "general":
+                    type = "Gen";
+            }
+            this.AddBook(type, this.nextID, Title, Author, Editor, Year, TotalQuantity, TotalQuantity);
             this.nextID++;
+            out.println("Registro cadastrado com sucesso!");
+        }
+        else {
+            out.println("Registro não cadastrado.");
         }
     }
 
@@ -85,7 +122,6 @@ public class Books extends Database implements FileInterface {
                 int totalquantity = Integer.parseInt(readed[6]);
                 int avaliablequantity = Integer.parseInt(readed[7]);
 
-
                 this.AddBook(type, id, title, author, editor, year, totalquantity, avaliablequantity);
             }
         } catch (IOException e) {
@@ -94,7 +130,7 @@ public class Books extends Database implements FileInterface {
         }
 	}
 
-    public Book SearchBook(){
+    public Book Search(){
         Scanner scan = new Scanner(System.in);
         Boolean endSearch = false;
         Book result = null;
@@ -105,13 +141,13 @@ public class Books extends Database implements FileInterface {
             String input = scan.nextLine();
 
             // ----- Saida -----
-            if (input.equals("exit") || input.equals("\'exit\'")){  // Nunca confie na inteligï¿½ncia do usuï¿½rio
+            if (input.toLowerCase().equals("exit") || input.toLowerCase().equals("\'exit\'")){  // Nunca confie na inteligencia do usuario
                 out.println("Encerrando a busca.");
                 result = null;
                 endSearch = true;
             }
             // ----- Ajuda -----
-            else if (input.equals("help") || input.equals("\'help\'")) {  // Nunca confie na inteligï¿½ncia do usuï¿½rio
+            else if (input.toLowerCase().equals("help") || input.toLowerCase().equals("\'help\'")) {  // Nunca confie na inteligencia do usuario
                 out.println("Para pesquisar voce pode usar alguns comandos:");
                 out.println(splitSign + "id <id do livro>");
                 out.println(splitSign + "type <text|general>");
@@ -140,8 +176,8 @@ public class Books extends Database implements FileInterface {
                 for (String cmd : splited){                 // Para cada comando...
                     try {
                         String[] command = cmd.split(" ", 2);   // Separa o comando do parametro
-                        command[1] = command[1].trim();         // Retira espaï¿½os antes e depois
-                        filtered = this.FilterBook(command[0], command[1], filtered, true);    // Filtra
+                        command[1] = command[1].trim();         // Retira espaços antes e depois
+                        filtered = this.Filter(command[0], command[1], filtered, true);    // Filtra
                     } catch (ArrayIndexOutOfBoundsException e){
                         out.printf("\n\t! (Comando \"%s\" faltando argumentos; Ignorado)\n", cmd);
                     }
@@ -155,7 +191,7 @@ public class Books extends Database implements FileInterface {
                     collect.get(0).Print();
 
                     out.print("\nDeseja usar esse livro? [s|n]");
-                    if (scan.nextLine().equals("s")){
+                    if (scan.nextLine().toLowerCase().equals("s")){
                         result = collect.get(0);
                         endSearch = true;
                     }
@@ -175,6 +211,7 @@ public class Books extends Database implements FileInterface {
                         out.println("==================================================");
                         subID++;
                     }
+                    subID--; // Porque ele termina o For valendo (collect.size()+1)
 
                     out.print("Selecione o resultado pelo indice\nou digite 0 para uma nova busca: ");
                     int index = Integer.parseInt(scan.nextLine());
@@ -196,27 +233,27 @@ public class Books extends Database implements FileInterface {
     }
 
     public Book FindByID(int id){
-        Stream<Book> filtered = this.FilterBook("id", Integer.valueOf(id).toString(), false);
+        Stream<Book> filtered = this.Filter("id", Integer.valueOf(id).toString(), false);
         return filtered.collect(Collectors.toList()).get(0);
     }
 
-    public Stream<Book> FilterBook(String field, String param, Boolean printMsg) {    // Aplica o filtro num stream com todos os livros
+    public Stream<Book> Filter(String field, String param, Boolean printMsg) {    // Aplica o filtro num stream com todos os livros
         Stream<Book> filtered = books.stream();
-        this.FilterBook(field, param, filtered, printMsg);
+        this.Filter(field, param, filtered, printMsg);
         return filtered;
     }
 
-    public Stream<Book> FilterBook(String field, String param, Stream<Book> filtered, Boolean printMsg) {  // Aplica o filtro num stream personalizado
+    public Stream<Book> Filter(String field, String param, Stream<Book> filtered, Boolean printMsg) {  // Aplica o filtro num stream personalizado
         if (printMsg) out.printf("\n\t%s = %s", field, param);
 
         switch (field){
             case "type":
-                switch (param) {
+                switch (param.toLowerCase()) {
                     case "text":
-                        filtered = filtered.filter(b -> b.Type.equals("Tex"));
+                        filtered = filtered.filter(b -> b.getType().equals("Tex"));
                         break;
                     case "general":
-                        filtered = filtered.filter(b -> b.Type.equals("Gen"));
+                        filtered = filtered.filter(b -> b.getType().equals("Gen"));
                         break;
                     default:
                         if (printMsg) out.printf(" (\"%s\" nao eh um parametro valido; Ignorado)", param);
@@ -244,7 +281,7 @@ public class Books extends Database implements FileInterface {
             case "id":
                 try {
                     int id = Integer.parseInt(param);
-                    filtered = filtered.filter(b -> b.ID == id);
+                    filtered = filtered.filter(b -> b.getID() == id);
                 } catch (NumberFormatException e){
                     if (printMsg) out.printf(" (\"%s\" nao eh um ano valido; Ignorado)", param);
                 }
@@ -259,10 +296,9 @@ public class Books extends Database implements FileInterface {
 
 	public void WriteFile() {
         OpenWriter();
-
-        String SEPARATOR = ",";
-        String ENDLINE = "\n";
-        String HEADER = "Type,ID,Title,Author,Editor,Year,TotalQuantity,AvaliableQuantity";
+        final String SEPARATOR = ",";
+        final String ENDLINE = "\n";
+        final String HEADER = "Type,ID,Title,Author,Editor,Year,TotalQuantity,AvaliableQuantity";
 
         try {
             fw.append(Integer.valueOf(this.nextID).toString());
@@ -274,10 +310,10 @@ public class Books extends Database implements FileInterface {
             fw.flush();
 
             for (Book b : books) {
-                fw.append(b.Type);
+                fw.append(b.getType());
                 fw.append(SEPARATOR);
 
-                fw.append(Integer.valueOf(b.ID).toString());
+                fw.append(Integer.valueOf(b.getID()).toString());
                 fw.append(SEPARATOR);
 
                 fw.append(b.getTitle());
