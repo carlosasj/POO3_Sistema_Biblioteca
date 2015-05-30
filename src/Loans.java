@@ -23,16 +23,22 @@ public class Loans extends Database implements FileInterface {
         //this.loans.add(l);
     }
 
-    public void AddLoan(int bookid, int userid, GregorianCalendar date, GregorianCalendar expirationdate) {
+    public void RegisterLoan(TimeMachine curTime, Books books, Users users){
 
-        Loan l = new Loan(this.nextID, bookid, userid, date, expirationdate);
+        Scanner scan = new Scanner(System.in);
 
-        Book b = null;
+        out.println("ID do Livro: ");
+        int bookId = Integer.parseInt(scan.nextLine());
+        Book b;
+        int userId;
+        if (books.FindByID(bookId) == null) {
 
-        this.loans.add(l);
+        }
 
-        this.nextID++;
-        this.loans.add(l);
+        out.println("ID do Usuario: ");
+         //= Integer.parseInt(scan.nextLine());
+        User u = users.FindByID(userId);
+
 
     }
 

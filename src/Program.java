@@ -1,8 +1,13 @@
 import java.io.IOException;
+import java.sql.Time;
+
 import static java.lang.System.out;
 
 public class Program {
 	public static void main (String[] args) throws IOException {
+
+        TimeMachine curTime = new TimeMachine();
+
 
 		Books b = new Books(null);
 		b.OpenFile("books.csv");
