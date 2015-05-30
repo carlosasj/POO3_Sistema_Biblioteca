@@ -1,15 +1,17 @@
+package Database;
+
 import java.io.*;
 import static java.lang.System.out;
 
 abstract public class Database {
-	private File file = null;
-	public BufferedReader br = null;
-	public FileWriter fw = null;
-	public String path = null;
+	protected File file = null;
+	protected BufferedReader br = null;
+	protected FileWriter fw = null;
+	protected String path = null;
 
-    public int nextID;
+    protected int nextID;
 
-	public void OpenFile(String filename) {
+	protected void OpenFile(String filename) {
 		if (filename != null) { path = filename; }
 
 		// Try open the file
@@ -22,9 +24,10 @@ abstract public class Database {
 				e.printStackTrace();
 			}
 		}
+
 	}
 
-	public void OpenReader() {
+	protected void OpenReader() {
 		try {
 			br = new BufferedReader(new FileReader(file));
 		} catch (FileNotFoundException e) {
@@ -33,7 +36,7 @@ abstract public class Database {
 		}
 	}
 
-	public void OpenWriter() {
+	protected void OpenWriter() {
 		try {
 			fw = new FileWriter(file);
 		} catch (IOException e) {
@@ -42,7 +45,7 @@ abstract public class Database {
 		}
 	}
 
-	public void CloseFile(){
+	protected void CloseFile(){
 		try {
 			fw.close();
 			br.close();

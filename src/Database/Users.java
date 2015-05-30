@@ -1,3 +1,10 @@
+package Database;
+
+import User.Comunity;
+import User.Student;
+import User.Teacher;
+import User.User;
+
 import java.io.*;
 import java.util.LinkedList;
 import java.util.List;
@@ -7,15 +14,26 @@ import java.util.stream.Stream;
 
 import static java.lang.System.out;
 
-public class Users extends Database implements FileInterface {
+public class Users extends Database {
 
+    private static Users usersDB;
     private List<User> users;
+
+    // Singleton
+    public static Users getInstance() { return usersDB; }
+    protected static Users getInstance(String filename){
+        if (usersDB == null){
+            usersDB = new Users(filename);
+        }
+        return usersDB;
+    }
 
     public Users (String filename) {
         this.nextID = 0;
         this.path = "users.csv";
         this.users = new LinkedList<User>();
         this.OpenFile(filename);
+        this.ReadFile();
     }
 
     public void RegisterUser () {
@@ -27,10 +45,11 @@ public class Users extends Database implements FileInterface {
         System.out.println("Name: ");
         String Name = scan.nextLine();
 
-        this.AddUser(Type, Name);
+        this.AddUser(Type, nextID, Name);
+        this.nextID++;
     }
 
-    private void AddUser (String type, int ID, String name) {
+    protected void AddUser (String type, int ID, String name) {
         User user = null;
         switch (type) {
             case "Tea":
@@ -48,7 +67,7 @@ public class Users extends Database implements FileInterface {
 
         this.users.add(user);
     }
-
+/*
     public void AddUser (String type, String name) {
         User user = null;
         switch (type) {
@@ -66,10 +85,10 @@ public class Users extends Database implements FileInterface {
         }
 
         this.users.add(user);
-        this.nextID++;
+        this.nextID++
     }
-
-    public void ReadFile() {
+*/
+    protected void ReadFile() {
 
         this.OpenReader();
 
@@ -108,13 +127,13 @@ public class Users extends Database implements FileInterface {
             String input = scan.nextLine();
 
             // ----- Saida -----
-            if (input.toLowerCase().equals("exit") || input.toLowerCase().equals("\'exit\'")){  // Nunca confie na inteligência do usuário
+            if (input.toLowerCase().equals("exit") || input.toLowerCase().equals("\'exit\'")){  // Nunca confie na inteligï¿½ncia do usuï¿½rio
                 out.println("Encerrando a busca.");
                 result = null;
                 endSearch = true;
             }
             // ----- Ajuda -----
-            else if (input.toLowerCase().equals("help") || input.toLowerCase().equals("\'help\'")) {  // Nunca confie na inteligência do usuário
+            else if (input.toLowerCase().equals("help") || input.toLowerCase().equals("\'help\'")) {  // Nunca confie na inteligï¿½ncia do usuï¿½rio
                 out.println("Para pesquisar voce pode usar alguns comandos:");
                 out.println(splitSign + "id <id do usuario>");
                 out.println(splitSign + "type <student|teacher|community>");
@@ -140,7 +159,7 @@ public class Users extends Database implements FileInterface {
                 for (String cmd : splited){                 // Para cada comando...
                     try {
                         String[] command = cmd.split(" ", 2);   // Separa o comando do parametro
-                        command[1] = command[1].trim();         // Retira espaços antes e depois
+                        command[1] = command[1].trim();         // Retira espaï¿½os antes e depois
                         filtered = this.Filter(command[0], command[1], filtered, true);    // Filtra
                     } catch (ArrayIndexOutOfBoundsException e){
                         out.printf("\n\t! (Comando \"%s\" faltando argumentos; Ignorado)\n", cmd);
@@ -214,13 +233,13 @@ public class Users extends Database implements FileInterface {
             case "type":
                 switch (param.toLowerCase()) {
                     case "student":
-                        filtered = filtered.filter(u -> u.Type.equals("Stu"));
+                        filtered = filtered.filter(u -> u.getType().equals("Stu"));
                         break;
                     case "teacher":
-                        filtered = filtered.filter(u -> u.Type.equals("Tea"));
+                        filtered = filtered.filter(u -> u.getType().equals("Tea"));
                         break;
                     case "community":
-                        filtered = filtered.filter(u -> u.Type.equals("Com"));
+                        filtered = filtered.filter(u -> u.getType().equals("Com"));
                     default:
                         if (printMsg) out.printf(" (\"%s\" nao eh um parametro valido; Ignorado)", param);
                         break;
@@ -234,7 +253,7 @@ public class Users extends Database implements FileInterface {
             case "id":
                 try {
                     int id = Integer.parseInt(param);
-                    filtered = filtered.filter(u -> u.ID == id);
+                    filtered = filtered.filter(u -> u.getID() == id);
                 } catch (NumberFormatException e){
                     if (printMsg) out.printf(" (\"%s\" nao eh um ID valido; Ignorado)", param);
                 }
@@ -247,7 +266,7 @@ public class Users extends Database implements FileInterface {
         return filtered;
     }
 
-	public void WriteFile() {
+	protected void WriteFile() {
         OpenWriter();
 
         final String SEPARATOR = ",";
@@ -264,10 +283,10 @@ public class Users extends Database implements FileInterface {
             fw.flush();
 
             for (User u : users) {
-                fw.append(u.Type);
+                fw.append(u.getType());
                 fw.append(SEPARATOR);
 
-                fw.append(Integer.valueOf(u.ID).toString());
+                fw.append(Integer.valueOf(u.getID()).toString());
                 fw.append(SEPARATOR);
 
                 fw.append(u.getName());

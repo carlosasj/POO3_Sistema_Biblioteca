@@ -1,20 +1,34 @@
-import java.io.BufferedReader;
-import java.io.FileReader;
+package Database;
+
+import Book.Book;
+import Loan.Loan;
+import User.User;
+
 import java.io.IOException;
 import java.util.*;
 
 import static java.lang.System.out;
 
-public class Loans extends Database implements FileInterface {
+public class Loans extends Database {
 
-    public List<Loan> loans;
+    private static Loans loansDB;
+    private List<Loan> loans;
+
+    // Singleton
+    public static Loans getInstance() { return loansDB; }
+    protected static Loans getInstance(String filename){
+        if (loansDB == null){
+            loansDB = new Loans(filename);
+        }
+        return loansDB;
+    }
 
     public Loans (String filename) {
-
         this.nextID = 0;
         this.path = "loans.csv";
         this.loans = new LinkedList<Loan>();
         this.OpenFile(filename);
+        this.ReadFile();
     }
 
     private void AddLoan(int id, int bookid, int userid, String date, String expirationdate) {

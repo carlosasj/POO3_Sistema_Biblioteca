@@ -1,4 +1,6 @@
-abstract class Book {
+package Book;
+
+abstract public class Book {
 
     protected String Type;
     protected int ID;

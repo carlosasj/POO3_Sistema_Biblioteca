@@ -1,4 +1,6 @@
-abstract class User {
+package User;
+
+abstract public class User {
 
     protected String Type;
     protected int ID;
