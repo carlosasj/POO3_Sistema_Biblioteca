@@ -30,24 +30,36 @@ public class Loans extends Database {
         this.ReadFile();
     }
 
-    private void AddLoan(int id, int bookid, int userid, String date, String expirationdate) {
+    public void RegisterLoan(){
 
-        //Loan l = new Loan(id, bookid, userid, date, expirationdate);
-
-        //this.loans.add(l);
     }
 
-    public void AddLoan(int bookid, int userid, GregorianCalendar date, GregorianCalendar expirationdate) {
+    // Utilizado no ReadFile
+    private void AddLoan(int loanid, int bookid, int userid, String date, String expirationdate) {
+        String[] split_date = date.split("/");
+        String[] split_expiration = expirationdate.split("/");
 
-        Loan l = new Loan(this.nextID, bookid, userid, date, expirationdate);
+        GregorianCalendar cal_date =
+                new GregorianCalendar(Integer.parseInt(split_date[2]),
+                        Integer.parseInt(split_date[1]),
+                        Integer.parseInt(split_date[0]));
 
-        Book b = null;
+        GregorianCalendar cal_expiration =
+                new GregorianCalendar(Integer.parseInt(split_expiration[2]),
+                        Integer.parseInt(split_expiration[1]),
+                        Integer.parseInt(split_expiration[0]));
 
+        this.AddLoan(loanid, bookid, userid, cal_date, cal_expiration);
+    }
+
+    private void AddLoan(int loanid, int bookid, int userid, GregorianCalendar date, GregorianCalendar expirationdate) {
+        Loan l = new Loan(loanid, bookid, userid, date, expirationdate);
         this.loans.add(l);
+    }
 
+    protected void AddLoan(int bookid, int userid, GregorianCalendar date, GregorianCalendar expirationdate) {
+        this.AddLoan(this.nextID, bookid, userid, date, expirationdate);
         this.nextID++;
-        this.loans.add(l);
-
     }
 
     public void ReadFile(){
