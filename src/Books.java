@@ -38,6 +38,11 @@ public class Books extends Database implements FileInterface {
 
         out.print("Type:\t");
         String Type = scan.nextLine();
+        while (!Type.equals("Tex") && !Type.equals("Gen")){
+            out.println("Tipo Inválido!");
+            out.print("Type:\t");
+            String Type = scan.nextLine();
+        }
         out.print("Title:\t");
         String Title = scan.nextLine();
         out.print("Author:\t");
