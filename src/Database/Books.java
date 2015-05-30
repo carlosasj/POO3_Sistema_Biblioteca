@@ -54,41 +54,41 @@ public class Books extends Database {
         out.println("Cadastro de livro:");
         out.print("ID:\t\t" + this.nextID);
 
-        out.print("Type:\t");
+        out.print("Tipo:\t");
         String type = scan.nextLine().toLowerCase();
         while (!type.equals("text") && !type.equals("general")){
             out.println("Tipo Invalido!");
-            out.print("Type <text|general>:\t");
+            out.print("Tipo <text|general>:\t");
             type = scan.nextLine().toLowerCase();
         }
 
-        out.print("Title:\t");
+        out.print("Titulo:\t");
         String Title = scan.nextLine();
 
-        out.print("Author:\t");
+        out.print("Autor:\t");
         String Author = scan.nextLine();
 
-        out.print("Editor:\t");
+        out.print("Editora:\t");
         String Editor = scan.nextLine();
 
-        out.print("Year:\t");
+        out.print("Ano:\t");
         int Year = -1;
         while (Year == -1) {
             try {
                 Year = Integer.parseInt(scan.nextLine());
             } catch (NumberFormatException e){
-                out.println("Ano Inválido");
+                out.println("Ano Invalido");
                 Year = -1;
             }
         }
 
-        out.print("Total Quantity:\t");
+        out.print("Quantidade Total:\t");
         int TotalQuantity = -1;
         while (TotalQuantity == -1) {
             try {
                 TotalQuantity = Integer.parseInt(scan.nextLine());
             } catch (NumberFormatException e){
-                out.println("Quantidade Inválida");
+                out.println("Quantidade Invalida");
                 Year = -1;
             }
         }
@@ -109,7 +109,7 @@ public class Books extends Database {
             out.println("Registro cadastrado com sucesso!");
         }
         else {
-            out.println("Registro não cadastrado.");
+            out.println("Registro nao cadastrado.");
         }
     }
 
@@ -190,7 +190,7 @@ public class Books extends Database {
                 for (String cmd : splited){                 // Para cada comando...
                     try {
                         String[] command = cmd.split(" ", 2);   // Separa o comando do parametro
-                        command[1] = command[1].trim();         // Retira espaços antes e depois
+                        command[1] = command[1].trim();         // Retira espaï¿½os antes e depois
                         filtered = this.Filter(command[0], command[1], filtered, true);    // Filtra
                     } catch (ArrayIndexOutOfBoundsException e){
                         out.printf("\n\t! (Comando \"%s\" faltando argumentos; Ignorado)\n", cmd);

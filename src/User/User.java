@@ -1,5 +1,7 @@
 package User;
 
+import static java.lang.System.out;
+
 abstract public class User {
 
     protected String Type;
@@ -15,6 +17,6 @@ abstract public class User {
 	public int getMaxLoans() { return this.MaxLoans; }
 
 	public void Print(){
-		System.out.printf("Type:\t%s\nID:\t%d\nName:\t%s\n", Type, ID, Name);
+		System.out.printf("Tipo:\t%s\nID:\t%d\nNome:\t%s\n", Type, ID, Name);
 	}
 }

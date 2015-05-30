@@ -40,9 +40,14 @@ public class Users extends Database {
 
         Scanner scan = new Scanner(System.in);
 
-        System.out.println("Type: ");
-        String Type = scan.nextLine();
-        System.out.println("Name: ");
+        out.print("Tipo:\t");
+        String type = scan.nextLine().toLowerCase();
+        while (!type.equals("community") && !type.equals("student") && !type.equals("teacher")){
+            out.println("Tipo Invalido!");
+            out.print("Tipo <community|student|teacher>:\t");
+            type = scan.nextLine().toLowerCase();
+        }
+        out.println("Nome: ");
         String Name = scan.nextLine();
 
         this.AddUser(Type, nextID, Name);
@@ -52,16 +57,16 @@ public class Users extends Database {
     protected void AddUser (String type, int ID, String name) {
         User user = null;
         switch (type) {
-            case "Tea":
-                user = new Teacher(ID, name);
+            case "community":
+                user = new Comunity(ID, name);
                 break;
 
-            case "Stu":
+            case "student":
                 user = new Student(ID, name);
                 break;
 
-            case "Com":
-                user = new Comunity(ID, name);
+            case "teacher":
+                user = new Teacher(ID, name);
                 break;
         }
 

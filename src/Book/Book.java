@@ -1,5 +1,7 @@
 package Book;
 
+import static java.lang.System.out;
+
 abstract public class Book {
 
     protected String Type;
@@ -25,9 +27,9 @@ abstract public class Book {
     public void backLoan() { this.AvaliableQuantity++; }
 
     public void Print(){
-        System.out.printf(
-                "Type:\t\t%s\nID:\t\t\t%d\nTitle:\t\t%s\nAuthor:\t\t%s\nEditor:\t\t%s\nYear:\t\t%d\nTotal:\t\t%d\nAvaliable:\t%d\n",
-                Type,        ID,          Title,        Author,        Editor,        Year,       TotalQuantity, AvaliableQuantity);
+        out.printf(
+                "Tipo:\t\t%s\nID:\t\t\t%d\nTitulo:\t\t%s\nAutor:\t\t%s\nEditora:\t\t%s\nAno:\t\t%d\nTotal:\t\t%d\nDisponivel:\t%d\n",
+                Type,        ID,          Title,         Author,       Editor,         Year,       TotalQuantity,AvaliableQuantity);
     }
 
 }
