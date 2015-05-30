@@ -2,9 +2,10 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.*;
-
-import static java.lang.System.out;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
 
 import static java.lang.System.out;
 
@@ -20,44 +21,21 @@ public class Loans extends Database implements FileInterface {
         this.OpenFile(filename);
     }
 
-    private void AddLoan(int id, int bookid, int userid, GregorianCalendar date, GregorianCalendar expirationdate) {
+    private void AddLoan(int id, int bookid, int userid, String date, String expirationdate) {
 
         Loan l = new Loan(id, bookid, userid, date, expirationdate);
 
         this.loans.add(l);
     }
 
-    public void RegisterLoan(){
+    public void AddLoan(int bookid, int userid, String date, String expirationdate) {
 
-        Scanner scan = new Scanner(System.in);
-
-        out.println("ID do Livro: ");
-        int bookid = scan.nextInt();
-
-        Book b = null;
-
-        out.println("ID do Usuário: ");
-        int userid = scan.nextInt();
-
-        User u = null;
-
-        //this.AddLoan(this.nextID, bookid, userid, date);
+        Loan l = new Loan(this.nextID, bookid, userid, date, expirationdate);
 
         this.nextID++;
-    }
-
-    public boolean VerifyUser() {
-        /*
-        * FALTA IMPLEMENTAR ESSA BUSCA!
-        * */
-
-        return false;
-    }
-
-    public void RegisterReturn() {
+        this.loans.add(l);
 
     }
-
     public void ReadFile() throws IOException {
 
         BufferedReader br = new BufferedReader(new FileReader(this.path));
@@ -81,7 +59,6 @@ public class Loans extends Database implements FileInterface {
             this.AddLoan(id, bookid, userid, date, expirationdate);
         }
     }
-
 
     public void WriteFile() throws IOException {
         OpenWriter();
