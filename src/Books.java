@@ -39,7 +39,7 @@ public class Books extends Database implements FileInterface {
         out.print("Type:\t");
         String Type = scan.nextLine();
         while (!Type.equals("Tex") && !Type.equals("Gen")){
-            out.println("Tipo Inválido!");
+            out.println("Tipo Invalido!");
             out.print("Type:\t");
             String Type = scan.nextLine();
         }
@@ -109,13 +109,13 @@ public class Books extends Database implements FileInterface {
             String input = scan.nextLine();
 
             // ----- Saida -----
-            if (input.equals("exit") || input.equals("\'exit\'")){  // Nunca confie na intelig�ncia do usu�rio
+            if (input.equals("exit") || input.equals("\'exit\'")){  // Nunca confie na inteligencia do usuario
                 out.println("Encerrando a busca.");
                 result = null;
                 endSearch = true;
             }
             // ----- Ajuda -----
-            else if (input.equals("help") || input.equals("\'help\'")) {  // Nunca confie na intelig�ncia do usu�rio
+            else if (input.equals("help") || input.equals("\'help\'")) {  // Nunca confie na inteligencia do usuario
                 out.println("Para pesquisar voce pode usar alguns comandos:");
                 out.println(splitSign + "id <id do livro>");
                 out.println(splitSign + "type <text|general>");

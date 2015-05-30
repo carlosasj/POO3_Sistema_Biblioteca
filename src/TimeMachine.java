@@ -16,12 +16,12 @@ public class TimeMachine {
         out.println("Data[dd/mm/aaaa]: ");
         String d = scan.nextLine();
 
-        //Mudança da data de string para Calendar
+        //Mudanca da data de string para Calendar
         String[] date = d.split(splitBy);
         int day = Integer.parseInt(date[0]);
         int month = Integer.parseInt(date[1]);
         int year = Integer.parseInt(date[2]);
-        //Armazena em um calendar a data digitada pelo usuário
+        //Armazena em um calendar a data digitada pelo usuario
         GregorianCalendar loanDate = new GregorianCalendar(year, month, day);
     }
 

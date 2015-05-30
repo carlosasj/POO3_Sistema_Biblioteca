@@ -33,7 +33,7 @@ public class Loans extends Database implements FileInterface {
 
         Book b = null;
 
-        out.println("ID do Usuário: ");
+        out.println("ID do Usuario: ");
         int userid = scan.nextInt();
 
         User u = null;

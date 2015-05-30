@@ -28,7 +28,7 @@ public class Loan {
 
         this.ID = id;
 
-        out.println("Primeiro, pesquise o usu�rio");
+        out.println("Primeiro, pesquise o usuario");
 /*
         this.BookID = bookid;
         this.UserID = userid;
