@@ -19,9 +19,9 @@ public class Loans extends Database implements FileInterface {
 
     private void AddLoan(int id, int bookid, int userid, String date, String expirationdate) {
 
-        Loan l = new Loan(id, bookid, userid, date, expirationdate);
+        //Loan l = new Loan(id, bookid, userid, date, expirationdate);
 
-        this.loans.add(l);
+        //this.loans.add(l);
     }
 
     public void RegisterLoan(){
@@ -55,31 +55,37 @@ public class Loans extends Database implements FileInterface {
 
     }
 
-    public void ReadFile() throws IOException {
+    public void ReadFile(){
 
-        BufferedReader br = new BufferedReader(new FileReader(this.path));
+        this.OpenReader();
+
         String line;
         String splitBy = ",";
 
-        if ((line = br.readLine()) != null) {
-            this.nextID = Integer.parseInt(line);
-            br.readLine();
-        }
+        try {
+            if ((line = br.readLine()) != null) {
+                this.nextID = Integer.parseInt(line);
+                br.readLine();
+            }
 
-        while ((line = br.readLine()) != null) {
+            while ((line = br.readLine()) != null) {
 
-            String[] loanData = line.split(splitBy);
-            int id = Integer.parseInt(loanData[0]);
-            int bookid = Integer.parseInt(loanData[1]);
-            int userid = Integer.parseInt(loanData[2]);
-            String date = loanData[3];
-            String expirationdate = loanData[4];
+                String[] loanData = line.split(splitBy);
+                int id = Integer.parseInt(loanData[0]);
+                int bookid = Integer.parseInt(loanData[1]);
+                int userid = Integer.parseInt(loanData[2]);
+                String date = loanData[3];
+                String expirationdate = loanData[4];
 
-            this.AddLoan(id, bookid, userid, date, expirationdate);
+                this.AddLoan(id, bookid, userid, date, expirationdate);
+            }
+        } catch (IOException e){
+            out.println("Erro na leitura do arquivo.");
+            e.printStackTrace();
         }
     }
 
-    public void WriteFile() throws IOException {
+    public void WriteFile(){
         OpenWriter();
         String SEPARATOR = ",";
         String ENDLINE = "\n";
@@ -104,10 +110,10 @@ public class Loans extends Database implements FileInterface {
                 fw.append(Integer.valueOf(l.getUserID()).toString());
                 fw.append(SEPARATOR);
 
-                fw.append(l.getDate());
+                fw.append(l.getDate().toString());
                 fw.append(SEPARATOR);
 
-                fw.append(l.getExpirationDate());
+                fw.append(l.getExpirationDate().toString());
                 fw.append(ENDLINE);
                 fw.flush();
             }

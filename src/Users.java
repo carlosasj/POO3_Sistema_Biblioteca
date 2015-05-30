@@ -12,7 +12,7 @@ public class Users extends Database implements FileInterface {
     private List<User> users;
 
     public Users (String filename) {
-
+        this.nextID = 0;
         this.path = "users.csv";
         this.users = new LinkedList<User>();
         this.OpenFile(filename);
@@ -30,17 +30,20 @@ public class Users extends Database implements FileInterface {
         this.AddUser(Type, Name);
     }
 
-    public void AddUser (String type, int ID, String name) {
+    private void AddUser (String type, int ID, String name) {
         User user = null;
-        if (type.equals("Tea")) {
-            user = new Teacher(ID, name);
+        switch (type) {
+            case "Tea":
+                user = new Teacher(ID, name);
+                break;
 
-        } else if (type.equals("Stu")) {
-            user = new Student(ID, name);
+            case "Stu":
+                user = new Student(ID, name);
+                break;
 
-        } else if (type.equals("Com")) {
-            user = new Comunity(ID, name);
-
+            case "Com":
+                user = new Comunity(ID, name);
+                break;
         }
 
         this.users.add(user);
@@ -48,40 +51,49 @@ public class Users extends Database implements FileInterface {
 
     public void AddUser (String type, String name) {
         User user = null;
-        if (type.equals("Tea")) {
-            user = new Teacher(this.nextID, name);
+        switch (type) {
+            case "Tea":
+                user = new Teacher(this.nextID, name);
+                break;
 
-        } else if (type.equals("Stu")) {
-            user = new Student(this.nextID, name);
+            case "Stu":
+                user = new Student(this.nextID, name);
+                break;
 
-        } else if (type.equals("Com")) {
-            user = new Comunity(this.nextID, name);
-
+            case "Com":
+                user = new Comunity(this.nextID, name);
+                break;
         }
 
-        this.nextID++;
         this.users.add(user);
+        this.nextID++;
     }
 
-    public void ReadFile() throws IOException {
+    public void ReadFile() {
 
-        BufferedReader br = new BufferedReader(new FileReader(this.path));
-        String line = null;
+        this.OpenReader();
+
+        String line;
         String splitBy = ",";
 
-        if ((line = br.readLine()) != null) {
-            this.nextID = Integer.parseInt(line);
-            br.readLine();
-        }
+        try {
+            if ((line = br.readLine()) != null) {
+                this.nextID = Integer.parseInt(line);
+                br.readLine();
+            }
 
-        while ((line = br.readLine()) != null) {
+            while ((line = br.readLine()) != null) {
 
-            String[] userData = line.split(splitBy);
-            String type = userData[0];
-            int id = Integer.parseInt(userData[1]);
-            String name = userData[2];
+                String[] userData = line.split(splitBy);
+                String type = userData[0];
+                int id = Integer.parseInt(userData[1]);
+                String name = userData[2];
 
-            this.AddUser(type, id, name);
+                this.AddUser(type, id, name);
+            }
+        }catch (IOException e){
+            out.println("Erro na leitura do arquivo.");
+            e.printStackTrace();
         }
     }
 
@@ -96,13 +108,13 @@ public class Users extends Database implements FileInterface {
             String input = scan.nextLine();
 
             // ----- Saida -----
-            if (input.equals("exit") || input.equals("\'exit\'")){  // Nunca confie na inteligência do usuário
+            if (input.toLowerCase().equals("exit") || input.toLowerCase().equals("\'exit\'")){  // Nunca confie na inteligência do usuário
                 out.println("Encerrando a busca.");
                 result = null;
                 endSearch = true;
             }
             // ----- Ajuda -----
-            else if (input.equals("help") || input.equals("\'help\'")) {  // Nunca confie na inteligência do usuário
+            else if (input.toLowerCase().equals("help") || input.toLowerCase().equals("\'help\'")) {  // Nunca confie na inteligência do usuário
                 out.println("Para pesquisar voce pode usar alguns comandos:");
                 out.println(splitSign + "id <id do usuario>");
                 out.println(splitSign + "type <student|teacher|community>");
@@ -143,7 +155,7 @@ public class Users extends Database implements FileInterface {
                     collect.get(0).Print();
 
                     out.print("\nDeseja selecionar esse usuario? [s|n]");
-                    if (scan.nextLine().equals("s")){
+                    if (scan.nextLine().toLowerCase().equals("s")){
                         result = collect.get(0);
                         endSearch = true;
                     }
@@ -163,6 +175,7 @@ public class Users extends Database implements FileInterface {
                         out.println("==================================================");
                         subID++;
                     }
+                    subID--; // Porque ele termina o For valendo (collect.size()+1)
 
                     out.print("Selecione o resultado pelo indice\nou digite 0 para uma nova busca: ");
                     int index = Integer.parseInt(scan.nextLine());
@@ -199,7 +212,7 @@ public class Users extends Database implements FileInterface {
 
         switch (field){
             case "type":
-                switch (param) {
+                switch (param.toLowerCase()) {
                     case "student":
                         filtered = filtered.filter(u -> u.Type.equals("Stu"));
                         break;
@@ -234,7 +247,7 @@ public class Users extends Database implements FileInterface {
         return filtered;
     }
 
-	public void WriteFile() throws IOException {
+	public void WriteFile() {
         OpenWriter();
 
         final String SEPARATOR = ",";

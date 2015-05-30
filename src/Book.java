@@ -1,20 +1,18 @@
 abstract class Book {
 
-    public String Type;
-    public int ID;
-    public String Title;
-    public String Author;
-    public String Editor;
-    public int Year;
+    protected String Type;
+    protected int ID;
+    protected String Title;
+    protected String Author;
+    protected String Editor;
+    protected int Year;
 
-    public int TotalQuantity;
-    public int AvaliableQuantity;
+    protected int TotalQuantity;
+    protected int AvaliableQuantity;
 
-    public void Print(){
-        System.out.printf(
-            "Type:\t\t%s\nID:\t\t\t%d\nTitle:\t\t%s\nAuthor:\t\t%s\nEditor:\t\t%s\nYear:\t\t%d\nTotal:\t\t%d\nAvaliable:\t%d\n",
-             Type,        ID,          Title,        Author,        Editor,        Year,       TotalQuantity, AvaliableQuantity);
-    }
+    public String getType() { return this.Type; }
+
+    public int getID() { return this.ID; }
 
     public String getTitle() { return this.Title; }
 
@@ -27,5 +25,11 @@ abstract class Book {
     public int getTotalQuantity() { return this.TotalQuantity; }
 
     public int getAvaliableQuantity() { return this.AvaliableQuantity; }
+
+    public void Print(){
+        System.out.printf(
+                "Type:\t\t%s\nID:\t\t\t%d\nTitle:\t\t%s\nAuthor:\t\t%s\nEditor:\t\t%s\nYear:\t\t%d\nTotal:\t\t%d\nAvaliable:\t%d\n",
+                Type,        ID,          Title,        Author,        Editor,        Year,       TotalQuantity, AvaliableQuantity);
+    }
 
 }
