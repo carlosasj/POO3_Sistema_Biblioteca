@@ -1,3 +1,5 @@
+package Loan;
+
 import java.util.GregorianCalendar;
 import java.util.Scanner;
 

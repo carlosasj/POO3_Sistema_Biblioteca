@@ -1,3 +1,9 @@
+package Database;
+
+import Book.Book;
+import Book.General;
+import Book.Text;
+
 import java.io.*;
 import java.util.LinkedList;
 import java.util.List;
@@ -7,20 +13,29 @@ import java.util.stream.Stream;
 
 import static java.lang.System.out;
 
-public class Books extends Database implements FileInterface {
+public class Books extends Database {
 
+    private static Books booksDB;
     private List<Book> books;
 
-	public Books (String filename){
+    // Singleton
+    public static Books getInstance() { return booksDB; }
+    protected static Books getInstance(String filename){
+        if (booksDB == null){
+            booksDB = new Books(filename);
+        }
+        return booksDB;
+    }
 
+	private Books (String filename){
         this.nextID = 0;
-        books = new LinkedList<Book>();
 		this.path = "books.csv";
 		this.books = new LinkedList<Book>();
 		this.OpenFile(filename);
+        this.ReadFile();
 	}
 
-    private void AddBook(String type, int id, String title, String author, String editor, int year, int totalquantity, int avaliablequantity){
+    protected void AddBook(String type, int id, String title, String author, String editor, int year, int totalquantity, int avaliablequantity){
         Book book;
         
         if(type.equals("Tex")){
@@ -98,8 +113,7 @@ public class Books extends Database implements FileInterface {
         }
     }
 
-	public void ReadFile(){
-
+	protected void ReadFile(){
         this.OpenReader();
 
 		String line;
@@ -137,7 +151,7 @@ public class Books extends Database implements FileInterface {
         String splitSign = "/";
 
         while (!endSearch) {
-            out.println("\nPesquise por um livro\n(para ajuda, digite 'help'):\t");
+            out.print("\nPesquise por um livro\n(para ajuda, digite 'help'):\t");
             String input = scan.nextLine();
 
             // ----- Saida -----
@@ -294,7 +308,7 @@ public class Books extends Database implements FileInterface {
         return filtered;
     }
 
-	public void WriteFile() {
+	protected void WriteFile() {
         OpenWriter();
         final String SEPARATOR = ",";
         final String ENDLINE = "\n";

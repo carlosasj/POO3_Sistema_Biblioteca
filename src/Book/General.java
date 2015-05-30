@@ -1,8 +1,10 @@
-public class Text extends Book{
+package Book;
 
-    public Text(int id, String title, String author, String editor, int year, int totalquantity, int avaliablequantity) {
+public class General extends Book {
 
-        this.Type = "Tex";
+    public General(int id, String title, String author, String editor, int year, int totalquantity, int avaliablequantity) {
+
+        this.Type = "Gen";
         this.ID = id;
         this.Title = title;
         this.Author = author;
@@ -11,5 +13,4 @@ public class Text extends Book{
         this.TotalQuantity = totalquantity;
         this.AvaliableQuantity = avaliablequantity;
     }
-
 }

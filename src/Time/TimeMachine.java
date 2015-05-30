@@ -1,3 +1,5 @@
+package Time;
+
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Scanner;
@@ -6,7 +8,7 @@ import static java.lang.System.out;
 
 public class TimeMachine {
 
-    public static GregorianCalendar currentDate;
+    private static GregorianCalendar currentDate;
 
     public TimeMachine() {
         this.setDate();
@@ -34,6 +36,10 @@ public class TimeMachine {
 
         out.println("Dia: " + currentDate.get(Calendar.DAY_OF_MONTH) + " Mês: " + currentDate.get(Calendar.MONTH) + " Ano: " + currentDate.get(Calendar.YEAR));
 
+    }
+
+    public static GregorianCalendar CurrentDate(){
+        return currentDate;
     }
 
 }

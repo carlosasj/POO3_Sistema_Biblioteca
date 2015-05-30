@@ -1,7 +1,8 @@
-import java.io.IOException;
-import java.sql.Time;
+import Database.Books;
+import Database.Source;
 
-import static java.lang.System.out;
+import java.io.IOException;
+
 
 public class Program {
 	public static void main (String[] args) throws IOException {
@@ -12,12 +13,14 @@ public class Program {
 		Books b = new Books(null);
 		b.OpenFile("books.csv");
 		b.ReadFile();
+
+		Source src = new Source(null);
+		Books b = Books.getInstance();
+
 		//b.AddBook("Tex","O fabuloso livro de teste","Jhon Doe","Editora Teste",2015,10,8);
 		//b.AddBook("Tex","O fabuloso livro de teste 2","Jhon Doe","Editora Teste",2015,10,8);
 		//b.RegisterBook();
 		b.Search();
-
-		b.WriteFile();
-		b.CloseFile();
+		src.WriteFile();
 	}
 }

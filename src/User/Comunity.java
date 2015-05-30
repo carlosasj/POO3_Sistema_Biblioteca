@@ -1,3 +1,5 @@
+package User;
+
 public class Comunity extends User {
 
     public Comunity (int id, String name) {
