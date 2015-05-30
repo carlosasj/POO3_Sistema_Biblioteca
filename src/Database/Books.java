@@ -77,7 +77,7 @@ public class Books extends Database {
             try {
                 Year = Integer.parseInt(scan.nextLine());
             } catch (NumberFormatException e){
-                out.println("Ano Invalido");
+                out.println("Ano Invalido!");
                 Year = -1;
             }
         }
@@ -88,7 +88,7 @@ public class Books extends Database {
             try {
                 TotalQuantity = Integer.parseInt(scan.nextLine());
             } catch (NumberFormatException e){
-                out.println("Quantidade Invalida");
+                out.println("Quantidade Invalida!");
                 Year = -1;
             }
         }
