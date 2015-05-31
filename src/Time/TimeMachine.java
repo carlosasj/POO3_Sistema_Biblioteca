@@ -8,9 +8,17 @@ import static java.lang.System.out;
 
 public class TimeMachine {
 
+	private static TimeMachine timeMachine;
 	private static GregorianCalendar currentDate;
 
-	public TimeMachine() {
+	// Singleton
+	public static TimeMachine getInstance(){
+		if (timeMachine == null){
+			timeMachine = new TimeMachine();
+		}
+		return timeMachine;
+	}
+	private TimeMachine() {
 		this.setDate();
 	}
 
