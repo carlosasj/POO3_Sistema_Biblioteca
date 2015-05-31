@@ -43,7 +43,7 @@ public class Loans extends Database {
         User user = Users.getInstance().Search();
 
         // Verifica se o usuario nao esta bloqueado para emprestimo
-        if (user.VerifyUser(TimeMachine.CurrentDate()) == false) {
+        if (!user.VerifyUser()) {
             out.println("Usuário bloqueado por possuir faltas de devolução.");
             return;
         }
@@ -73,19 +73,8 @@ public class Loans extends Database {
 
     // Utilizado no ReadFile
     private void AddLoan(int loanid, int bookid, int userid, String date, String expirationdate) {
-        String[] split_date = date.split("/");
-        String[] split_expiration = expirationdate.split("/");
-
-        GregorianCalendar cal_date =
-                new GregorianCalendar(Integer.parseInt(split_date[2]),
-                        Integer.parseInt(split_date[1]),
-                        Integer.parseInt(split_date[0]));
-
-        GregorianCalendar cal_expiration =
-                new GregorianCalendar(Integer.parseInt(split_expiration[2]),
-                        Integer.parseInt(split_expiration[1]),
-                        Integer.parseInt(split_expiration[0]));
-
+        GregorianCalendar cal_date = strToCalendar(date);
+        GregorianCalendar cal_expiration = strToCalendar(expirationdate);
         this.AddLoan(loanid, bookid, userid, cal_date, cal_expiration);
     }
 
@@ -99,50 +88,10 @@ public class Loans extends Database {
 
         Stream<Loan> filter = loans.stream();
 
-        //Busca todos os empréstimos de um usuário
+        //Busca todos os emprestimos de um usuário
         filter.filter(l -> l.getUserID() == userId);
 
         return filter.count();
-    }
-
-    protected Loan findLoan (int loanId) {
-
-        Stream<Loan> filterLoans = loans.stream();
-
-        //Realiza a busca de um empréstimo a partir do seu ID
-        filterLoans.anyMatch(l -> l.getID() == loanId);
-
-        return filterLoans.collect(Collectors.toList()).get(0);
-    }
-
-    protected List<Loan> getLateLoans () {
-
-        Stream<Loan> filterLoans = loans.stream();
-
-        //Busca os emprestimos com atraso
-        filterLoans.filter(l -> l.ExpirationDate.before(TimeMachine.CurrentDate()));
-
-        return filterLoans.collect(Collectors.toList());
-    }
-
-    protected List<Loan> getUserLoans (int userId) {
-
-        Stream<Loan> filterLoans = loans.stream();
-
-        //Busca os emprestimos de um usuario
-        filterLoans.filter(l -> l.getUserID() == userId);
-
-        return filterLoans.collect(Collectors.toList());
-    }
-
-    protected List<Loan> getBookLoans (int bookId) {
-
-        Stream<Loan> filterLoans = loans.stream();
-
-        //Busca os emprestimos de um livro
-        filterLoans.filter(l -> l.getBookID() == bookId);
-
-        return filterLoans.collect(Collectors.toList());
     }
 
     protected void returnLoan() {
@@ -150,14 +99,6 @@ public class Loans extends Database {
         loans.listIterator();
 
     }
-
-    protected void printListLoans (List<Loan> list) {
-
-        for (Loan l : list) {
-            out.println("Id: " + l.getID() + "\nBook Id: " + l.getBookID() + "\nUser Id: " + l.getUserID() + "\nLoan Date: " + l.getDate().toString() + "\nExpiration Date: " + l.getExpirationDate().toString());
-        }
-    }
-
 
     public void ReadFile(){
 
@@ -227,10 +168,10 @@ public class Loans extends Database {
         }
     }
 
-    public Book Search(){
+    public Loan Search(){
         Scanner scan = new Scanner(System.in);
         Boolean endSearch = false;
-        Book result = null;
+        Loan result = null;
         String splitSign = "/";
 
         while (!endSearch) {
@@ -269,14 +210,14 @@ public class Loans extends Database {
             else {
                 input = input.substring(1);                 // Retira a primeira barra da String
                 String[] splited = input.split(splitSign);  // Separa os comandos
-                Stream<Book> filtered = books.stream();     // Cria um Stream
+                Stream<Loan> filtered = loans.stream();     // Cria um Stream
 
                 out.print("Filtrando por:");
 
                 for (String cmd : splited){                 // Para cada comando...
                     try {
                         String[] command = cmd.split(" ", 2);   // Separa o comando do parametro
-                        command[1] = command[1].trim();         // Retira espa�os antes e depois
+                        command[1] = command[1].trim();         // Retira espa�os antes e depois
                         filtered = this.Filter(command[0], command[1], filtered, true);    // Filtra
                     } catch (ArrayIndexOutOfBoundsException e){
                         out.printf("\n\t! (Comando \"%s\" faltando argumentos; Ignorado)\n", cmd);
@@ -284,7 +225,7 @@ public class Loans extends Database {
                 }
 
                 // Transforma em uma lista
-                List<Book> collect = filtered.collect(Collectors.toList());
+                List<Loan> collect = filtered.collect(Collectors.toList());
 
                 if (collect.size() == 1){   // Se soh encontrou 1 resultado...
                     out.println("Livro encontrado:");
@@ -305,9 +246,9 @@ public class Loans extends Database {
                     out.println("==================================================");
                     int subID = 1;
 
-                    for (Book b : collect){ // Imprime os livros
+                    for (Loan l : collect){ // Imprime os livros
                         out.println("< " + subID + " >");
-                        b.Print();
+                        l.Print();
                         out.println("==================================================");
                         subID++;
                     }
@@ -332,65 +273,61 @@ public class Loans extends Database {
 
     }
 
-    public Book FindByID(int id){
-        Stream<Book> filtered = this.Filter("id", Integer.valueOf(id).toString(), false);
+    public Loan FindByID(int id){
+        Stream<Loan> filtered = this.Filter("id", Integer.valueOf(id).toString(), false);
         return filtered.collect(Collectors.toList()).get(0);
     }
 
-    public Stream<Book> Filter(String field, String param, Boolean printMsg) {    // Aplica o filtro num stream com todos os livros
-        Stream<Book> filtered = books.stream();
+    public Stream<Loan> Filter(String field, String param, Boolean printMsg) {    // Aplica o filtro num stream com todos os livros
+        Stream<Loan> filtered = loans.stream();
         this.Filter(field, param, filtered, printMsg);
         return filtered;
     }
 
-    public Stream<Book> Filter(String field, String param, Stream<Book> filtered, Boolean printMsg) {  // Aplica o filtro num stream personalizado
+    public Stream<Loan> Filter(String field, String param, Stream<Loan> filtered, Boolean printMsg) {  // Aplica o filtro num stream personalizado
         if (printMsg) out.printf("\n\t%s = %s", field, param);
 
         switch (field){
-            case "type":
-                switch (param.toLowerCase()) {
-                    case "text":
-                        filtered = filtered.filter(b -> b.getType().equals("Tex"));
-                        break;
-                    case "general":
-                        filtered = filtered.filter(b -> b.getType().equals("Gen"));
-                        break;
-                    default:
-                        if (printMsg) out.printf(" (\"%s\" nao eh um parametro valido; Ignorado)", param);
-                        break;
-                }
-                break;
-
-            case "title":
-                filtered = filtered.filter(b -> b.getTitle().contains(param));
-                break;
-
-            case "author":
-                filtered = filtered.filter(b -> b.getAuthor().contains(param));
-                break;
-
-            case "year":
-                try {
-                    int year = Integer.parseInt(param);
-                    filtered = filtered.filter(b -> b.getYear() == year);
-                } catch (NumberFormatException e){
-                    if (printMsg) out.printf(" (\"%s\" nao eh um ano valido; Ignorado)", param);
-                }
-                break;
-
             case "id":
-                try {
-                    int id = Integer.parseInt(param);
-                    filtered = filtered.filter(b -> b.getID() == id);
-                } catch (NumberFormatException e){
-                    if (printMsg) out.printf(" (\"%s\" nao eh um ano valido; Ignorado)", param);
-                }
+                filtered.anyMatch(l -> l.getID() == Integer.parseInt(param));
                 break;
-
+            case "book":
+                /*switch (param.toLowerCase()) {
+                    case "text":
+                        filtered = filtered.filter((b -> Books.getInstance().Filter("type", "text", false)))
+                }*/
+                filtered.filter(l -> l.getBookID() == Integer.parseInt(param));
+                break;
+            case "userid":
+                filtered = filtered.filter(l -> l.getUserID() == Integer.parseInt(param));
+                break;
+            case "data":
+                GregorianCalendar date = strToCalendar(param);
+                filtered.filter(l -> l.getDate().equals(date));
+                break;
+            case "expiration":
+                GregorianCalendar expdate = strToCalendar(param);
+                filtered.filter(l -> l.getExpirationDate().equals(expdate));
+                break;
+            case "loaned today":
+                filtered.filter(l -> l.getDate().equals(TimeMachine.CurrentDate()));
+                break;
             default:
                 if (printMsg) out.print(" (Comando Invalido; Ignorado)");
                 break;
         }
         return filtered;
     }
+
+    protected GregorianCalendar strToCalendar (String date) {
+        String[] split_date = date.split("/");
+
+        GregorianCalendar cal_date =
+                new GregorianCalendar(Integer.parseInt(split_date[2]),
+                        Integer.parseInt(split_date[1]),
+                        Integer.parseInt(split_date[0]));
+
+        return cal_date;
+    }
 }
+
