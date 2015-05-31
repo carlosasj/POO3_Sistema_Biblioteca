@@ -17,20 +17,18 @@ public class Loans extends Database {
 
     private static Loans loansDB;
     private List<Loan> loans;
-    private static GregorianCalendar curDate;
 
 
     // Singleton
     public static Loans getInstance() { return loansDB; }
     protected static Loans getInstance(String filename, GregorianCalendar curDate){
         if (loansDB == null){
-            loansDB = new Loans(filename, curDate);
+            loansDB = new Loans(filename);
         }
         return loansDB;
     }
 
-    public Loans (String filename, GregorianCalendar curDate) {
-        this.curDate = curDate;
+    public Loans (String filename) {
         this.nextID = 0;
         this.path = "loans.csv";
         this.loans = new LinkedList<Loan>();
@@ -45,7 +43,7 @@ public class Loans extends Database {
         User user = Users.getInstance().Search();
 
         // Verifica se o usuario nao esta bloqueado para emprestimo
-        if (user.VerifyUser(this.curDate) == false) {
+        if (user.VerifyUser(TimeMachine.CurrentDate()) == false) {
             out.println("Usuário bloqueado por possuir faltas de devolução.");
             return;
         }
@@ -58,7 +56,7 @@ public class Loans extends Database {
 
         out.println("Agora selecione o livro");
         Book book = Books.getInstance().Search();
-        
+
         // Verifica se existe o livro para ser emprestado
         if (book == null) {
             out.println("Livro não cadastrado no sistema");
