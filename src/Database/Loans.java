@@ -119,8 +119,18 @@ public class Loans extends Database {
 
         Stream<Loan> filterLoans = loans.stream();
 
-        //Busca os empréstimos com atraso
+        //Busca os emprestimos com atraso
         filterLoans.filter(l -> l.ExpirationDate.before(TimeMachine.CurrentDate()));
+
+        return filterLoans.collect(Collectors.toList());
+    }
+
+    protected List<Loan> getUserLoans (int userId) {
+
+        Stream<Loan> filterLoans = loans.stream();
+
+        //Busca os emprestimos de um usuario
+        filterLoans.filter(l -> l.getUserID() == userId);
 
         return filterLoans.collect(Collectors.toList());
     }
