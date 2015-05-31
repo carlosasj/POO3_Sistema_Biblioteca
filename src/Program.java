@@ -7,12 +7,8 @@ import static java.lang.System.out;
 
 public class Program {
 	public static void main (String[] args) throws IOException {
-
-		for (String s : args){
-			out.println("- " + s);
-		}
-
-		TimeMachine curTime = new TimeMachine();
+		// Abrir os arquivos
+		TimeMachine curTime = TimeMachine.getInstance();
 
 		Source src = null;
 		try {
@@ -21,6 +17,9 @@ public class Program {
 			src = Source.getInstance(null);
 		}
 
+		
+
+		// Salvar e fechar os arquivos
 		src.backup();
 		src.CloseFile();
 	}
