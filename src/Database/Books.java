@@ -4,7 +4,7 @@ import Book.Book;
 import Book.General;
 import Book.Text;
 
-import java.io.*;
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
@@ -56,7 +56,7 @@ public class Books extends Database {
 
 		out.print("Tipo:\t");
 		String type = scan.nextLine().toLowerCase();
-		while (!type.equals("text") && !type.equals("general")){
+		while (type.equals("text") == type.equals("general")){	// While (false == false)
 			out.println("Tipo Invalido!");
 			out.print("Tipo <text|general>:\t");
 			type = scan.nextLine().toLowerCase();
@@ -155,13 +155,13 @@ public class Books extends Database {
 			String input = scan.nextLine();
 
 			// ----- Saida -----
-			if (input.toLowerCase().equals("exit") || input.toLowerCase().equals("\'exit\'")){  // Nunca confie na inteligencia do usuario
+			if (input.toLowerCase().equals("exit") || input.toLowerCase().equals("\'exit\'")){	// Nunca confie na inteligencia do usuario
 				out.println("Encerrando a busca.");
 				result = null;
 				endSearch = true;
 			}
 			// ----- Ajuda -----
-			else if (input.toLowerCase().equals("help") || input.toLowerCase().equals("\'help\'")) {  // Nunca confie na inteligencia do usuario
+			else if (input.toLowerCase().equals("help") || input.toLowerCase().equals("\'help\'")) {	// Nunca confie na inteligencia do usuario
 				out.println("Para pesquisar voce pode usar alguns comandos:");
 				out.println(splitSign + "id <id do livro>");
 				out.println(splitSign + "type <text|general>");

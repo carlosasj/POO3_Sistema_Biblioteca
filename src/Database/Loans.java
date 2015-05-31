@@ -41,23 +41,15 @@ public class Loans extends Database {
 		User user = Users.getInstance().Search();
 
 		// Verifica se o usuario nao esta bloqueado para emprestimo
-		if (!user.VerifyUser()) {
-			out.println("Usuário bloqueado por possuir faltas de devolução.");
-			return;
-		}
-
-		// Verifica se o usuario tem menos emprestimos do que maximo permitido
-		if(user.getMaxLoans() <= this.CountLoansUser(user.getID())) {
-			out.println("Número máximo de empréstimos efetuados.");
+		if (user == null || !user.canLoan()) {
 			return;
 		}
 
 		out.println("Agora selecione o livro.");
 		Book book = Books.getInstance().Search();
 
-		// Verifica se existe o livro para ser emprestado
-		if (book == null) {
-			out.println("Livro não cadastrado no sistema");
+		// Verifica se o livro pode ser emprestado
+		if (book == null || !book.canLoan()) {
 			return;
 		}
 
@@ -82,7 +74,7 @@ public class Loans extends Database {
 		Books.getInstance().FindByID(bookid).goLoan();
 	}
 
-	protected long CountLoansUser(int userId) {
+	public long CountLoansUser(int userId) {
 
 		Stream<Loan> filter = loans.stream();
 

@@ -31,4 +31,8 @@ abstract public class Book {
 				"Tipo:\t\t%s\nID:\t\t\t%d\nTitulo:\t\t%s\nAutor:\t\t%s\nEditora:\t\t%s\nAno:\t\t%d\nTotal:\t\t%d\nDisponivel:\t%d\n",
 				 Type,        ID,          Title,         Author,       Editor,         Year,       TotalQuantity,AvaliableQuantity);
 	}
+
+	public boolean canLoan() {
+		return (AvaliableQuantity > 0);
+	}
 }
