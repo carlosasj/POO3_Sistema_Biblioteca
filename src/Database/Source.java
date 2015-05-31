@@ -34,8 +34,8 @@ public class Source extends Database{
 			else {
 				String[] splited = path.split(".csv");
 				booksDB = Books.getInstance(splited[0]+"_books.csv");
-				loansDB = Loans.getInstance(splited[0]+"_loans.csv");
-				usersDB = Users.getInstance(splited[0]+"_users.csv");
+				loansDB = Loans.getInstance(splited[1]+"_loans.csv");
+				usersDB = Users.getInstance(splited[2]+"_users.csv");
 			}
 		} catch (IOException e) {
 			out.println("Erro na leitura do arquivo.");

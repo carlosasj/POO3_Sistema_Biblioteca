@@ -4,8 +4,10 @@ import User.Comunity;
 import User.Student;
 import User.Teacher;
 import User.User;
+import Time.TimeMachine;
 
 import java.io.*;
+import java.util.GregorianCalendar;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
@@ -40,9 +42,14 @@ public class Users extends Database {
 
         Scanner scan = new Scanner(System.in);
 
-        System.out.println("Type: ");
-        String Type = scan.nextLine();
-        System.out.println("Name: ");
+        out.print("Tipo:\t");
+        String type = scan.nextLine().toLowerCase();
+        while (!type.equals("community") && !type.equals("student") && !type.equals("teacher")){
+            out.println("Tipo Invalido!");
+            out.print("Tipo <community|student|teacher>:\t");
+            type = scan.nextLine().toLowerCase();
+        }
+        out.println("Nome: ");
         String Name = scan.nextLine();
 
         this.AddUser(Type, nextID, Name);
@@ -52,42 +59,22 @@ public class Users extends Database {
     protected void AddUser (String type, int ID, String name) {
         User user = null;
         switch (type) {
-            case "Tea":
-                user = new Teacher(ID, name);
+            case "community":
+                user = new Comunity(ID, name);
                 break;
 
-            case "Stu":
+            case "student":
                 user = new Student(ID, name);
                 break;
 
-            case "Com":
-                user = new Comunity(ID, name);
+            case "teacher":
+                user = new Teacher(ID, name);
                 break;
         }
 
         this.users.add(user);
     }
-/*
-    public void AddUser (String type, String name) {
-        User user = null;
-        switch (type) {
-            case "Tea":
-                user = new Teacher(this.nextID, name);
-                break;
 
-            case "Stu":
-                user = new Student(this.nextID, name);
-                break;
-
-            case "Com":
-                user = new Comunity(this.nextID, name);
-                break;
-        }
-
-        this.users.add(user);
-        this.nextID++
-    }
-*/
     protected void ReadFile() {
 
         this.OpenReader();
