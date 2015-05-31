@@ -14,7 +14,7 @@ public class TimeMachine {
         this.setDate();
     }
 
-    public static void setDate() {
+    public void setDate() {
 
         Scanner scan = new Scanner(System.in);
         String splitBy = "/";
@@ -32,14 +32,36 @@ public class TimeMachine {
 
     }
 
-    public static void printDate() {
+    public static void printDate(String format) {
+        printDate(currentDate, format);
+    }
 
-        out.println("Dia: " + currentDate.get(Calendar.DAY_OF_MONTH) + " Mês: " + currentDate.get(Calendar.MONTH) + " Ano: " + currentDate.get(Calendar.YEAR));
+    public static void printDate(GregorianCalendar date, String format) {
+        switch (format){
+            case "dd/mm/aaaa":
+                out.println(date.get(Calendar.DAY_OF_MONTH)
+                    + "/" + date.get(Calendar.MONTH)
+                    + "/" + date.get(Calendar.YEAR));
+                break;
 
+            case "d:m:a":
+                out.println("Dia: " + date.get(Calendar.DAY_OF_MONTH)
+                         + " Mes: " + date.get(Calendar.MONTH)
+                         + " Ano: " + date.get(Calendar.YEAR));
+                break;
+        }
     }
 
     public static GregorianCalendar CurrentDate(){
-        return currentDate;
+        return (GregorianCalendar) currentDate.clone();
+    }
+
+    public static GregorianCalendar strToCalendar (String date) {
+        String[] split_date = date.split("/");
+
+        return new GregorianCalendar(Integer.parseInt(split_date[2]),
+                                     Integer.parseInt(split_date[1]),
+                                     Integer.parseInt(split_date[0]));
     }
 
 }

@@ -34,7 +34,6 @@ public class Loans extends Database {
         this.loans = new LinkedList<Loan>();
         this.OpenFile(filename);
         this.ReadFile();
-
     }
 
     public void RegisterLoan(){
@@ -63,8 +62,8 @@ public class Loans extends Database {
             return;
         }
 
-        GregorianCalendar date = (GregorianCalendar) TimeMachine.CurrentDate().clone();
-        GregorianCalendar expirationdate = (GregorianCalendar) TimeMachine.CurrentDate().clone();
+        GregorianCalendar date = TimeMachine.CurrentDate();
+        GregorianCalendar expirationdate = TimeMachine.CurrentDate();
         expirationdate.add(Calendar.DAY_OF_MONTH, user.getMaxDays());
 
         this.AddLoan(this.nextID, book.getID(), user.getID(), date, expirationdate);
@@ -73,8 +72,8 @@ public class Loans extends Database {
 
     // Utilizado no ReadFile
     private void AddLoan(int loanid, int bookid, int userid, String date, String expirationdate) {
-        GregorianCalendar cal_date = strToCalendar(date);
-        GregorianCalendar cal_expiration = strToCalendar(expirationdate);
+        GregorianCalendar cal_date = TimeMachine.strToCalendar(date);
+        GregorianCalendar cal_expiration = TimeMachine.strToCalendar(expirationdate);
         this.AddLoan(loanid, bookid, userid, cal_date, cal_expiration);
     }
 
@@ -302,11 +301,11 @@ public class Loans extends Database {
                 filtered = filtered.filter(l -> l.getUserID() == Integer.parseInt(param));
                 break;
             case "data":
-                GregorianCalendar date = strToCalendar(param);
+                GregorianCalendar date = TimeMachine.strToCalendar(param);
                 filtered.filter(l -> l.getDate().equals(date));
                 break;
             case "expiration":
-                GregorianCalendar expdate = strToCalendar(param);
+                GregorianCalendar expdate = TimeMachine.strToCalendar(param);
                 filtered.filter(l -> l.getExpirationDate().equals(expdate));
                 break;
             case "loaned today":
@@ -319,15 +318,6 @@ public class Loans extends Database {
         return filtered;
     }
 
-    protected GregorianCalendar strToCalendar (String date) {
-        String[] split_date = date.split("/");
 
-        GregorianCalendar cal_date =
-                new GregorianCalendar(Integer.parseInt(split_date[2]),
-                        Integer.parseInt(split_date[1]),
-                        Integer.parseInt(split_date[0]));
-
-        return cal_date;
-    }
 }
 

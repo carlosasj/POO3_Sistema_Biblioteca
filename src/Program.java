@@ -1,6 +1,7 @@
 import Database.Source;
 import Time.TimeMachine;
 import java.io.IOException;
+
 import static java.lang.System.out;
 
 
@@ -11,9 +12,14 @@ public class Program {
 			out.println("- " + s);
 		}
 
-        TimeMachine curTime = new TimeMachine();
-		Source src = Source.getInstance();
+		TimeMachine curTime = new TimeMachine();
 
+		Source src = null;
+		try {
+			src = Source.getInstance(args[0]);
+		} catch (ArrayIndexOutOfBoundsException e) {
+			src = Source.getInstance(null);
+		}
 
 		src.backup();
 		src.CloseFile();
