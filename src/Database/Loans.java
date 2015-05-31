@@ -49,7 +49,7 @@ public class Loans extends Database {
         }
 
         // Verifica se o usuario tem menos emprestimos do que maximo permitido
-        if(user.getMaxLoans() <= this.CountLoans(user.getID())) {
+        if(user.getMaxLoans() <= this.CountLoansUser(user.getID())) {
             out.println("Número máximo de empréstimos efetuados.");
             return;
         }
@@ -67,7 +67,8 @@ public class Loans extends Database {
         GregorianCalendar expirationdate = (GregorianCalendar) TimeMachine.CurrentDate().clone();
         expirationdate.add(Calendar.DAY_OF_MONTH, user.getMaxDays());
 
-        this.AddLoan(book.getID(), user.getID(), date, expirationdate);
+        this.AddLoan(this.nextID, book.getID(), user.getID(), date, expirationdate);
+        this.nextID++;
     }
 
     // Utilizado no ReadFile
@@ -94,26 +95,41 @@ public class Loans extends Database {
         Books.getInstance().FindByID(bookid).goLoan();
     }
 
-    protected void AddLoan(int bookid, int userid, GregorianCalendar date, GregorianCalendar expirationdate) {
-        this.AddLoan(this.nextID, bookid, userid, date, expirationdate);
-        this.nextID++;
-    }
-
-    protected long CountLoans(int userId) {
+    protected long CountLoansUser(int userId) {
 
         Stream<Loan> filter = loans.stream();
 
+        //Busca todos os empréstimos de um usuário
         filter.filter(l -> l.getUserID() == userId);
 
         return filter.count();
-
     }
 
-    protected void ReturnLoan (int loanId) {
+    protected Loan ReturnLoan (int loanId) {
 
+        Stream<Loan> filterLoans = loans.stream();
 
+        //Realiza a busca de um empréstimo a partir do seu ID
+        filterLoans.anyMatch(l -> l.getID() == loanId);
+
+        return filterLoans.collect(Collectors.toList()).get(0);
     }
 
+    protected List<Loan> getLateLoans () {
+
+        Stream<Loan> filterLoans = loans.stream();
+
+        //Busca os empréstimos com atraso
+        filterLoans.filter(l -> l.ExpirationDate.before(TimeMachine.CurrentDate()));
+
+        return filterLoans.collect(Collectors.toList());
+    }
+
+    protected void returnLoan() {
+
+        loans.listIterator();
+
+    }
 
     public void ReadFile(){
 
