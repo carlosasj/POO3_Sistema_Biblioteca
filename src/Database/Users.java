@@ -4,6 +4,7 @@ import User.Comunity;
 import User.Student;
 import User.Teacher;
 import User.User;
+import Time.TimeMachine;
 
 import java.io.*;
 import java.util.GregorianCalendar;
@@ -19,7 +20,6 @@ public class Users extends Database {
 
     private static Users usersDB;
     private List<User> users;
-    private GregorianCalendar curDate;
 
     // Singleton
     public static Users getInstance() { return usersDB; }
@@ -36,7 +36,6 @@ public class Users extends Database {
         this.users = new LinkedList<User>();
         this.OpenFile(filename);
         this.ReadFile();
-        this.curDate = curDate;
     }
 
     public void RegisterUser () {
@@ -56,15 +55,15 @@ public class Users extends Database {
         User user = null;
         switch (type) {
             case "Tea":
-                user = new Teacher(ID, name, this.curDate);
+                user = new Teacher(ID, name, TimeMachine.CurrentDate());
                 break;
 
             case "Stu":
-                user = new Student(ID, name, this.curDate);
+                user = new Student(ID, name, TimeMachine.CurrentDate());
                 break;
 
             case "Com":
-                user = new Comunity(ID, name, this.curDate);
+                user = new Comunity(ID, name, TimeMachine.CurrentDate());
                 break;
         }
 

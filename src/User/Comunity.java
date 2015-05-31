@@ -12,7 +12,7 @@ public class Comunity extends User {
         this.Name = name;
         this.MaxDays = 15;
         this.MaxLoans = 2;
-        this.AllowedAt =  new GregorianCalendar(curDate.get(Calendar.YEAR) ,curDate.get(Calendar.MONTH), curDate.get(Calendar.DAY_OF_MONTH));
+        this.AllowedAt =  (GregorianCalendar) curDate.clone();
         this.AllowedAt.add(Calendar.DAY_OF_MONTH, -1);
     }
 }
