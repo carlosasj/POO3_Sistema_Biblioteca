@@ -31,7 +31,7 @@ abstract public class Database {
 		try {
 			br = new BufferedReader(new FileReader(file));
 		} catch (FileNotFoundException e) {
-			out.println("Erro ao criar o Buffered Reader");
+			out.println("Erro ao criar o Buffered Reader.");
 			e.printStackTrace();
 		}
 	}
@@ -40,7 +40,7 @@ abstract public class Database {
 		try {
 			fw = new FileWriter(file);
 		} catch (IOException e) {
-			out.println("Erro ao criar o File Writer");
+			out.println("Erro ao criar o File Writer.");
 			e.printStackTrace();
 		}
 	}

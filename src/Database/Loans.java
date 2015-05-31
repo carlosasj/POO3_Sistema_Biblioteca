@@ -41,7 +41,7 @@ public class Loans extends Database {
         // Verifica se o usuario nao esta bloqueado para emprestimo
         // Verifica se o usuario tem menos emprestimos do que maximo permitido
 
-        out.println("Agora selecione o livro");
+        out.println("Agora selecione o livro.");
         Book book = Books.getInstance().Search();
         // Verifica se existe o livro para ser emprestado
 
