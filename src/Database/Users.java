@@ -30,7 +30,7 @@ public class Users extends Database {
         return usersDB;
     }
 
-    public Users (String filename) {
+    private Users (String filename) {
         this.nextID = 0;
         this.path = "users.csv";
         this.users = new LinkedList<User>();

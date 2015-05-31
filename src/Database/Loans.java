@@ -28,7 +28,7 @@ public class Loans extends Database {
         return loansDB;
     }
 
-    public Loans (String filename) {
+    private Loans (String filename) {
         this.nextID = 0;
         this.path = "loans.csv";
         this.loans = new LinkedList<Loan>();
