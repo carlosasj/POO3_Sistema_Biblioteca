@@ -6,6 +6,7 @@ import Time.TimeMachine;
 import User.User;
 
 import java.io.IOException;
+import java.sql.Time;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -16,37 +17,53 @@ public class Loans extends Database {
 
     private static Loans loansDB;
     private List<Loan> loans;
-    private static TimeMachine time;
+    private static GregorianCalendar curDate;
+
 
     // Singleton
     public static Loans getInstance() { return loansDB; }
-    protected static Loans getInstance(String filename){
+    protected static Loans getInstance(String filename, GregorianCalendar curDate){
         if (loansDB == null){
-            loansDB = new Loans(filename);
+            loansDB = new Loans(filename, curDate);
         }
         return loansDB;
     }
 
-    public Loans (String filename) {
+    public Loans (String filename, GregorianCalendar curDate) {
+        this.curDate = curDate;
         this.nextID = 0;
         this.path = "loans.csv";
         this.loans = new LinkedList<Loan>();
         this.OpenFile(filename);
         this.ReadFile();
+
     }
 
     public void RegisterLoan(){
         out.println("--- Novo Emprestimo ---");
         out.println("Primeiro, selecione o usuario.");
         User user = Users.getInstance().Search();
-        // Verifica se o usuario nao esta bloqueado para emprestimo
 
+        // Verifica se o usuario nao esta bloqueado para emprestimo
+        if (user.VerifyUser(this.curDate) == false) {
+            out.println("Usuário bloqueado por possuir faltas de devolução.");
+            return;
+        }
 
         // Verifica se o usuario tem menos emprestimos do que maximo permitido
+        if(user.getMaxLoans() <= this.CountLoans(user.getID())) {
+            out.println("Número máximo de empréstimos efetuados.");
+            return;
+        }
 
         out.println("Agora selecione o livro");
         Book book = Books.getInstance().Search();
+        
         // Verifica se existe o livro para ser emprestado
+        if (book == null) {
+            out.println("Livro não cadastrado no sistema");
+            return;
+        }
 
         GregorianCalendar date = (GregorianCalendar) TimeMachine.CurrentDate().clone();
         GregorianCalendar expirationdate = (GregorianCalendar) TimeMachine.CurrentDate().clone();
@@ -84,9 +101,14 @@ public class Loans extends Database {
         this.nextID++;
     }
 
-    protected int CountLoans(int userId) {
-        //Stream<Loan> filter =
-        return 0;
+    protected long CountLoans(int userId) {
+
+        Stream<Loan> filter = loans.stream();
+
+        filter.filter(l -> l.getUserID() == userId);
+
+        return filter.count();
+
     }
 
     protected void ReturnLoan (int loanId) {
