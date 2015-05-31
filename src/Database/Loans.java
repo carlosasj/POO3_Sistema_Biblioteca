@@ -6,6 +6,7 @@ import Time.TimeMachine;
 import User.User;
 
 import java.io.IOException;
+import java.sql.Time;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -16,6 +17,7 @@ public class Loans extends Database {
 
     private static Loans loansDB;
     private List<Loan> loans;
+
 
     // Singleton
     public static Loans getInstance() { return loansDB; }
@@ -32,24 +34,41 @@ public class Loans extends Database {
         this.loans = new LinkedList<Loan>();
         this.OpenFile(filename);
         this.ReadFile();
+
     }
 
     public void RegisterLoan(){
         out.println("--- Novo Emprestimo ---");
         out.println("Primeiro, selecione o usuario.");
         User user = Users.getInstance().Search();
+
         // Verifica se o usuario nao esta bloqueado para emprestimo
+        if (user.VerifyUser(TimeMachine.CurrentDate()) == false) {
+            out.println("Usuário bloqueado por possuir faltas de devolução.");
+            return;
+        }
+
         // Verifica se o usuario tem menos emprestimos do que maximo permitido
+        if(user.getMaxLoans() <= this.CountLoansUser(user.getID())) {
+            out.println("Número máximo de empréstimos efetuados.");
+            return;
+        }
 
         out.println("Agora selecione o livro.");
         Book book = Books.getInstance().Search();
+
         // Verifica se existe o livro para ser emprestado
+        if (book == null) {
+            out.println("Livro não cadastrado no sistema");
+            return;
+        }
 
         GregorianCalendar date = (GregorianCalendar) TimeMachine.CurrentDate().clone();
         GregorianCalendar expirationdate = (GregorianCalendar) TimeMachine.CurrentDate().clone();
         expirationdate.add(Calendar.DAY_OF_MONTH, user.getMaxDays());
 
-        this.AddLoan(book.getID(), user.getID(), date, expirationdate);
+        this.AddLoan(this.nextID, book.getID(), user.getID(), date, expirationdate);
+        this.nextID++;
     }
 
     // Utilizado no ReadFile
@@ -76,10 +95,69 @@ public class Loans extends Database {
         Books.getInstance().FindByID(bookid).goLoan();
     }
 
-    protected void AddLoan(int bookid, int userid, GregorianCalendar date, GregorianCalendar expirationdate) {
-        this.AddLoan(this.nextID, bookid, userid, date, expirationdate);
-        this.nextID++;
+    protected long CountLoansUser(int userId) {
+
+        Stream<Loan> filter = loans.stream();
+
+        //Busca todos os empréstimos de um usuário
+        filter.filter(l -> l.getUserID() == userId);
+
+        return filter.count();
     }
+
+    protected Loan findLoan (int loanId) {
+
+        Stream<Loan> filterLoans = loans.stream();
+
+        //Realiza a busca de um empréstimo a partir do seu ID
+        filterLoans.anyMatch(l -> l.getID() == loanId);
+
+        return filterLoans.collect(Collectors.toList()).get(0);
+    }
+
+    protected List<Loan> getLateLoans () {
+
+        Stream<Loan> filterLoans = loans.stream();
+
+        //Busca os emprestimos com atraso
+        filterLoans.filter(l -> l.ExpirationDate.before(TimeMachine.CurrentDate()));
+
+        return filterLoans.collect(Collectors.toList());
+    }
+
+    protected List<Loan> getUserLoans (int userId) {
+
+        Stream<Loan> filterLoans = loans.stream();
+
+        //Busca os emprestimos de um usuario
+        filterLoans.filter(l -> l.getUserID() == userId);
+
+        return filterLoans.collect(Collectors.toList());
+    }
+
+    protected List<Loan> getBookLoans (int bookId) {
+
+        Stream<Loan> filterLoans = loans.stream();
+
+        //Busca os emprestimos de um livro
+        filterLoans.filter(l -> l.getBookID() == bookId);
+
+        return filterLoans.collect(Collectors.toList());
+    }
+
+    protected void returnLoan() {
+
+        loans.listIterator();
+
+    }
+
+    protected void printListLoans (List<Loan> list) {
+
+        for (Loan l : list) {
+            out.println("Id: " + l.getID() + "\nBook Id: " + l.getBookID() + "\nUser Id: " + l.getUserID() + "\nLoan Date: " + l.getDate().toString() + "\nExpiration Date: " + l.getExpirationDate().toString());
+        }
+    }
+
 
     public void ReadFile(){
 
@@ -315,7 +393,4 @@ public class Loans extends Database {
         }
         return filtered;
     }
-
-
-
 }

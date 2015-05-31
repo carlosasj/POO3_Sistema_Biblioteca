@@ -4,8 +4,10 @@ import User.Comunity;
 import User.Student;
 import User.Teacher;
 import User.User;
+import Time.TimeMachine;
 
 import java.io.*;
+import java.util.GregorianCalendar;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
@@ -72,27 +74,7 @@ public class Users extends Database {
 
         this.users.add(user);
     }
-/*
-    public void AddUser (String type, String name) {
-        User user = null;
-        switch (type) {
-            case "Tea":
-                user = new Teacher(this.nextID, name);
-                break;
 
-            case "Stu":
-                user = new Student(this.nextID, name);
-                break;
-
-            case "Com":
-                user = new Comunity(this.nextID, name);
-                break;
-        }
-
-        this.users.add(user);
-        this.nextID++
-    }
-*/
     protected void ReadFile() {
 
         this.OpenReader();
