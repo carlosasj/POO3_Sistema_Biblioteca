@@ -21,7 +21,7 @@ public class Loans extends Database {
 
     // Singleton
     public static Loans getInstance() { return loansDB; }
-    protected static Loans getInstance(String filename, GregorianCalendar curDate){
+    protected static Loans getInstance(String filename){
         if (loansDB == null){
             loansDB = new Loans(filename);
         }
@@ -105,7 +105,7 @@ public class Loans extends Database {
         return filter.count();
     }
 
-    protected Loan ReturnLoan (int loanId) {
+    protected Loan findLoan (int loanId) {
 
         Stream<Loan> filterLoans = loans.stream();
 
@@ -135,11 +135,29 @@ public class Loans extends Database {
         return filterLoans.collect(Collectors.toList());
     }
 
+    protected List<Loan> getBookLoans (int bookId) {
+
+        Stream<Loan> filterLoans = loans.stream();
+
+        //Busca os emprestimos de um livro
+        filterLoans.filter(l -> l.getBookID() == bookId);
+
+        return filterLoans.collect(Collectors.toList());
+    }
+
     protected void returnLoan() {
 
         loans.listIterator();
 
     }
+
+    protected void printListLoans (List<Loan> list) {
+
+        for (Loan l : list) {
+            out.println("Id: " + l.getID() + "\nBook Id: " + l.getBookID() + "\nUser Id: " + l.getUserID() + "\nLoan Date: " + l.getDate().toString() + "\nExpiration Date: " + l.getExpirationDate().toString());
+        }
+    }
+
 
     public void ReadFile(){
 
@@ -208,10 +226,4 @@ public class Loans extends Database {
             e.printStackTrace();
         }
     }
-
-
-
-    
-
-
 }

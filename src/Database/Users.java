@@ -23,14 +23,14 @@ public class Users extends Database {
 
     // Singleton
     public static Users getInstance() { return usersDB; }
-    protected static Users getInstance(String filename, GregorianCalendar curDate){
+    protected static Users getInstance(String filename){
         if (usersDB == null){
-            usersDB = new Users(filename, curDate);
+            usersDB = new Users(filename);
         }
         return usersDB;
     }
 
-    public Users (String filename, GregorianCalendar curDate) {
+    public Users (String filename) {
         this.nextID = 0;
         this.path = "users.csv";
         this.users = new LinkedList<User>();
