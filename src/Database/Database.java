@@ -24,7 +24,6 @@ abstract public class Database {
 				e.printStackTrace();
 			}
 		}
-
 	}
 
 	protected void OpenReader() {
