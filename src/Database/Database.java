@@ -9,7 +9,7 @@ abstract public class Database {
 	protected FileWriter fw = null;
 	protected String path = null;
 
-    protected int nextID;
+	protected int nextID;
 
 	protected void OpenFile(String filename) {
 		if (filename != null) { path = filename; }
