@@ -7,12 +7,16 @@ import User.User;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 import static java.lang.System.out;
 
 public class Loans extends Database {
 
     private static Loans loansDB;
     private List<Loan> loans;
+    private static TimeMachine time;
 
     // Singleton
     public static Loans getInstance() { return loansDB; }
@@ -36,6 +40,8 @@ public class Loans extends Database {
         out.println("Primeiro, selecione o usuario.");
         User user = Users.getInstance().Search();
         // Verifica se o usuario nao esta bloqueado para emprestimo
+
+
         // Verifica se o usuario tem menos emprestimos do que maximo permitido
 
         out.println("Agora selecione o livro");
@@ -77,6 +83,17 @@ public class Loans extends Database {
         this.AddLoan(this.nextID, bookid, userid, date, expirationdate);
         this.nextID++;
     }
+
+    protected int CountLoans(int userId) {
+        //Stream<Loan> filter =
+        return 0;
+    }
+
+    protected void ReturnLoan (int loanId) {
+
+
+    }
+
 
     public void ReadFile(){
 
@@ -145,6 +162,8 @@ public class Loans extends Database {
             e.printStackTrace();
         }
     }
+
+
 
     
 

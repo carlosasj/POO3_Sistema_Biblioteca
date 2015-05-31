@@ -6,6 +6,7 @@ import User.Teacher;
 import User.User;
 
 import java.io.*;
+import java.util.GregorianCalendar;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
@@ -18,22 +19,24 @@ public class Users extends Database {
 
     private static Users usersDB;
     private List<User> users;
+    private GregorianCalendar curDate;
 
     // Singleton
     public static Users getInstance() { return usersDB; }
-    protected static Users getInstance(String filename){
+    protected static Users getInstance(String filename, GregorianCalendar curDate){
         if (usersDB == null){
-            usersDB = new Users(filename);
+            usersDB = new Users(filename, curDate);
         }
         return usersDB;
     }
 
-    public Users (String filename) {
+    public Users (String filename, GregorianCalendar curDate) {
         this.nextID = 0;
         this.path = "users.csv";
         this.users = new LinkedList<User>();
         this.OpenFile(filename);
         this.ReadFile();
+        this.curDate = curDate;
     }
 
     public void RegisterUser () {
@@ -53,41 +56,21 @@ public class Users extends Database {
         User user = null;
         switch (type) {
             case "Tea":
-                user = new Teacher(ID, name);
+                user = new Teacher(ID, name, this.curDate);
                 break;
 
             case "Stu":
-                user = new Student(ID, name);
+                user = new Student(ID, name, this.curDate);
                 break;
 
             case "Com":
-                user = new Comunity(ID, name);
+                user = new Comunity(ID, name, this.curDate);
                 break;
         }
 
         this.users.add(user);
     }
-/*
-    public void AddUser (String type, String name) {
-        User user = null;
-        switch (type) {
-            case "Tea":
-                user = new Teacher(this.nextID, name);
-                break;
 
-            case "Stu":
-                user = new Student(this.nextID, name);
-                break;
-
-            case "Com":
-                user = new Comunity(this.nextID, name);
-                break;
-        }
-
-        this.users.add(user);
-        this.nextID++
-    }
-*/
     protected void ReadFile() {
 
         this.OpenReader();
