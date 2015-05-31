@@ -52,7 +52,7 @@ public class Users extends Database {
         out.println("Nome: ");
         String Name = scan.nextLine();
 
-        this.AddUser(Type, nextID, Name);
+        this.AddUser(type, nextID, Name);
         this.nextID++;
     }
 

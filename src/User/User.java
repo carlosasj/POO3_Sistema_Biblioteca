@@ -1,5 +1,7 @@
 package User;
 
+import Time.TimeMachine;
+
 import static java.lang.System.out;
 import java.util.GregorianCalendar;
 
@@ -19,12 +21,8 @@ abstract public class User {
 	public int getMaxLoans() { return this.MaxLoans; }
     public GregorianCalendar getAllowedAt() { return this.AllowedAt; }
 
-    public boolean VerifyUser(GregorianCalendar curDate) {
-
-        if (this.AllowedAt.before(curDate)) {
-            return true;
-        }
-        return false;
+    public boolean VerifyUser() {
+        return this.AllowedAt.before(TimeMachine.CurrentDate());
     }
 
 	public void Print(){

@@ -49,4 +49,6 @@ public class Loan {
 
     public GregorianCalendar getExpirationDate () { return this.ExpirationDate; }
 
+    public void Print () {}
+
 }
