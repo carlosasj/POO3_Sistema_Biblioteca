@@ -1,5 +1,8 @@
 package Loan;
 
+import Database.Books;
+import Database.Users;
+
 import java.util.GregorianCalendar;
 import java.util.Scanner;
 
@@ -49,6 +52,8 @@ public class Loan {
 
 	public GregorianCalendar getExpirationDate () { return this.ExpirationDate; }
 
-	public void Print () {}
+	public void Print () {
+        out.printf("ID:\t\t\t%d\nUsuário:\t\t\t%s\nLivro:\t\t\t%s\nData:\t\t\t$s\nDevolução:\t\t\t$s", this.ID, Users.getInstance().FindByID(this.UserID).getName(), Books.getInstance().FindByID(this.BookID).getTitle(), this.Date.toString(), this.ExpirationDate.toString());
+    }
 
 }
