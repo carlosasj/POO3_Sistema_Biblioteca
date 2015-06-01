@@ -95,7 +95,7 @@ public class Loans extends Database {
 
 	}
 
-	// Le arquivo
+	// Le arquivo e adiciona na lista
 	public void ReadFile(){
 
 		this.OpenReader();
@@ -126,7 +126,7 @@ public class Loans extends Database {
 		}
 	}
 
-	// Escreve arquivo
+	// Lê a lista e escreve no arquivo
 	public void WriteFile(){
 		OpenWriter();
 		String SEPARATOR = ",";
@@ -165,7 +165,7 @@ public class Loans extends Database {
 		}
 	}
 
-	// Busca emprestimo
+	// Busca emprestimo com interface com o usuário
 	public Loan Search(){
 		Scanner scan = new Scanner(System.in);
 		Boolean endSearch = false;
@@ -273,7 +273,7 @@ public class Loans extends Database {
 		return filtered.collect(Collectors.toList()).get(0);
 	}
 
-	// Aplica o filtro num stream com todos os emprestimo
+	// Aplica o filtro num stream com todos os emprestimos
 	public Stream<Loan> Filter(String field, String param, Boolean printMsg) {
 		Stream<Loan> filtered = loans.stream();
 		this.Filter(field, param, filtered, printMsg);
@@ -289,10 +289,6 @@ public class Loans extends Database {
 				filtered.anyMatch(l -> l.getID() == Integer.parseInt(param));
 				break;
 			case "bookid":
-				/*switch (param.toLowerCase()) {
-					case "text":
-						filtered = filtered.filter((b -> Books.getInstance().Filter("type", "text", false)))
-				}*/
 				filtered.filter(l -> l.getBookID() == Integer.parseInt(param));
 				break;
 			case "userid":
@@ -311,11 +307,11 @@ public class Loans extends Database {
 				break;
 			case "booksearch":
 				Book b = Books.getInstance().Search();
-				this.Filter("bookid", Integer.valueOf(b.getID()).toString, filtered, true);
+				filtered = Filter("bookid", Integer.valueOf(b.getID()).toString(), filtered, true);
 				break;
 			case "usersearch":
 				User u = Users.getInstance().Search();
-				this.Filter("userid", Integer.valueOf(u.getID()).toString, filtered, true);
+				filtered = Filter("userid", Integer.valueOf(u.getID()).toString(), filtered, true);
 				break;
 			default:
 				if (printMsg) out.print(" (Comando Invalido; Ignorado)");
