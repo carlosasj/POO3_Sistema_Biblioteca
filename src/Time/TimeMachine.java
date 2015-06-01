@@ -68,7 +68,7 @@ public class TimeMachine {
 		return (GregorianCalendar) currentDate.clone();
 	}
 
-    public static GregorianCalendar ActualDate() { return (GregorianCalendar) ActualDate().clone(); }
+    public static GregorianCalendar ActualDate() { return (GregorianCalendar) actualDate.clone(); }
 
 	public static GregorianCalendar strToCalendar (String date) {
 		String[] split_date = date.split("/");
