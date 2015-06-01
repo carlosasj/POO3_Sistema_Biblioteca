@@ -55,13 +55,16 @@ public class Program {
                 cmd = cmd.substring(1);
                 switch (cmd) {
                     case "add user":
-                        Users.getInstance().RegisterUser();
+                        if (VerifyDate())
+                            Users.getInstance().RegisterUser();
                         break;
                     case "add book":
-                        Books.getInstance().RegisterBook();
+                        if (VerifyDate())
+                            Books.getInstance().RegisterBook();
                         break;
                     case "add loan":
-                        Loans.getInstance().RegisterLoan();
+                        if (VerifyDate())
+                            Loans.getInstance().RegisterLoan();
                         break;
                     case "search user":
                         Users.getInstance().Search();
@@ -73,19 +76,30 @@ public class Program {
                         Loans.getInstance().Search();
                         break;
                     case "del user":
-                        Users.getInstance().RemoveUser();
+                        if (VerifyDate())
+                            Users.getInstance().RemoveUser();
                         break;
                     case "del book":
-                        Books.getInstance().RemoveBook();
+                        if (VerifyDate())
+                            Books.getInstance().RemoveBook();
                         break;
                     case "return loan":
-                        Loans.getInstance().ReturnLoan();
+                        if (VerifyDate())
+                            Loans.getInstance().ReturnLoan();
                         break;
                 }
             }
         }
+
+
 		// Salvar e fechar os arquivos
 		src.backup();
 		src.CloseFile();
+    }
+
+    private static boolean VerifyDate() {
+        if (!TimeMachine.CurrentDate().after(TimeMachine.ActualDate()))
+            out.println("Operacao nao permitida!");
+        return TimeMachine.CurrentDate().after(TimeMachine.ActualDate());
     }
 }

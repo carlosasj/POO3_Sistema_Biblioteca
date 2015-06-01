@@ -250,6 +250,108 @@ public class Books extends Database {
 
 	}
 
+    public Book Search(boolean select){
+        Scanner scan = new Scanner(System.in);
+        Boolean endSearch = false;
+        Book result = null;
+        String splitSign = "/";
+
+        while (!endSearch) {
+            out.print("\nPesquise por um livro\n(para ajuda, digite 'help'):\t");
+            String input = scan.nextLine();
+
+            // ----- Saida -----
+            if (input.toLowerCase().equals("exit") || input.toLowerCase().equals("\'exit\'")){	// Nunca confie na inteligencia do usuario
+                out.println("Encerrando a busca.");
+                result = null;
+                endSearch = true;
+            }
+            // ----- Ajuda -----
+            else if (input.toLowerCase().equals("help") || input.toLowerCase().equals("\'help\'")) {	// Nunca confie na inteligencia do usuario
+                out.println("Para pesquisar voce pode usar alguns comandos:");
+                out.println(splitSign + "id <id do livro>");
+                out.println(splitSign + "type <text|general>");
+                out.println(splitSign + "title <titulo do livro>");
+                out.println(splitSign + "author <nome do autor>");
+                out.println(splitSign + "year <ano de publicacao>");
+                out.println("\nExceto pelo campo " + splitSign + "id, todos os outros podem ser encadeados, por exemplo:");
+                out.println("\n\t" + splitSign + "type text " + splitSign + "title Aprenda " + splitSign + "title Programar " + splitSign + "author Deitel\n");
+                out.println("Ele vai procurar por um livro-texto que tenha \'Aprenda\' e \'Programar\'");
+                out.println("no titulo, e tem \'Deitel\' como autor.");
+                out.println("\nUse 'help' para ver este texto de ajuda.");
+                out.println("Use 'exit' para encerrar a busca sem retornar nada.\n");
+            }
+            // ----- Comando Invalido -----
+            else if (!input.startsWith(splitSign)){
+                out.println("Comando invalido.");
+            }
+            // ----- Comando Valido -----
+            else {
+                input = input.substring(1);					// Retira a primeira barra da String
+                String[] splited = input.split(splitSign);	// Separa os comandos
+                Stream<Book> filtered = books.stream();		// Cria um Stream
+
+                out.print("Filtrando por:");
+
+                for (String cmd : splited){					// Para cada comando...
+                    try {
+                        String[] command = cmd.split(" ", 2);	// Separa o comando do parametro
+                        command[1] = command[1].trim();			// Retira espacos antes e depois
+                        filtered = this.Filter(command[0], command[1], filtered, true);	// Filtra
+                    } catch (ArrayIndexOutOfBoundsException e){
+                        out.printf("\n\t! (Comando \"%s\" faltando argumentos; Ignorado)\n", cmd);
+                    }
+                }
+
+                // Transforma em uma lista
+                List<Book> collect = filtered.collect(Collectors.toList());
+
+                if (collect.size() == 1){	// Se soh encontrou 1 resultado...
+                    out.println("Livro encontrado:");
+                    collect.get(0).Print();
+
+                    out.print("\nDeseja usar esse livro? [s|n]");
+                    if (scan.nextLine().toLowerCase().equals("s")){
+                        result = collect.get(0);
+                        endSearch = true;
+                    }
+                    else {
+                        out.println("Entao faca uma nova pesquisa.");
+                    }
+                }
+
+                else {	// Se encontrar mais resultados...
+                    out.println("Livros encontrados:");
+                    out.println("==================================================");
+                    int subID = 1;
+
+                    for (Book b : collect){ // Imprime os livros
+                        out.println("< " + subID + " >");
+                        b.Print();
+                        out.println("==================================================");
+                        subID++;
+                    }
+                    subID--; // Porque ele termina o For valendo (collect.size()+1)
+
+                    out.print("Selecione o resultado pelo indice\nou digite 0 para uma nova busca: ");
+                    int index = Integer.parseInt(scan.nextLine());
+                    while (index > subID || index < 0){
+                        out.print("Opcao invalida.\nDigite o indice ou 0 para uma nova busca: ");
+                        index = Integer.parseInt(scan.nextLine());
+                    }
+
+                    if (index != 0) {
+                        result = collect.get(index-1);
+                        endSearch = true;
+                    }
+                }
+            }
+        }
+
+        return result;
+
+    }
+
 	public Book FindByID(int id){
 		Stream<Book> filtered = this.Filter("id", Integer.valueOf(id).toString(), false);
 		return filtered.collect(Collectors.toList()).get(0);
