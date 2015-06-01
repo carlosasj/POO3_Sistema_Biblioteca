@@ -90,7 +90,6 @@ public class TimeMachine {
 		try {
 			form.parse(date);
 		} catch (ParseException e){
-			out.print("AQUI");
 			return false;
 		}
 

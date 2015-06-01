@@ -49,9 +49,7 @@ abstract public class Database {
 			fw.close();
 			br.close();
 		} catch (IOException e) {
-			//e.printStackTrace();
-		} catch (NullPointerException f){
-			//f.printStackTrace();
+			e.printStackTrace();
 		}
 	}
 }

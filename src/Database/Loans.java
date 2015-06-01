@@ -36,7 +36,7 @@ public class Loans extends Database {
 	}
 
 	// Registra um novo emprestimo
-	public void RegisterLoan(){
+	public void Register(){
 		out.println("--- Novo Emprestimo ---");
 		out.println("Primeiro, selecione o usuario.");
 		User user = Users.getInstance().Search();
@@ -54,28 +54,28 @@ public class Loans extends Database {
 			return;
 		}
 
-		// Seta a data atual e a data de expiracao do emprestimo
-		GregorianCalendar date = TimeMachine.CurrentDate();
-		GregorianCalendar expirationdate = TimeMachine.CurrentDate();
-		expirationdate.add(Calendar.DAY_OF_MONTH, user.getMaxDays());
-
-		this.AddLoan(this.nextID, book.getID(), user.getID(), date, expirationdate);
+		this.Add(this.nextID, book.getID(), user.getID());
 		this.nextID++;
 	}
 
 	// Adiciona emprestimo
 
 	// Utilizado no ReadFile
-	protected void AddLoan(int loanid, int bookid, int userid, String date, String expirationdate) {
-		GregorianCalendar cal_date = TimeMachine.strToCalendar(date);
-		GregorianCalendar cal_expiration = TimeMachine.strToCalendar(expirationdate);
-		this.AddLoan(loanid, bookid, userid, cal_date, cal_expiration);
+	protected void Add(int loanid, int bookid, int userid) {
+		Loan l =  Load(loanid, bookid, userid);
+		History.getInstance().logAdd(l);
 	}
 
-	private void AddLoan(int loanid, int bookid, int userid, GregorianCalendar date, GregorianCalendar expirationdate) {
-		Loan l = new Loan(loanid, bookid, userid, date, expirationdate);
-		this.loans.add(l);
+	protected Loan Load(int loanid, int bookid, int userid) {
+		User u = Users.getInstance().FindByID(userid);
+		GregorianCalendar cal_date = TimeMachine.CurrentDate();
+		GregorianCalendar cal_expiration = TimeMachine.CurrentDate();
+		cal_expiration.add(Calendar.DAY_OF_MONTH, u.getMaxDays());
+
+		Loan l = new Loan(loanid, bookid, userid, cal_date, cal_expiration);
 		Books.getInstance().FindByID(bookid).goLoan();
+		this.loans.add(l);
+		return l;
 	}
 
 	// Retorna numero de emprestimos de um usuario
@@ -89,15 +89,28 @@ public class Loans extends Database {
 		return filter.count();
 	}
 
-	public void ReturnLoan() {
-        Loan l = this.Search();
-        if (l.getExpirationDate().compareTo(TimeMachine.CurrentDate()) < 0) {
-            User u = Users.getInstance().FindByID(l.getUserID());
-            u.setAllowedAt(l.getExpirationDate().compareTo(TimeMachine.CurrentDate()));
-            out.println("Usuario bloqueado por atraso");
-        }
-        Books.getInstance().FindByID(l.getBookID()).backLoan();
-        loans.remove(l);
+	public void Remove() {
+        Loan l = Search();
+		Del(l.getID(), true);
+		History.getInstance().logDel(l);
+	}
+
+	// Deletar Usuario ou Livro
+	protected void Del(int id){
+		Del(id, false);
+		Loan l = FindByID(id);
+		Books.getInstance().FindByID(l.getBookID()).increase(-1);
+	}
+
+	protected void Del(int id, boolean verify){
+		Loan l = FindByID(id);
+		if (verify && l.getExpirationDate().compareTo(TimeMachine.CurrentDate()) < 0) {
+			User u = Users.getInstance().FindByID(l.getUserID());
+			u.setAllowedAt(l.getExpirationDate().compareTo(TimeMachine.CurrentDate()));
+			out.println("Usuario bloqueado por atraso");
+		}
+		Books.getInstance().FindByID(l.getBookID()).backLoan();
+		loans.remove(l);
 	}
 
 	// Le arquivo e adiciona na lista
@@ -123,7 +136,7 @@ public class Loans extends Database {
 				String date = loanData[3];
 				String expirationdate = loanData[4];
 
-				this.AddLoan(id, bookid, userid, date, expirationdate);
+				//this.Load(id, bookid, userid, date, expirationdate);
 			}
 		} catch (IOException e){
 			out.println("Erro na leitura do arquivo.");

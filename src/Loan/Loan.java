@@ -26,7 +26,6 @@ public class Loan {
 		UserID = userid;
 		Date = date;
 		ExpirationDate = expirationdate;
-		History.getInstance().logAdd(this);
 	}
 
 	public int getID () { return ID; }

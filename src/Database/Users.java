@@ -1,5 +1,6 @@
 package Database;
 
+import Loan.Loan;
 import User.Comunity;
 import User.Student;
 import User.Teacher;
@@ -35,7 +36,7 @@ public class Users extends Database {
 		//this.ReadFile();
 	}
 
-	public void RegisterUser () {
+	public void Register () {
 
 		Scanner scan = new Scanner(System.in);
 
@@ -49,11 +50,11 @@ public class Users extends Database {
 		out.println("Nome: ");
 		String Name = scan.nextLine();
 
-		this.AddUser(type, nextID, Name);
+		this.Add(type, nextID, Name);
 		this.nextID++;
 	}
 
-	protected void AddUser (String type, int ID, String name) {
+	protected void Add (String type, int ID, String name) {
 		User user = Load(type, ID, name);
 		History.getInstance().logAdd(user);
 	}
@@ -98,7 +99,7 @@ public class Users extends Database {
 				int id = Integer.parseInt(userData[1]);
 				String name = userData[2];
 
-				this.AddUser(type, id, name);
+				this.Load(type, id, name);
 			}
 		}catch (IOException e){
 			out.println("Erro na leitura do arquivo.");
@@ -117,13 +118,13 @@ public class Users extends Database {
 			String input = scan.nextLine();
 
 			// ----- Saida -----
-			if (input.toLowerCase().equals("exit") || input.toLowerCase().equals("\'exit\'")){	// Nunca confie na intelig�ncia do usu�rio
+			if (input.toLowerCase().equals("exit") || input.toLowerCase().equals("\'exit\'")){	// Nunca confie na inteligencia do usuario
 				out.println("Encerrando a busca.");
 				result = null;
 				endSearch = true;
 			}
 			// ----- Ajuda -----
-			else if (input.toLowerCase().equals("help") || input.toLowerCase().equals("\'help\'")) {	// Nunca confie na intelig�ncia do usu�rio
+			else if (input.toLowerCase().equals("help") || input.toLowerCase().equals("\'help\'")) {	// Nunca confie na inteligencia do usuario
 				out.println("Para pesquisar voce pode usar alguns comandos:");
 				out.println(splitSign + "id <id do usuario>");
 				out.println(splitSign + "type <student|teacher|community>");
@@ -255,24 +256,40 @@ public class Users extends Database {
 		}
 		return filtered;
 	}
-
-    protected void RemoveUser (int userid) {
+/*
+    protected void Remove (int userid) {
 		User u = this.FindByID(userid);
 		History.getInstance().logDel(u);
 		users.remove(users.indexOf(u));
 	}
+*/
+    public void Remove () {
+		Scanner scan = new Scanner(System.in);
+		User u = Search();
+		u.Print();
 
-    public void RemoveUser () {
-        Scanner scan = new Scanner(System.in);
-        out.println("Digite o ID do usuario que deseja remover: ");
-        int userid = Integer.parseInt(scan.nextLine());
-
-		FindByID(userid).Print();
-
+		if (Loans.getInstance().CountLoansUser(u.getID()) > 0){
+			out.println("Esse usuario tem livros nao revolvidos, e essa acao vai");
+			out.println("excluir todos os emprestimos relacionados a esse usuario,");
+			out.println("e vai reduzir a Quantidade Total dos livros que estao com ele.");
+		}
         out.println("Tem certeza que deseja remover esse usuario?[s/n]");
         String confirm = scan.nextLine().toLowerCase();
-        if (confirm.equals("s")) users.remove(userid);
+        if (confirm.equals("s")) {
+			Del(u.getID());
+			History.getInstance().logDel(u);
+		}
     }
+
+	protected void Del(int id){
+		User u = FindByID(id);
+		Stream<Loan> stream = Loans.getInstance()
+								.Filter("userid", Integer.valueOf(u.getID()).toString(), false);
+		for (Loan l : stream.collect(Collectors.toList())){
+			Loans.getInstance().Del(l.getID());
+		}
+		users.remove(id);
+	}
 
 	protected void WriteFile() {
 		OpenWriter();

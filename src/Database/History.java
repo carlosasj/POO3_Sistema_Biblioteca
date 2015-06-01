@@ -73,8 +73,8 @@ public class History extends Database {
 											   Integer.parseInt(splited[9]));
 									break;
 								case "del":
-									/*Books.getInstance()
-											.Del(Integer.parseInt(splited[3]));*/
+									Books.getInstance()
+											.Del(Integer.parseInt(splited[3]));
 									break;
 								case "inc":
 									Books.getInstance()
@@ -87,16 +87,14 @@ public class History extends Database {
 						case "Loans":
 							switch (splited[2]){
 								case "add":
-									Loans.getInstance().AddLoan(
+									Loans.getInstance().Load(
 											Integer.parseInt(splited[3]),
 											Integer.parseInt(splited[4]),
-											Integer.parseInt(splited[5]),
-															 splited[0],
-															 splited[7]);
+											Integer.parseInt(splited[5]));
 									break;
 								case "del":
-									/*Loans.getInstance()
-											.Del(Integer.parseInt(splited[3]));*/
+									Loans.getInstance()
+											.Del(Integer.parseInt(splited[3]));
 									break;
 							}
 							break;
@@ -104,14 +102,13 @@ public class History extends Database {
 						case "Users":
 							switch (splited[2]){
 								case "add":
-									out.println(line);
 									Users.getInstance().Load(splited[3],
 											   Integer.parseInt(splited[4]),
 																splited[5]);
 									break;
 								case "del":
-									/*Users.getInstance()
-											.Del(Integer.parseInt(splited[3]));*/
+									Users.getInstance()
+											.Del(Integer.parseInt(splited[3]));
 									break;
 							}
 							break;
