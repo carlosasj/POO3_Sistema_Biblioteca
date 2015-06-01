@@ -10,7 +10,6 @@ import java.util.Scanner;
 
 import static java.lang.System.out;
 
-
 public class Program {
 	public static void main (String[] args) throws IOException {
 		TimeMachine.getInstance();
@@ -30,10 +29,11 @@ public class Program {
 		String splitSign = "/";
 
 		while (!endProgram) {
-			out.println("Digite um comando: \n(para ajuda, digite 'help'):");
+			out.print("Digite um comando.\n(para ajuda, digite 'help'):");
 			cmd = scan.nextLine();
 
 			if (cmd.toLowerCase().equals("exit")) {
+				out.println("Saindo do sistema...");
 				endProgram = true;
 			} else if (cmd.toLowerCase().equals("help")) {
 				out.println("Comandos:");

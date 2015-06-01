@@ -76,35 +76,7 @@ public class Users {
 		users.add(user);
 		return user;
 	}
-/*
-	protected void ReadFile() {
 
-		OpenReader();
-
-		String line;
-		String splitBy = ",";
-
-		try {
-			if ((line = br.readLine()) != null) {
-				nextID = Integer.parseInt(line);
-				br.readLine();
-			}
-
-			while ((line = br.readLine()) != null) {
-
-				String[] userData = line.split(splitBy);
-				String type = userData[0];
-				int id = Integer.parseInt(userData[1]);
-				String name = userData[2];
-
-				Load(type, id, name);
-			}
-		}catch (IOException e){
-			out.println("Erro na leitura do arquivo.");
-			e.printStackTrace();
-		}
-	}
-*/
 	public User Search(){ return Search(false); }
 	public User Search(boolean select){
 		Scanner scan = new Scanner(System.in);
@@ -253,13 +225,7 @@ public class Users {
 		}
 		return filtered;
 	}
-/*
-	protected void Remove (int userid) {
-		User u = FindByID(userid);
-		History.getInstance().logDel(u);
-		users.remove(users.indexOf(u));
-	}
-*/
+
 	public void Remove () {
 		Scanner scan = new Scanner(System.in);
 		User u = Search();
@@ -287,41 +253,4 @@ public class Users {
 		}
 		users.remove(id);
 	}
-/*
-	protected void WriteFile() {
-		OpenWriter();
-
-		final String SEPARATOR = ",";
-		final String ENDLINE = "\n";
-		final String HEADER = "Type,ID,Name";
-
-		try {
-			fw.append(Integer.valueOf(nextID).toString());
-			fw.append(ENDLINE);
-			fw.flush();
-
-			fw.append(HEADER);
-			fw.append(ENDLINE);
-			fw.flush();
-
-			for (User u : users) {
-				fw.append(u.getType());
-				fw.append(SEPARATOR);
-
-				fw.append(Integer.valueOf(u.getID()).toString());
-				fw.append(SEPARATOR);
-
-				fw.append(u.getName());
-				fw.append(ENDLINE);
-
-				fw.flush();
-			}
-		} catch (IOException e){
-			out.println("Erro na escrita do arquivo.");
-			e.printStackTrace();
-		} catch (NullPointerException f){
-			out.println("Outro erro na escrita do arquivo.");
-			f.printStackTrace();
-		}
-	}*/
 }
