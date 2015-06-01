@@ -3,6 +3,7 @@ package User;
 import Database.Loans;
 import Time.TimeMachine;
 
+import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 import static java.lang.System.out;
@@ -36,6 +37,12 @@ abstract public class User {
 
 		return true;
 	}
+
+    public void setAllowedAt (int fine) {
+
+        this.AllowedAt.add(Calendar.DAY_OF_MONTH, - fine);
+
+    }
 
 	public void Print(){
 		out.printf("Tipo:\t%s\nID:\t\t%d\nNome:\t%s\n", Type, ID, Name);

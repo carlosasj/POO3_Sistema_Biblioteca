@@ -251,12 +251,13 @@ public class Users extends Database {
 	}
 
     public void RemoveUser () {
-        User u = this.Search();
-        String confirm;
         Scanner scan = new Scanner(System.in);
+        out.println("Digite o ID do usuario que deseja remover: ");
+        int userid = Integer.parseInt(scan.nextLine());
+        User u = this.FindByID(userid);
 
         out.println("Tem certeza que deseja remover esse usuario?[s/n]");
-        confirm = scan.nextLine();
+        String confirm = scan.nextLine();
         switch (confirm) {
             case "s":
                 users.remove(u);
