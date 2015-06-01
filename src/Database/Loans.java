@@ -91,7 +91,7 @@ public class Loans extends Database {
             u.setAllowedAt(l.getExpirationDate().compareTo(TimeMachine.CurrentDate()));
             out.println("Usuario bloqueado por atraso");
         }
-
+        Books.getInstance().FindByID(l.getBookID()).backLoan();
         loans.remove(l);
 	}
 

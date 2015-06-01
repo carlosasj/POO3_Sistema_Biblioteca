@@ -313,7 +313,6 @@ public class Books extends Database {
         out.println("Digite o ID do livro que deseja remover: ");
         int bookid = Integer.parseInt(scan.nextLine());
         Book b = this.FindByID(bookid);
-
         out.println("Tem certeza que deseja remover esse livro?[s/n]");
         String confirm = scan.nextLine();
         switch (confirm) {
