@@ -28,7 +28,7 @@ public class History extends Database {
 		this.nextID = 0;
 		this.path = "history.csv";
 		this.OpenFile(filename);
-		//this.ReadFile();
+		this.ReadFile();
 	}
 
 	protected void OpenWriter(){
@@ -64,7 +64,7 @@ public class History extends Database {
 						case "Books":
 							switch (splited[2]){
 								case "add":
-									Books.getInstance().AddBook(splited[3],
+									Books.getInstance().Load(splited[3],
 											   Integer.parseInt(splited[4]),
 																splited[5],
 																splited[6],
@@ -104,7 +104,7 @@ public class History extends Database {
 						case "Users":
 							switch (splited[2]){
 								case "add":
-									Users.getInstance().AddUser(splited[3],
+									Users.getInstance().Load(splited[3],
 											   Integer.parseInt(splited[4]),
 																splited[5]);
 									break;

@@ -13,7 +13,5 @@ public class General extends Book {
 		Year = year;
 		TotalQuantity = totalquantity;
 		AvaliableQuantity = totalquantity;
-
-		History.getInstance().logAdd(this);
 	}
 }

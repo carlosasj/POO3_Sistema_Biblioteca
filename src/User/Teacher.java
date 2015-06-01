@@ -16,7 +16,5 @@ public class Teacher extends User {
 		MaxLoans = 6;
 		AllowedAt = TimeMachine.CurrentDate();
 		AllowedAt.add(Calendar.DAY_OF_MONTH, -1);
-
-		History.getInstance().logAdd(this);
 	}
 }

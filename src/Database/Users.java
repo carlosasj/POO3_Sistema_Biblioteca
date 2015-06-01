@@ -54,6 +54,11 @@ public class Users extends Database {
 	}
 
 	protected void AddUser (String type, int ID, String name) {
+		User user = Load(type, ID, name);
+		History.getInstance().logAdd(user);
+	}
+
+	protected User Load (String type, int ID, String name) {
 		User user = null;
 		switch (type) {
 			case "community":
@@ -70,6 +75,7 @@ public class Users extends Database {
 		}
 
 		this.users.add(user);
+		return user;
 	}
 
 	protected void ReadFile() {
