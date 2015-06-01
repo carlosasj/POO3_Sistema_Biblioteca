@@ -7,10 +7,7 @@ import User.User;
 import Time.TimeMachine;
 
 import java.io.*;
-import java.util.GregorianCalendar;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -252,6 +249,24 @@ public class Users extends Database {
 		}
 		return filtered;
 	}
+
+    protected void RemoveUser (int userid) {
+		User u = this.FindByID(userid);
+		History.getInstance().logDel(u);
+		users.remove(users.indexOf(u));
+	}
+
+    public void RemoveUser () {
+        Scanner scan = new Scanner(System.in);
+        out.println("Digite o ID do usuario que deseja remover: ");
+        int userid = Integer.parseInt(scan.nextLine());
+
+		FindByID(userid).Print();
+
+        out.println("Tem certeza que deseja remover esse usuario?[s/n]");
+        String confirm = scan.nextLine().toLowerCase();
+        if (confirm.equals("s")) users.remove(userid);
+    }
 
 	protected void WriteFile() {
 		OpenWriter();

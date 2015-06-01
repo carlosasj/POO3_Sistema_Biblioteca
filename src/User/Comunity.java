@@ -2,18 +2,21 @@ package User;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+
+import Database.History;
 import Time.TimeMachine;
 
 public class Comunity extends User {
 
 	public Comunity (int id, String name) {
+		Type = "Com";
+		ID = id;
+		Name = name;
+		MaxDays = 15;
+		MaxLoans = 2;
+		AllowedAt = TimeMachine.CurrentDate();
+		AllowedAt.add(Calendar.DAY_OF_MONTH, -1);
 
-		this.Type = "Com";
-		this.ID = id;
-		this.Name = name;
-		this.MaxDays = 15;
-		this.MaxLoans = 2;
-		this.AllowedAt = TimeMachine.CurrentDate();
-		this.AllowedAt.add(Calendar.DAY_OF_MONTH, -1);
+		History.getInstance().logAdd(this);
 	}
 }

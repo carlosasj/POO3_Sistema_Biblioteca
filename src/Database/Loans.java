@@ -28,13 +28,14 @@ public class Loans extends Database {
 	}
 
 	private Loans (String filename) {
-		this.nextID = 0;
+		this.nextID = 0;	// Inicializa variavel do proximo ID
 		this.path = "loans.csv";
 		this.loans = new LinkedList<Loan>();
 		this.OpenFile(filename);
 		this.ReadFile();
 	}
 
+	// Registra um novo emprestimo
 	public void RegisterLoan(){
 		out.println("--- Novo Emprestimo ---");
 		out.println("Primeiro, selecione o usuario.");
@@ -53,6 +54,7 @@ public class Loans extends Database {
 			return;
 		}
 
+		// Seta a data atual e a data de expiracao do emprestimo
 		GregorianCalendar date = TimeMachine.CurrentDate();
 		GregorianCalendar expirationdate = TimeMachine.CurrentDate();
 		expirationdate.add(Calendar.DAY_OF_MONTH, user.getMaxDays());
@@ -61,8 +63,10 @@ public class Loans extends Database {
 		this.nextID++;
 	}
 
+	// Adiciona emprestimo
+
 	// Utilizado no ReadFile
-	private void AddLoan(int loanid, int bookid, int userid, String date, String expirationdate) {
+	protected void AddLoan(int loanid, int bookid, int userid, String date, String expirationdate) {
 		GregorianCalendar cal_date = TimeMachine.strToCalendar(date);
 		GregorianCalendar cal_expiration = TimeMachine.strToCalendar(expirationdate);
 		this.AddLoan(loanid, bookid, userid, cal_date, cal_expiration);
@@ -74,22 +78,29 @@ public class Loans extends Database {
 		Books.getInstance().FindByID(bookid).goLoan();
 	}
 
+	// Retorna numero de emprestimos de um usuario
 	public long CountLoansUser(int userId) {
 
 		Stream<Loan> filter = loans.stream();
 
-		//Busca todos os emprestimos de um usuário
+		//Busca todos os emprestimos de um usuario
 		filter.filter(l -> l.getUserID() == userId);
 
 		return filter.count();
 	}
 
-	protected void returnLoan() {
-
-		loans.listIterator();
-
+	public void ReturnLoan() {
+        Loan l = this.Search();
+        if (l.getExpirationDate().compareTo(TimeMachine.CurrentDate()) < 0) {
+            User u = Users.getInstance().FindByID(l.getUserID());
+            u.setAllowedAt(l.getExpirationDate().compareTo(TimeMachine.CurrentDate()));
+            out.println("Usuario bloqueado por atraso");
+        }
+        Books.getInstance().FindByID(l.getBookID()).backLoan();
+        loans.remove(l);
 	}
 
+	// Le arquivo e adiciona na lista
 	public void ReadFile(){
 
 		this.OpenReader();
@@ -120,6 +131,7 @@ public class Loans extends Database {
 		}
 	}
 
+	// Lê a lista e escreve no arquivo
 	public void WriteFile(){
 		OpenWriter();
 		String SEPARATOR = ",";
@@ -158,6 +170,7 @@ public class Loans extends Database {
 		}
 	}
 
+	// Busca emprestimo com interface com o usuário
 	public Loan Search(){
 		Scanner scan = new Scanner(System.in);
 		Boolean endSearch = false;
@@ -178,17 +191,17 @@ public class Loans extends Database {
 			else if (input.toLowerCase().equals("help") || input.toLowerCase().equals("\'help\'")) {	// Nunca confie na inteligencia do usuario
 				out.println("Para pesquisar voce pode usar alguns comandos:");
 				out.println(splitSign + "id <id do emprestimo>");
-				out.println(splitSign + "book <type|> <id do emprestimo>");
-				out.println(splitSign + "userid <id do emprestimo>");
+				out.println(splitSign + "bookid <id do livro>");
+				out.println(splitSign + "userid <id do usuario>");
 				out.println(splitSign + "date <data do emprestimo no formato DD/MM/AAAA>");
 				out.println(splitSign + "expiration <data maxima de devolucao no formato DD/MM/AAAA>");
-				out.println(splitSign + "loaned today");
-				out.println(splitSign + "author <nome do autor>");
-				out.println(splitSign + "year <ano de publicacao>");
+				out.println(splitSign + "loaned (todos os emprestimos nao devolvidos)");
+				out.println(splitSign + "booksearch (abre a pesquisa por livros, com seus próprios comandos)");
+				out.println(splitSign + "usersearch (abre a pesquisa por usuarios, com seus próprios comandos)");
 				out.println("\nExceto pelo campo " + splitSign + "id, todos os outros podem ser encadeados, por exemplo:");
-				out.println("\n\t" + splitSign + "type text " + splitSign + "title Aprenda " + splitSign + "title Programar " + splitSign + "author Deitel\n");
-				out.println("Ele vai procurar por um livro-texto que tenha \'Aprenda\' e \'Programar\'");
-				out.println("no titulo, e tem \'Deitel\' como autor.");
+				out.println("\n\t" + splitSign + "loaned " + splitSign + "booksearch\n");
+				out.println("Ele vai abrir a pesquisa por livros, para você encontrar exatamente o livro,");
+				out.println("em seguida ele vai procurar todos os emprestimos daquele livro");
 				out.println("\nUse 'help' para ver este texto de ajuda.");
 				out.println("Use 'exit' para encerrar a busca sem retornar nada.\n");
 			}
@@ -205,23 +218,23 @@ public class Loans extends Database {
 				out.print("Filtrando por:");
 
 				for (String cmd : splited){						// Para cada comando...
+					String[] command = cmd.split(" ", 2);		// Separa o comando do parametro
 					try {
-						String[] command = cmd.split(" ", 2);	// Separa o comando do parametro
-						command[1] = command[1].trim();			// Retira espa�os antes e depois
+						command[1] = command[1].trim();			// Retira espacos antes e depois
 						filtered = this.Filter(command[0], command[1], filtered, true);	// Filtra
 					} catch (ArrayIndexOutOfBoundsException e){
-						out.printf("\n\t! (Comando \"%s\" faltando argumentos; Ignorado)\n", cmd);
+						filtered = this.Filter(command[0], filtered, true);	// Filtra
 					}
 				}
 
 				// Transforma em uma lista
 				List<Loan> collect = filtered.collect(Collectors.toList());
 
-				if (collect.size() == 1){	// Se soh encontrou 1 resultado...
-					out.println("Livro encontrado:");
+				if (collect.size() == 1){	// Se encontrou apenas 1 resultado...
+					out.println("Emprestimo encontrado:");
 					collect.get(0).Print();
 
-					out.print("\nDeseja usar esse livro? [s|n]");
+					out.print("\nDeseja usar esse emprestimo? [s|n]");
 					if (scan.nextLine().toLowerCase().equals("s")){
 						result = collect.get(0);
 						endSearch = true;
@@ -232,7 +245,7 @@ public class Loans extends Database {
 				}
 
 				else {	// Se encontrar mais resultados...
-					out.println("Livros encontrados:");
+					out.println("Emprestimos encontrados:");
 					out.println("==================================================");
 					int subID = 1;
 
@@ -263,44 +276,40 @@ public class Loans extends Database {
 
 	}
 
+	// Busca emprestimo pelo ID fornecido
 	public Loan FindByID(int id){
 		Stream<Loan> filtered = this.Filter("id", Integer.valueOf(id).toString(), false);
 		return filtered.collect(Collectors.toList()).get(0);
 	}
 
-	public Stream<Loan> Filter(String field, String param, Boolean printMsg) {	// Aplica o filtro num stream com todos os livros
+	// Aplica o filtro num stream com todos os emprestimos
+	public Stream<Loan> Filter(String field, String param, Boolean printMsg) {
 		Stream<Loan> filtered = loans.stream();
 		this.Filter(field, param, filtered, printMsg);
 		return filtered;
 	}
 
-	public Stream<Loan> Filter(String field, String param, Stream<Loan> filtered, Boolean printMsg) {	// Aplica o filtro num stream personalizado
+	// Aplica o filtro num stream personalizado
+	public Stream<Loan> Filter(String field, String param, Stream<Loan> filtered, Boolean printMsg) {
 		if (printMsg) out.printf("\n\t%s = %s", field, param);
 
 		switch (field){
 			case "id":
 				filtered.anyMatch(l -> l.getID() == Integer.parseInt(param));
 				break;
-			case "book":
-				/*switch (param.toLowerCase()) {
-					case "text":
-						filtered = filtered.filter((b -> Books.getInstance().Filter("type", "text", false)))
-				}*/
+			case "bookid":
 				filtered.filter(l -> l.getBookID() == Integer.parseInt(param));
 				break;
 			case "userid":
 				filtered = filtered.filter(l -> l.getUserID() == Integer.parseInt(param));
 				break;
-			case "data":
+			case "date":
 				GregorianCalendar date = TimeMachine.strToCalendar(param);
 				filtered.filter(l -> l.getDate().equals(date));
 				break;
 			case "expiration":
 				GregorianCalendar expdate = TimeMachine.strToCalendar(param);
 				filtered.filter(l -> l.getExpirationDate().equals(expdate));
-				break;
-			case "loaned today":
-				filtered.filter(l -> l.getDate().equals(TimeMachine.CurrentDate()));
 				break;
 			default:
 				if (printMsg) out.print(" (Comando Invalido; Ignorado)");
@@ -309,6 +318,24 @@ public class Loans extends Database {
 		return filtered;
 	}
 
-
+	public Stream<Loan> Filter(String field, Stream<Loan> filtered, Boolean printMsg) {
+		switch (field) {
+			case "loaned today":
+				filtered.filter(l -> l.getDate().equals(TimeMachine.CurrentDate()));
+				break;
+			case "booksearch":
+				Book b = Books.getInstance().Search();
+				if (b != null) filtered = Filter("bookid", Integer.valueOf(b.getID()).toString(), filtered, true);
+				break;
+			case "usersearch":
+				User u = Users.getInstance().Search();
+				if (u != null) filtered = Filter("userid", Integer.valueOf(u.getID()).toString(), filtered, true);
+				break;
+			default:
+				if (printMsg) out.print(" (Comando Invalido; Ignorado)");
+				break;
+		}
+		return filtered;
+	}
 }
 
