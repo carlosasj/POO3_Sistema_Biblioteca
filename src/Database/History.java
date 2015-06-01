@@ -50,7 +50,6 @@ public class History extends Database {
 
 			GregorianCalendar date_backup = TimeMachine.CurrentDate();
 
-
 			while ((line = br.readLine()) != null && !future) {
 				String[] splited = line.split(split);
 				GregorianCalendar date_readed = TimeMachine.strToCalendar(splited[0]);

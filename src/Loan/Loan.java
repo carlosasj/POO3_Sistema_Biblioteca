@@ -3,6 +3,7 @@ package Loan;
 import Database.Books;
 import Database.History;
 import Database.Users;
+import Time.TimeMachine;
 
 import java.util.GregorianCalendar;
 import java.util.Scanner;
@@ -43,7 +44,7 @@ public class Loan {
 				ID,
 				Users.getInstance().FindByID(this.UserID).getName(),
 				Books.getInstance().FindByID(this.BookID).getTitle(),
-				Date.toString(),
+				TimeMachine.CalendarToStr(Date),
 				ExpirationDate.toString());
     }
 

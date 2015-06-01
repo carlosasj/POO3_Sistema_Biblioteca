@@ -190,9 +190,13 @@ public class Loans extends Database {
 				out.println(splitSign + "userid <id do usuario>");
 				out.println(splitSign + "date <data do emprestimo no formato DD/MM/AAAA>");
 				out.println(splitSign + "expiration <data maxima de devolucao no formato DD/MM/AAAA>");
-				out.println(splitSign + "loaned today");
-				out.println(splitSign + "booksearch");
-				out.println(splitSign + "usersearch");
+				out.println(splitSign + "loaned (todos os emprestimos nao devolvidos)");
+				out.println(splitSign + "booksearch (abre a pesquisa por livros, com seus próprios comandos)");
+				out.println(splitSign + "usersearch (abre a pesquisa por usuarios, com seus próprios comandos)");
+				out.println("\nExceto pelo campo " + splitSign + "id, todos os outros podem ser encadeados, por exemplo:");
+				out.println("\n\t" + splitSign + "loaned " + splitSign + "booksearch\n");
+				out.println("Ele vai abrir a pesquisa por livros, para você encontrar exatamente o livro,");
+				out.println("em seguida ele vai procurar todos os emprestimos daquele livro");
 				out.println("\nUse 'help' para ver este texto de ajuda.");
 				out.println("Use 'exit' para encerrar a busca sem retornar nada.\n");
 			}
@@ -214,7 +218,7 @@ public class Loans extends Database {
 						command[1] = command[1].trim();			// Retira espacos antes e depois
 						filtered = this.Filter(command[0], command[1], filtered, true);	// Filtra
 					} catch (ArrayIndexOutOfBoundsException e){
-						out.printf("\n\t! (Comando \"%s\" faltando argumentos; Ignorado)\n", cmd);
+						filtered = this.Filter(command[0], filtered, true);	// Filtra
 					}
 				}
 
@@ -316,11 +320,11 @@ public class Loans extends Database {
 				break;
 			case "booksearch":
 				Book b = Books.getInstance().Search();
-				filtered = Filter("bookid", Integer.valueOf(b.getID()).toString(), filtered, true);
+				if (b != null) filtered = Filter("bookid", Integer.valueOf(b.getID()).toString(), filtered, true);
 				break;
 			case "usersearch":
 				User u = Users.getInstance().Search();
-				filtered = Filter("userid", Integer.valueOf(u.getID()).toString(), filtered, true);
+				if (u != null) filtered = Filter("userid", Integer.valueOf(u.getID()).toString(), filtered, true);
 				break;
 			default:
 				if (printMsg) out.print(" (Comando Invalido; Ignorado)");
