@@ -1,5 +1,7 @@
 package Time;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Scanner;
@@ -27,17 +29,18 @@ public class TimeMachine {
 		Scanner scan = new Scanner(System.in);
 		String splitBy = "/";
 
-		out.println("Data[dd/mm/aaaa]: ");
-		String d = scan.nextLine();
+		String d;
+		do {
+			out.println("Data [dd/mm/aaaa]: ");
+			d = scan.nextLine();
+		} while (!validate(d));
 
-		//Mudanca da data de string para Calendar
-		String[] date = d.split(splitBy);
-		int day = Integer.parseInt(date[0]);
-		int month = Integer.parseInt(date[1]);
-		int year = Integer.parseInt(date[2]);
 		//Armazena em um calendar a data digitada pelo usuario
-		currentDate = new GregorianCalendar(year, month, day);
+		currentDate = strToCalendar(d);
+	}
 
+	public void setDate(GregorianCalendar date){
+		currentDate = date;
 	}
 
 	public static void printDate(String format) {
@@ -54,7 +57,7 @@ public class TimeMachine {
 
 			case "d:m:a":
 				out.println("Dia: " + date.get(Calendar.DAY_OF_MONTH)
-						 + " Mes: " + date.get(Calendar.MONTH)
+						 + " Mes: " + (date.get(Calendar.MONTH)-1)
 						 + " Ano: " + date.get(Calendar.YEAR));
 				break;
 		}
@@ -68,8 +71,31 @@ public class TimeMachine {
 		String[] split_date = date.split("/");
 
 		return new GregorianCalendar(Integer.parseInt(split_date[2]),
-									 Integer.parseInt(split_date[1]),
+									 Integer.parseInt(split_date[1])-1,
 									 Integer.parseInt(split_date[0]));
+	}
+
+	public static String CalendarToStr (GregorianCalendar date) {
+		return date.get(Calendar.DAY_OF_MONTH) + "/"
+				+(date.get(Calendar.MONTH)+1) + "/"
+				+date.get(Calendar.YEAR);
+	}
+
+	public static boolean validate (String date){ return validate(date, "dd/MM/aaaa"); }
+	public static boolean validate (String date, String format){
+
+		if (date == null || format == null) return false;
+
+		SimpleDateFormat form = new SimpleDateFormat(format);
+		form.setLenient(false);
+
+		try {
+			form.parse(date);
+		} catch (ParseException e){
+			return false;
+		}
+
+		return true;
 	}
 
 }

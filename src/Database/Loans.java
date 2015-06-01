@@ -62,7 +62,7 @@ public class Loans extends Database {
 	}
 
 	// Utilizado no ReadFile
-	private void AddLoan(int loanid, int bookid, int userid, String date, String expirationdate) {
+	protected void AddLoan(int loanid, int bookid, int userid, String date, String expirationdate) {
 		GregorianCalendar cal_date = TimeMachine.strToCalendar(date);
 		GregorianCalendar cal_expiration = TimeMachine.strToCalendar(expirationdate);
 		this.AddLoan(loanid, bookid, userid, cal_date, cal_expiration);

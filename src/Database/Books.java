@@ -35,13 +35,13 @@ public class Books extends Database {
 		this.ReadFile();
 	}
 
-	protected void AddBook(String type, int id, String title, String author, String editor, int year, int totalquantity, int avaliablequantity){
+	protected void AddBook(String type, int id, String title, String author, String editor, int year, int totalquantity){
 		Book book;
 
 		if(type.equals("Tex")){
-			book = new Text(id, title, author, editor, year, totalquantity, avaliablequantity);
+			book = new Text(id, title, author, editor, year, totalquantity);
 		} else {
-			book = new General(id, title, author, editor, year, totalquantity, avaliablequantity);
+			book = new General(id, title, author, editor, year, totalquantity);
 		}
 
 		this.books.add(book);
@@ -104,7 +104,7 @@ public class Books extends Database {
 				case "general":
 					type = "Gen";
 			}
-			this.AddBook(type, this.nextID, Title, Author, Editor, Year, TotalQuantity, TotalQuantity);
+			this.AddBook(type, this.nextID, Title, Author, Editor, Year, TotalQuantity);
 			this.nextID++;
 			out.println("Registro cadastrado com sucesso!");
 		}
@@ -134,9 +134,8 @@ public class Books extends Database {
 				String editor = readed[4];
 				int year = Integer.parseInt(readed[5]);
 				int totalquantity = Integer.parseInt(readed[6]);
-				int avaliablequantity = Integer.parseInt(readed[7]);
 
-				this.AddBook(type, id, title, author, editor, year, totalquantity, avaliablequantity);
+				this.AddBook(type, id, title, author, editor, year, totalquantity);
 			}
 		} catch (IOException e) {
 			out.println("Erro na leitura do arquivo.");

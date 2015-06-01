@@ -2,7 +2,7 @@ package Book;
 
 public class Text extends Book{
 
-	public Text(int id, String title, String author, String editor, int year, int totalquantity, int avaliablequantity) {
+	public Text(int id, String title, String author, String editor, int year, int totalquantity) {
 
 		this.Type = "Tex";
 		this.ID = id;
@@ -11,7 +11,7 @@ public class Text extends Book{
 		this.Editor = editor;
 		this.Year = year;
 		this.TotalQuantity = totalquantity;
-		this.AvaliableQuantity = avaliablequantity;
+		this.AvaliableQuantity = totalquantity;
 	}
 
 }

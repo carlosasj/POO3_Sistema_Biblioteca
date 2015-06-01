@@ -35,4 +35,21 @@ abstract public class Book {
 	public boolean canLoan() {
 		return (AvaliableQuantity > 0);
 	}
+
+	public boolean increase (int n, boolean validate){
+		boolean result = (TotalQuantity+n >= 0) && (AvaliableQuantity+n >= 0);
+		if (validate){
+			if (result) increase(n);
+		}
+		else {
+			increase(n);
+		}
+
+		return result;
+	}
+
+	public void increase (int n){
+		TotalQuantity += n;
+		AvaliableQuantity += n;
+	}
 }
