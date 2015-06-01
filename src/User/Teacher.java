@@ -9,7 +9,7 @@ import Time.TimeMachine;
 public class Teacher extends User {
 
 	public Teacher (int id, String name) {
-		Type = "Tea";
+		Type = "teacher";
 		ID = id;
 		Name = name;
 		MaxDays = 60;

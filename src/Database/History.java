@@ -104,6 +104,7 @@ public class History extends Database {
 						case "Users":
 							switch (splited[2]){
 								case "add":
+									out.println(line);
 									Users.getInstance().Load(splited[3],
 											   Integer.parseInt(splited[4]),
 																splited[5]);

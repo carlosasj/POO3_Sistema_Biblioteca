@@ -223,13 +223,13 @@ public class Users extends Database {
 			case "type":
 				switch (param.toLowerCase()) {
 					case "student":
-						filtered = filtered.filter(u -> u.getType().equals("Stu"));
+						filtered = filtered.filter(u -> u.getType().equals("student"));
 						break;
 					case "teacher":
-						filtered = filtered.filter(u -> u.getType().equals("Tea"));
+						filtered = filtered.filter(u -> u.getType().equals("teacher"));
 						break;
 					case "community":
-						filtered = filtered.filter(u -> u.getType().equals("Com"));
+						filtered = filtered.filter(u -> u.getType().equals("community"));
 					default:
 						if (printMsg) out.printf(" (\"%s\" nao eh um parametro valido; Ignorado)", param);
 						break;
@@ -305,6 +305,9 @@ public class Users extends Database {
 		} catch (IOException e){
 			out.println("Erro na escrita do arquivo.");
 			e.printStackTrace();
+		} catch (NullPointerException f){
+			out.println("Outro erro na escrita do arquivo.");
+			f.printStackTrace();
 		}
 	}
 }

@@ -9,7 +9,7 @@ import Time.TimeMachine;
 public class Comunity extends User {
 
 	public Comunity (int id, String name) {
-		Type = "Com";
+		Type = "community";
 		ID = id;
 		Name = name;
 		MaxDays = 15;
