@@ -28,7 +28,7 @@ public class History extends Database {
 		this.nextID = 0;
 		this.path = "history.csv";
 		this.OpenFile(filename);
-		this.ReadFile();
+		//this.ReadFile();
 	}
 
 	protected void OpenWriter(){

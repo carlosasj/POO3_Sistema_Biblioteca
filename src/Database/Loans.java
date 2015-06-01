@@ -32,7 +32,7 @@ public class Loans extends Database {
 		this.path = "loans.csv";
 		this.loans = new LinkedList<Loan>();
 		this.OpenFile(filename);
-		this.ReadFile();
+		//this.ReadFile();
 	}
 
 	// Registra um novo emprestimo

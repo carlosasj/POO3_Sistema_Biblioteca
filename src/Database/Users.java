@@ -32,7 +32,7 @@ public class Users extends Database {
 		this.path = "users.csv";
 		this.users = new LinkedList<User>();
 		this.OpenFile(filename);
-		this.ReadFile();
+		//this.ReadFile();
 	}
 
 	public void RegisterUser () {

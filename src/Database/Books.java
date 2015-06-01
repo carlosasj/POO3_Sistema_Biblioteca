@@ -32,7 +32,7 @@ public class Books extends Database {
 		this.path = "books.csv";
 		this.books = new LinkedList<Book>();
 		this.OpenFile(filename);
-		this.ReadFile();
+		//this.ReadFile();
 	}
 
 	protected void AddBook(String type, int id, String title, String author, String editor, int year, int totalquantity){

@@ -9,6 +9,7 @@ public class Source extends Database{
 	private Books booksDB;
 	private Loans loansDB;
 	private Users usersDB;
+	private History history;
 	private static Source sourceDB;
 
 	// Singleton
@@ -40,12 +41,14 @@ public class Source extends Database{
 				booksDB = Books.getInstance(splited[0]);
 				loansDB = Loans.getInstance(splited[1]);
 				usersDB = Users.getInstance(splited[2]);
+				history = History.getInstance(splited[3]);
 			}
 			else {
 				String[] splited = path.split(".csv");
 				booksDB = Books.getInstance(splited[0] + "_books.csv");
 				loansDB = Loans.getInstance(splited[0] + "_loans.csv");
 				usersDB = Users.getInstance(splited[0] + "_users.csv");
+				history = History.getInstance(splited[0] + "_log.csv");
 			}
 		} catch (IOException e) {
 			out.println("Erro na leitura do arquivo.");
@@ -57,7 +60,7 @@ public class Source extends Database{
 		OpenWriter();
 		final String SEPARATOR = ",";
 		final String ENDLINE = "\n";
-		final String HEADER = "BooksDB_path,LoansDB_path,UsersDB_path";
+		final String HEADER = "BooksDB_path,LoansDB_path,UsersDB_path,Log_path";
 
 		try {
 			fw.append(HEADER);
@@ -69,6 +72,8 @@ public class Source extends Database{
 			fw.append(loansDB.path);
 			fw.append(SEPARATOR);
 			fw.append(usersDB.path);
+			fw.append(SEPARATOR);
+			fw.append(history.path);
 			fw.flush();
 
 		} catch (IOException e){
@@ -88,6 +93,7 @@ public class Source extends Database{
 		booksDB.CloseFile();
 		loansDB.CloseFile();
 		usersDB.CloseFile();
+		history.CloseFile();
 		try {
 			fw.close();
 			br.close();
