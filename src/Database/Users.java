@@ -251,10 +251,9 @@ public class Users extends Database {
 	}
 
     protected void RemoveUser (int userid) {
-
-        User d = this.FindByID(userid);
-        users.remove(users.indexOf(d));
-
+        User u = this.FindByID(userid);
+		History.getInstance().logDel(u);
+        users.remove(users.indexOf(u));
     }
 
 	protected void WriteFile() {
