@@ -73,8 +73,10 @@ public class Program {
                         Loans.getInstance().Search();
                         break;
                     case "remove user":
+                        Users.getInstance().RemoveUser();
                         break;
                     case "remove book":
+                        Books.getInstance().RemoveBook();
                         break;
                     case "return loan":
                         break;

@@ -308,6 +308,22 @@ public class Books extends Database {
 		return filtered;
 	}
 
+    public void RemoveBook () {
+        Book b = this.Search();
+        String confirm;
+        Scanner scan = new Scanner(System.in);
+
+        out.println("Tem certeza que deseja remover esse livro?[s/n]");
+        confirm = scan.nextLine();
+        switch (confirm) {
+            case "s":
+                books.remove(b);
+                break;
+            case "n":
+                break;
+        }
+    }
+
 	protected void WriteFile() {
 		OpenWriter();
 		final String SEPARATOR = ",";

@@ -250,11 +250,20 @@ public class Users extends Database {
 		return filtered;
 	}
 
-    protected void RemoveUser (int userid) {
+    public void RemoveUser () {
+        User u = this.Search();
+        String confirm;
+        Scanner scan = new Scanner(System.in);
 
-        User d = this.FindByID(userid);
-        users.remove(users.indexOf(d));
-
+        out.println("Tem certeza que deseja remover esse usuario?[s/n]");
+        confirm = scan.nextLine();
+        switch (confirm) {
+            case "s":
+                users.remove(u);
+                break;
+            case "n":
+                break;
+        }
     }
 
 	protected void WriteFile() {
