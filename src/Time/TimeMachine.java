@@ -21,13 +21,11 @@ public class TimeMachine {
 		return timeMachine;
 	}
 	private TimeMachine() {
-		this.setDate();
+		setDate();
 	}
 
 	public void setDate() {
-
 		Scanner scan = new Scanner(System.in);
-		String splitBy = "/";
 
 		String d;
 		do {

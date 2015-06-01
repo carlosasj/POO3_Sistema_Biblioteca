@@ -1,15 +1,19 @@
 package Book;
 
+import Database.History;
+
 public class General extends Book {
 
 	public General(int id, String title, String author, String editor, int year, int totalquantity) {
-		this.Type = "Gen";
-		this.ID = id;
-		this.Title = title;
-		this.Author = author;
-		this.Editor = editor;
-		this.Year = year;
-		this.TotalQuantity = totalquantity;
-		this.AvaliableQuantity = totalquantity;
+		Type = "Gen";
+		ID = id;
+		Title = title;
+		Author = author;
+		Editor = editor;
+		Year = year;
+		TotalQuantity = totalquantity;
+		AvaliableQuantity = totalquantity;
+
+		History.getInstance().logAdd(this);
 	}
 }

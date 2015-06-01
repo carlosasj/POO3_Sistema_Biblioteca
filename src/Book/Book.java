@@ -1,5 +1,7 @@
 package Book;
 
+import Database.History;
+
 import static java.lang.System.out;
 
 abstract public class Book {

@@ -1,6 +1,7 @@
 package Loan;
 
 import Database.Books;
+import Database.History;
 import Database.Users;
 
 import java.util.GregorianCalendar;
@@ -19,41 +20,31 @@ public class Loan {
 	public GregorianCalendar ExpirationDate;
 
 	public Loan (int id, int bookid, int userid, GregorianCalendar date, GregorianCalendar expirationdate) {
-		this.ID = id;
-		this.BookID = bookid;
-		this.UserID = userid;
-		this.Date = date;
-		this.ExpirationDate = expirationdate;
+		ID = id;
+		BookID = bookid;
+		UserID = userid;
+		Date = date;
+		ExpirationDate = expirationdate;
+		History.getInstance().logAdd(this);
 	}
 
-	public Loan (int id) {
-		Scanner scan = new Scanner(System.in);
-		String inputStr;
-		int inputInt;
+	public int getID () { return ID; }
 
-		this.ID = id;
+	public int getBookID () { return BookID; }
 
-		out.println("Primeiro, pesquise o usuario");
-/*
-		this.BookID = bookid;
-		this.UserID = userid;
-		this.Date = date;
-		this.ReturnDate = date; // -1
-		this.ExpirationDate = expirationdate;*/
-	}
+	public int getUserID () { return UserID; }
 
-	public int getID () { return this.ID; }
+	public GregorianCalendar getDate () { return Date; }
 
-	public int getBookID () { return this.BookID; }
-
-	public int getUserID () { return this.UserID; }
-
-	public GregorianCalendar getDate () { return this.Date; }
-
-	public GregorianCalendar getExpirationDate () { return this.ExpirationDate; }
+	public GregorianCalendar getExpirationDate () { return ExpirationDate; }
 
 	public void Print () {
-        out.printf("ID:\t\t\t%d\nUsuário:\t\t\t%s\nLivro:\t\t\t%s\nData:\t\t\t$s\nDevolução:\t\t\t$s", this.ID, Users.getInstance().FindByID(this.UserID).getName(), Books.getInstance().FindByID(this.BookID).getTitle(), this.Date.toString(), this.ExpirationDate.toString());
+        out.printf("ID:\t\t\t%d\nUsuario:\t\t\t%s\nLivro:\t\t\t%s\nData:\t\t\t%s\nDevolucao:\t\t\t%s",
+				ID,
+				Users.getInstance().FindByID(this.UserID).getName(),
+				Books.getInstance().FindByID(this.BookID).getTitle(),
+				Date.toString(),
+				ExpirationDate.toString());
     }
 
 }
