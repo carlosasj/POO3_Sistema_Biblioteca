@@ -209,9 +209,9 @@ public class Loans extends Database {
 				out.print("Filtrando por:");
 
 				for (String cmd : splited){						// Para cada comando...
+					String[] command = cmd.split(" ", 2);		// Separa o comando do parametro
 					try {
-						String[] command = cmd.split(" ", 2);	// Separa o comando do parametro
-						command[1] = command[1].trim();			// Retira espa�os antes e depois
+						command[1] = command[1].trim();			// Retira espacos antes e depois
 						filtered = this.Filter(command[0], command[1], filtered, true);	// Filtra
 					} catch (ArrayIndexOutOfBoundsException e){
 						out.printf("\n\t! (Comando \"%s\" faltando argumentos; Ignorado)\n", cmd);
@@ -302,6 +302,15 @@ public class Loans extends Database {
 				GregorianCalendar expdate = TimeMachine.strToCalendar(param);
 				filtered.filter(l -> l.getExpirationDate().equals(expdate));
 				break;
+			default:
+				if (printMsg) out.print(" (Comando Invalido; Ignorado)");
+				break;
+		}
+		return filtered;
+	}
+
+	public Stream<Loan> Filter(String field, Stream<Loan> filtered, Boolean printMsg) {
+		switch (field) {
 			case "loaned today":
 				filtered.filter(l -> l.getDate().equals(TimeMachine.CurrentDate()));
 				break;
@@ -319,7 +328,5 @@ public class Loans extends Database {
 		}
 		return filtered;
 	}
-
-
 }
 
