@@ -43,9 +43,15 @@ public class Books {
 	protected Book Load(String type, int id, String title, String author, String editor, int year, int totalquantity){
 		Book book;
 
+
+		switch(type)
+		{
+			case "Tex":
+				book = new Text(id, title, author, editor, year, totalquantity);
+		}
 		if(type.equals("Tex")){
-			book = new Text(id, title, author, editor, year, totalquantity);
-		} else {
+
+		} else if(type.equals("Gen")) {
 			book = new General(id, title, author, editor, year, totalquantity);
 		}
 		books.add(book);
@@ -108,6 +114,7 @@ public class Books {
 					break;
 				case "general":
 					type = "Gen";
+					break;
 			}
 			Add(type, nextID, Title, Author, Editor, Year, TotalQuantity);
 			nextID++;
