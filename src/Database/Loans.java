@@ -110,77 +110,7 @@ public class Loans {
 		Books.getInstance().FindByID(l.getBookID()).backLoan();
 		loans.remove(l);
 	}
-/*
-	// Le arquivo e adiciona na lista
-	public void ReadFile(){
 
-		OpenReader();
-
-		String line;
-		String splitBy = ",";
-
-		try {
-			if ((line = br.readLine()) != null) {
-				nextID = Integer.parseInt(line);
-				br.readLine();
-			}
-
-			while ((line = br.readLine()) != null) {
-
-				String[] loanData = line.split(splitBy);
-				int id = Integer.parseInt(loanData[0]);
-				int bookid = Integer.parseInt(loanData[1]);
-				int userid = Integer.parseInt(loanData[2]);
-				String date = loanData[3];
-				String expirationdate = loanData[4];
-
-				//Load(id, bookid, userid, date, expirationdate);
-			}
-		} catch (IOException e){
-			out.println("Erro na leitura do arquivo.");
-			e.printStackTrace();
-		}
-	}
-
-	// Lê a lista e escreve no arquivo
-	public void WriteFile(){
-		OpenWriter();
-		String SEPARATOR = ",";
-		String ENDLINE = "\n";
-		String HEADER = "ID,BookID,UserID,Date,ExpirarionDate";
-
-		try {
-			fw.append(Integer.valueOf(nextID).toString());
-			fw.append(ENDLINE);
-			fw.flush();
-
-			fw.append(HEADER);
-			fw.append(ENDLINE);
-			fw.flush();
-
-			for (Loan l : loans) {
-				fw.append(Integer.valueOf(l.getID()).toString());
-				fw.append(SEPARATOR);
-
-				fw.append(Integer.valueOf(l.getBookID()).toString());
-				fw.append(SEPARATOR);
-
-				fw.append(Integer.valueOf(l.getUserID()).toString());
-				fw.append(SEPARATOR);
-
-				fw.append(l.getDate().toString());
-				fw.append(SEPARATOR);
-
-				fw.append(l.getExpirationDate().toString());
-				fw.append(ENDLINE);
-				fw.flush();
-			}
-		} catch (IOException e){
-			out.println("Erro na escrita do arquivo.");
-			e.printStackTrace();
-		}
-	}
-*/
 	// Busca emprestimo com interface com o usuário
 	public Loan Search() { return Search(false); }
 	public Loan Search(boolean select){

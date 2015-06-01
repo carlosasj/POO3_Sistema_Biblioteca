@@ -140,36 +140,6 @@ public class Books {
 		b.increase(number, true);
 		History.getInstance().logInc(b, number);
 	}
-/*
-	protected void ReadFile(){
-		OpenReader();
-
-		String line;
-		String splitSign = ",";
-
-		try {
-			if ((line = br.readLine()) != null) {
-				nextID = Integer.parseInt(line);
-				br.readLine();
-			}
-
-			while ((line = br.readLine()) != null){
-				String[] readed = line.split(splitSign);
-				String type = readed[0];
-				int id = Integer.parseInt(readed[1]);
-				String title = readed[2];
-				String author = readed[3];
-				String editor = readed[4];
-				int year = Integer.parseInt(readed[5]);
-				int totalquantity = Integer.parseInt(readed[6]);
-
-				Load(type, id, title, author, editor, year, totalquantity);
-			}
-		} catch (IOException e) {
-			out.println("Erro na leitura do arquivo.");
-			e.printStackTrace();
-		}
-	}*/
 
 	public Book Search(){
 		return Search(false);
@@ -368,52 +338,4 @@ public class Books {
 		}
 		books.remove(b);
 	}
-/*
-	protected void WriteFile() {
-		OpenWriter();
-		final String SEPARATOR = ",";
-		final String ENDLINE = "\n";
-		final String HEADER = "Type,ID,Title,Author,Editor,Year,TotalQuantity,AvaliableQuantity";
-
-		try {
-			fw.append(Integer.valueOf(nextID).toString());
-			fw.append(ENDLINE);
-			fw.flush();
-
-			fw.append(HEADER);
-			fw.append(ENDLINE);
-			fw.flush();
-
-			for (Book b : books) {
-				fw.append(b.getType());
-				fw.append(SEPARATOR);
-
-				fw.append(Integer.valueOf(b.getID()).toString());
-				fw.append(SEPARATOR);
-
-				fw.append(b.getTitle());
-				fw.append(SEPARATOR);
-
-				fw.append(b.getAuthor());
-				fw.append(SEPARATOR);
-
-				fw.append(b.getEditor());
-				fw.append(SEPARATOR);
-
-				fw.append(Integer.valueOf(b.getYear()).toString());
-				fw.append(SEPARATOR);
-
-				fw.append(Integer.valueOf(b.getTotalQuantity()).toString());
-				fw.append(SEPARATOR);
-
-				fw.append(Integer.valueOf(b.getAvaliableQuantity()).toString());
-				fw.append(ENDLINE);
-
-				fw.flush();
-			}
-		} catch (IOException e){
-			out.println("Erro na escrita do arquivo.");
-			e.printStackTrace();
-		}
-	}*/
 }
