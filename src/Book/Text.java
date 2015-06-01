@@ -1,7 +1,5 @@
 package Book;
 
-import Database.History;
-
 public class Text extends Book{
 
 	public Text(int id, String title, String author, String editor, int year, int totalquantity) {
@@ -14,5 +12,4 @@ public class Text extends Book{
 		TotalQuantity = totalquantity;
 		AvaliableQuantity = totalquantity;
 	}
-
 }

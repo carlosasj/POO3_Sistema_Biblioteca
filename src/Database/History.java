@@ -4,6 +4,7 @@ import Time.TimeMachine;
 import Book.Book;
 import Loan.Loan;
 import User.User;
+
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.GregorianCalendar;
@@ -12,7 +13,6 @@ import static java.lang.System.out;
 
 public class History extends Database {
 	private static History hist;
-	private static int lastLoadedHistoryID;
 	private static boolean future = false;	// Indica se há alguma operação numa data maior que a "atual"
 	private static String split = ",";
 
@@ -25,10 +25,9 @@ public class History extends Database {
 	}
 
 	private History (String filename) {
-		this.nextID = 0;
-		this.path = "history.csv";
-		this.OpenFile(filename);
-		this.ReadFile();
+		path = "history.csv";
+		OpenFile(filename);
+		ReadFile();
 	}
 
 	protected void OpenWriter(){
@@ -41,7 +40,7 @@ public class History extends Database {
 	}
 
 	private void ReadFile(){
-		this.OpenReader();
+		OpenReader();
 
 		String line;
 
@@ -128,7 +127,7 @@ public class History extends Database {
 					+u.getType() + split
 					+u.getID() + split
 					+u.getName();
-		this.WriteFile(log);
+		WriteFile(log);
 	}
 
 	public void logAdd (Book b){
@@ -141,7 +140,7 @@ public class History extends Database {
 				+b.getEditor() + split
 				+b.getYear() + split
 				+b.getTotalQuantity();
-		this.WriteFile(log);
+		WriteFile(log);
 	}
 
 	public void logAdd (Loan l){
@@ -152,28 +151,28 @@ public class History extends Database {
 				+l.getUserID() + split
 				+TimeMachine.CalendarToStr(l.getDate()) + split
 				+TimeMachine.CalendarToStr(l.getExpirationDate()) + split;
-		this.WriteFile(log);
+		WriteFile(log);
 	}
 
 	public void logDel (User u){
 		String log = "Users" + split
 				+"del" + split
 				+u.getType();
-		this.WriteFile(log);
+		WriteFile(log);
 	}
 
 	public void logDel (Book b){
 		String log = "Books" + split
 				+"del" + split
 				+b.getID();
-		this.WriteFile(log);
+		WriteFile(log);
 	}
 
 	public void logDel (Loan l){
 		String log = "Loans" + split
 				+"del" + split
 				+l.getID();
-		this.WriteFile(log);
+		WriteFile(log);
 	}
 
 	public void logInc (Book b, int inc){
@@ -181,7 +180,7 @@ public class History extends Database {
 				+"inc" + split
 				+b.getID() + split
 				+inc;
-		this.WriteFile(log);
+		WriteFile(log);
 	}
 
 	private void WriteFile(String log){
@@ -199,4 +198,9 @@ public class History extends Database {
 	}
 
 	public static boolean getFuture() { return future; }
+
+	public static boolean canChangeData(){
+		if (future) out.println("\nVoce esta visitando o sistema numa data antiga, neste caso apenas consultas sao permitidas.");
+		return !future;
+	}
 }

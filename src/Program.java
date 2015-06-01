@@ -1,9 +1,8 @@
-import Book.Book;
-import Database.Database;
 import Database.Source;
 import Database.Users;
 import Database.Books;
 import Database.Loans;
+import Database.History;
 import Time.TimeMachine;
 
 import java.io.IOException;
@@ -14,8 +13,7 @@ import static java.lang.System.out;
 
 public class Program {
 	public static void main (String[] args) throws IOException {
-		// Abrir os arquivos
-		TimeMachine curTime = TimeMachine.getInstance();
+		TimeMachine.getInstance();
 
 		Source src;
 		try {
@@ -39,28 +37,27 @@ public class Program {
 				endProgram = true;
 			} else if (cmd.toLowerCase().equals("help")) {
 				out.println("Comandos:");
-				out.println(splitSign + "add <user|book|loan>     (Adicionar)");
-				out.println(splitSign + "search <user|book|loan>  (Procurar)");
-				out.println(splitSign + "del <user|book>          (Excluir)");
-				out.println(splitSign + "return loan              (Retornar um emprestimo)");
-				out.println(splitSign + "inc book                 (Alterar a quantidade de exemplares de um livro)");
-						   out.println("help                      (Abre esse menu de ajuda)");
-						   out.println("exit                      (Sai do programa)");
+				if (History.canChangeData()) out.println(splitSign + "add <user|book|loan>     (Adicionar)");
+											 out.println(splitSign + "search <user|book|loan>  (Procurar)");
+				if (History.canChangeData()) out.println(splitSign + "del <user|book>          (Excluir)");
+				if (History.canChangeData()) out.println(splitSign + "return loan              (Retornar um emprestimo)");
+				if (History.canChangeData()) out.println(splitSign + "inc book                 (Alterar a quantidade de exemplares de um livro)");
+														out.println("help                      (Abre esse menu de ajuda)");
+														out.println("exit                      (Sai do programa)");
 			} else if (!cmd.startsWith(splitSign)) {
 				out.println("Comando invalido.");
 			} else {
 				cmd = cmd.substring(1); // Retira a barra do comando
-				String[] splited = cmd.split(" ");
 
-				switch (splited[0]) {
+				switch (cmd) {
 					case "add user":
-						Users.getInstance().Register();
+						if (History.canChangeData()) Users.getInstance().Register();
 						break;
 					case "add book":
-						Books.getInstance().Register();
+						if (History.canChangeData()) Books.getInstance().Register();
 						break;
 					case "add loan":
-						Loans.getInstance().Register();
+						if (History.canChangeData()) Loans.getInstance().Register();
 						break;
 					case "search user":
 						Users.getInstance().Search();
@@ -72,16 +69,16 @@ public class Program {
 						Loans.getInstance().Search();
 						break;
 					case "del user":
-						Users.getInstance().Remove();
+						if (History.canChangeData()) Users.getInstance().Remove();
 						break;
 					case "del book":
-						Books.getInstance().Remove();
+						if (History.canChangeData()) Books.getInstance().Remove();
 						break;
 					case "return loan":
-						Loans.getInstance().Remove();
+						if (History.canChangeData()) Loans.getInstance().Remove();
 						break;
 					case "inc book":
-						Books.getInstance().Increase();
+						if (History.canChangeData()) Books.getInstance().Increase();
 						break;
 					default:
 						out.println("Comando \"" + cmd + "\" Invalido");
@@ -90,7 +87,6 @@ public class Program {
 			}
 		}
 		// Salvar e fechar os arquivos
-		src.backup();
-		src.CloseFile();
+		src.exit();
 	}
 }

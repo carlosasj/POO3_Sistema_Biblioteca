@@ -5,35 +5,33 @@ import Loan.Loan;
 import Time.TimeMachine;
 import User.User;
 
-import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static java.lang.System.out;
 
-public class Loans extends Database {
+public class Loans {
 
 	private static Loans loansDB;
 	private List<Loan> loans;
-
+	private int nextID;
 
 	// Singleton
 	public static Loans getInstance() { return loansDB; }
-	protected static Loans getInstance(String filename){
+	protected static Loans getInstance(int next){
 		if (loansDB == null){
-			loansDB = new Loans(filename);
+			loansDB = new Loans(next);
 		}
 		return loansDB;
 	}
 
-	private Loans (String filename) {
-		this.nextID = 0;	// Inicializa variavel do proximo ID
-		this.path = "loans.csv";
-		this.loans = new LinkedList<Loan>();
-		this.OpenFile(filename);
-		//this.ReadFile();
+	private Loans (int next) {
+		nextID = next;	// Inicializa variavel do proximo ID
+		loans = new LinkedList<Loan>();
 	}
+
+	protected int getNextID() { return nextID; }
 
 	// Registra um novo emprestimo
 	public void Register(){
@@ -54,8 +52,8 @@ public class Loans extends Database {
 			return;
 		}
 
-		this.Add(this.nextID, book.getID(), user.getID());
-		this.nextID++;
+		Add(nextID, book.getID(), user.getID());
+		nextID++;
 	}
 
 	// Adiciona emprestimo
@@ -74,7 +72,7 @@ public class Loans extends Database {
 
 		Loan l = new Loan(loanid, bookid, userid, cal_date, cal_expiration);
 		Books.getInstance().FindByID(bookid).goLoan();
-		this.loans.add(l);
+		loans.add(l);
 		return l;
 	}
 
@@ -112,18 +110,18 @@ public class Loans extends Database {
 		Books.getInstance().FindByID(l.getBookID()).backLoan();
 		loans.remove(l);
 	}
-
+/*
 	// Le arquivo e adiciona na lista
 	public void ReadFile(){
 
-		this.OpenReader();
+		OpenReader();
 
 		String line;
 		String splitBy = ",";
 
 		try {
 			if ((line = br.readLine()) != null) {
-				this.nextID = Integer.parseInt(line);
+				nextID = Integer.parseInt(line);
 				br.readLine();
 			}
 
@@ -136,7 +134,7 @@ public class Loans extends Database {
 				String date = loanData[3];
 				String expirationdate = loanData[4];
 
-				//this.Load(id, bookid, userid, date, expirationdate);
+				//Load(id, bookid, userid, date, expirationdate);
 			}
 		} catch (IOException e){
 			out.println("Erro na leitura do arquivo.");
@@ -152,7 +150,7 @@ public class Loans extends Database {
 		String HEADER = "ID,BookID,UserID,Date,ExpirarionDate";
 
 		try {
-			fw.append(Integer.valueOf(this.nextID).toString());
+			fw.append(Integer.valueOf(nextID).toString());
 			fw.append(ENDLINE);
 			fw.flush();
 
@@ -182,7 +180,7 @@ public class Loans extends Database {
 			e.printStackTrace();
 		}
 	}
-
+*/
 	// Busca emprestimo com interface com o usuário
 	public Loan Search(){
 		Scanner scan = new Scanner(System.in);
@@ -234,9 +232,9 @@ public class Loans extends Database {
 					String[] command = cmd.split(" ", 2);		// Separa o comando do parametro
 					try {
 						command[1] = command[1].trim();			// Retira espacos antes e depois
-						filtered = this.Filter(command[0], command[1], filtered, true);	// Filtra
+						filtered = Filter(command[0], command[1], filtered, true);	// Filtra
 					} catch (ArrayIndexOutOfBoundsException e){
-						filtered = this.Filter(command[0], filtered, true);	// Filtra
+						filtered = Filter(command[0], filtered, true);	// Filtra
 					}
 				}
 
@@ -291,14 +289,14 @@ public class Loans extends Database {
 
 	// Busca emprestimo pelo ID fornecido
 	public Loan FindByID(int id){
-		Stream<Loan> filtered = this.Filter("id", Integer.valueOf(id).toString(), false);
+		Stream<Loan> filtered = Filter("id", Integer.valueOf(id).toString(), false);
 		return filtered.collect(Collectors.toList()).get(0);
 	}
 
 	// Aplica o filtro num stream com todos os emprestimos
 	public Stream<Loan> Filter(String field, String param, Boolean printMsg) {
 		Stream<Loan> filtered = loans.stream();
-		this.Filter(field, param, filtered, printMsg);
+		Filter(field, param, filtered, printMsg);
 		return filtered;
 	}
 

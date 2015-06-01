@@ -1,9 +1,6 @@
 package User;
 
 import java.util.Calendar;
-import java.util.GregorianCalendar;
-
-import Database.History;
 import Time.TimeMachine;
 
 public class Student extends User {

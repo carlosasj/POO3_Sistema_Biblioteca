@@ -5,36 +5,34 @@ import User.Comunity;
 import User.Student;
 import User.Teacher;
 import User.User;
-import Time.TimeMachine;
 
-import java.io.*;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static java.lang.System.out;
 
-public class Users extends Database {
+public class Users {
 
 	private static Users usersDB;
 	private List<User> users;
+	private int nextID;
 
 	// Singleton
 	public static Users getInstance() { return usersDB; }
-	protected static Users getInstance(String filename){
+	protected static Users getInstance(int next){
 		if (usersDB == null){
-			usersDB = new Users(filename);
+			usersDB = new Users(next);
 		}
 		return usersDB;
 	}
 
-	private Users (String filename) {
-		this.nextID = 0;
-		this.path = "users.csv";
-		this.users = new LinkedList<User>();
-		this.OpenFile(filename);
-		//this.ReadFile();
+	private Users (int next) {
+		nextID = next;
+		users = new LinkedList<User>();
 	}
+
+	protected int getNextID() { return nextID; }
 
 	public void Register () {
 
@@ -50,8 +48,8 @@ public class Users extends Database {
 		out.println("Nome: ");
 		String Name = scan.nextLine();
 
-		this.Add(type, nextID, Name);
-		this.nextID++;
+		Add(type, nextID, Name);
+		nextID++;
 	}
 
 	protected void Add (String type, int ID, String name) {
@@ -75,20 +73,20 @@ public class Users extends Database {
 				break;
 		}
 
-		this.users.add(user);
+		users.add(user);
 		return user;
 	}
-
+/*
 	protected void ReadFile() {
 
-		this.OpenReader();
+		OpenReader();
 
 		String line;
 		String splitBy = ",";
 
 		try {
 			if ((line = br.readLine()) != null) {
-				this.nextID = Integer.parseInt(line);
+				nextID = Integer.parseInt(line);
 				br.readLine();
 			}
 
@@ -99,14 +97,14 @@ public class Users extends Database {
 				int id = Integer.parseInt(userData[1]);
 				String name = userData[2];
 
-				this.Load(type, id, name);
+				Load(type, id, name);
 			}
 		}catch (IOException e){
 			out.println("Erro na leitura do arquivo.");
 			e.printStackTrace();
 		}
 	}
-
+*/
 	public User Search(){
 		Scanner scan = new Scanner(System.in);
 		Boolean endSearch = false;
@@ -151,7 +149,7 @@ public class Users extends Database {
 					try {
 						String[] command = cmd.split(" ", 2);	// Separa o comando do parametro
 						command[1] = command[1].trim();			// Retira espacos antes e depois
-						filtered = this.Filter(command[0], command[1], filtered, true);	// Filtra
+						filtered = Filter(command[0], command[1], filtered, true);	// Filtra
 					} catch (ArrayIndexOutOfBoundsException e){
 						out.printf("\n\t! (Comando \"%s\" faltando argumentos; Ignorado)\n", cmd);
 					}
@@ -207,13 +205,13 @@ public class Users extends Database {
 	}
 
 	public User FindByID(int id){
-		Stream<User> filtered = this.Filter("id", Integer.valueOf(id).toString(), false);
+		Stream<User> filtered = Filter("id", Integer.valueOf(id).toString(), false);
 		return filtered.collect(Collectors.toList()).get(0);
 	}
 
 	public Stream<User> Filter(String field, String param, Boolean printMsg) {		// Aplica o filtro num stream com todos os Usuarios
 		Stream<User> filtered = users.stream();
-		this.Filter(field, param, filtered, printMsg);
+		Filter(field, param, filtered, printMsg);
 		return filtered;
 	}
 
@@ -258,7 +256,7 @@ public class Users extends Database {
 	}
 /*
     protected void Remove (int userid) {
-		User u = this.FindByID(userid);
+		User u = FindByID(userid);
 		History.getInstance().logDel(u);
 		users.remove(users.indexOf(u));
 	}
@@ -290,7 +288,7 @@ public class Users extends Database {
 		}
 		users.remove(id);
 	}
-
+/*
 	protected void WriteFile() {
 		OpenWriter();
 
@@ -299,7 +297,7 @@ public class Users extends Database {
 		final String HEADER = "Type,ID,Name";
 
 		try {
-			fw.append(Integer.valueOf(this.nextID).toString());
+			fw.append(Integer.valueOf(nextID).toString());
 			fw.append(ENDLINE);
 			fw.flush();
 
@@ -326,5 +324,5 @@ public class Users extends Database {
 			out.println("Outro erro na escrita do arquivo.");
 			f.printStackTrace();
 		}
-	}
+	}*/
 }
