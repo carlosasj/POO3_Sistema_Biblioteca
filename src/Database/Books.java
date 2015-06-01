@@ -307,6 +307,22 @@ public class Books extends Database {
 		return filtered;
 	}
 
+    public void RemoveBook () {
+        Scanner scan = new Scanner(System.in);
+        out.println("Digite o ID do livro que deseja remover: ");
+        int bookid = Integer.parseInt(scan.nextLine());
+        Book b = this.FindByID(bookid);
+        out.println("Tem certeza que deseja remover esse livro?[s/n]");
+        String confirm = scan.nextLine();
+        switch (confirm) {
+            case "s":
+                books.remove(b);
+                break;
+            case "n":
+                break;
+        }
+    }
+
 	protected void WriteFile() {
 		OpenWriter();
 		final String SEPARATOR = ",";

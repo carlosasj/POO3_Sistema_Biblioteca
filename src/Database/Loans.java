@@ -89,10 +89,15 @@ public class Loans extends Database {
 		return filter.count();
 	}
 
-	protected void returnLoan() {
-
-		loans.listIterator();
-
+	public void ReturnLoan() {
+        Loan l = this.Search();
+        if (l.getExpirationDate().compareTo(TimeMachine.CurrentDate()) < 0) {
+            User u = Users.getInstance().FindByID(l.getUserID());
+            u.setAllowedAt(l.getExpirationDate().compareTo(TimeMachine.CurrentDate()));
+            out.println("Usuario bloqueado por atraso");
+        }
+        Books.getInstance().FindByID(l.getBookID()).backLoan();
+        loans.remove(l);
 	}
 
 	// Le arquivo e adiciona na lista
