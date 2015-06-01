@@ -79,7 +79,7 @@ public class TimeMachine {
 				+date.get(Calendar.YEAR);
 	}
 
-	public static boolean validate (String date){ return validate(date, "dd/MM/aaaa"); }
+	public static boolean validate (String date){ return validate(date, "dd/MM/yyyy"); }
 	public static boolean validate (String date, String format){
 
 		if (date == null || format == null) return false;
@@ -90,6 +90,7 @@ public class TimeMachine {
 		try {
 			form.parse(date);
 		} catch (ParseException e){
+			out.print("AQUI");
 			return false;
 		}
 

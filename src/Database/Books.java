@@ -32,10 +32,15 @@ public class Books extends Database {
 		this.path = "books.csv";
 		this.books = new LinkedList<Book>();
 		this.OpenFile(filename);
-		this.ReadFile();
+		//this.ReadFile();
 	}
 
 	protected void AddBook(String type, int id, String title, String author, String editor, int year, int totalquantity){
+		Book book = Load(type, id, title, author, editor, year, totalquantity);
+		History.getInstance().logAdd(book);
+	}
+
+	protected Book Load(String type, int id, String title, String author, String editor, int year, int totalquantity){
 		Book book;
 
 		if(type.equals("Tex")){
@@ -43,8 +48,8 @@ public class Books extends Database {
 		} else {
 			book = new General(id, title, author, editor, year, totalquantity);
 		}
-
 		this.books.add(book);
+		return book;
 	}
 
 	public void RegisterBook () {

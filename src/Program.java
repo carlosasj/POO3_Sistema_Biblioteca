@@ -83,10 +83,9 @@ public class Program {
                         break;
                 }
             }
-
-            // Salvar e fechar os arquivos
-            src.backup();
-            src.CloseFile();
         }
+		// Salvar e fechar os arquivos
+		src.backup();
+		src.CloseFile();
     }
 }

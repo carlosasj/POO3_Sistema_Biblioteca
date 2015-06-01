@@ -32,7 +32,7 @@ public class Users extends Database {
 		this.path = "users.csv";
 		this.users = new LinkedList<User>();
 		this.OpenFile(filename);
-		this.ReadFile();
+		//this.ReadFile();
 	}
 
 	public void RegisterUser () {
@@ -54,6 +54,11 @@ public class Users extends Database {
 	}
 
 	protected void AddUser (String type, int ID, String name) {
+		User user = Load(type, ID, name);
+		History.getInstance().logAdd(user);
+	}
+
+	protected User Load (String type, int ID, String name) {
 		User user = null;
 		switch (type) {
 			case "community":
@@ -70,6 +75,7 @@ public class Users extends Database {
 		}
 
 		this.users.add(user);
+		return user;
 	}
 
 	protected void ReadFile() {
@@ -217,13 +223,13 @@ public class Users extends Database {
 			case "type":
 				switch (param.toLowerCase()) {
 					case "student":
-						filtered = filtered.filter(u -> u.getType().equals("Stu"));
+						filtered = filtered.filter(u -> u.getType().equals("student"));
 						break;
 					case "teacher":
-						filtered = filtered.filter(u -> u.getType().equals("Tea"));
+						filtered = filtered.filter(u -> u.getType().equals("teacher"));
 						break;
 					case "community":
-						filtered = filtered.filter(u -> u.getType().equals("Com"));
+						filtered = filtered.filter(u -> u.getType().equals("community"));
 					default:
 						if (printMsg) out.printf(" (\"%s\" nao eh um parametro valido; Ignorado)", param);
 						break;
@@ -299,6 +305,9 @@ public class Users extends Database {
 		} catch (IOException e){
 			out.println("Erro na escrita do arquivo.");
 			e.printStackTrace();
+		} catch (NullPointerException f){
+			out.println("Outro erro na escrita do arquivo.");
+			f.printStackTrace();
 		}
 	}
 }
