@@ -32,7 +32,7 @@ public class Program {
         String splitSign = "/";
 
         while (!endProgram) {
-            out.println("Digite um comando \n(para ajuda, digite 'help'):");
+            out.println("Digite um comando: \n(para ajuda, digite 'help'):");
             cmd = scan.nextLine();
 
             if (cmd.toLowerCase().equals("exit")) {
@@ -45,8 +45,8 @@ public class Program {
                 out.println(splitSign + "search user");
                 out.println(splitSign + "search book");
                 out.println(splitSign + "search loan");
-                out.println(splitSign + "remove user");
-                out.println(splitSign + "remove book");
+                out.println(splitSign + "del user");
+                out.println(splitSign + "del book");
                 out.println(splitSign + "return loan");
                 out.println("exit");
             } else if (!cmd.startsWith(splitSign)) {

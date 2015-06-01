@@ -7,10 +7,7 @@ import User.User;
 import Time.TimeMachine;
 
 import java.io.*;
-import java.util.GregorianCalendar;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -252,6 +249,13 @@ public class Users extends Database {
 		}
 		return filtered;
 	}
+
+    protected void RemoveUser (int userid) {
+
+        User d = this.FindByID(userid);
+        users.remove(users.indexOf(d));
+
+    }
 
 	protected void WriteFile() {
 		OpenWriter();
