@@ -235,14 +235,16 @@ public class Books {
 					out.println("Livro encontrado:");
 					collect.get(0).Print();
 
-					out.print("\nDeseja usar esse livro? [s|n]");
-					if (scan.nextLine().toLowerCase().equals("s")){
-						result = collect.get(0);
-						endSearch = true;
-					}
-					else {
-						out.println("Entao faca uma nova pesquisa.");
-					}
+                    if (select) {
+                        out.print("\nDeseja usar esse livro? [s|n]");
+                        if (scan.nextLine().toLowerCase().equals("s")){
+                            result = collect.get(0);
+                            endSearch = true;
+                        }
+                        else {
+                            out.println("Entao faca uma nova pesquisa.");
+                        }
+                    }
 				}
 
 				else {	// Se encontrar mais resultados...

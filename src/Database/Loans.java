@@ -246,14 +246,16 @@ public class Loans {
 					out.println("Emprestimo encontrado:");
 					collect.get(0).Print();
 
-					out.print("\nDeseja usar esse emprestimo? [s|n]");
-					if (scan.nextLine().toLowerCase().equals("s")){
-						result = collect.get(0);
-						endSearch = true;
-					}
-					else {
-						out.println("Entao faca uma nova pesquisa.");
-					}
+                    if (select) {
+                        out.print("\nDeseja usar esse emprestimo? [s|n]");
+                        if (scan.nextLine().toLowerCase().equals("s")){
+                            result = collect.get(0);
+                            endSearch = true;
+                        }
+                        else {
+                            out.println("Entao faca uma nova pesquisa.");
+                        }
+                    }
 				}
 
 				else {	// Se encontrar mais resultados...

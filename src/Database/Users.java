@@ -163,14 +163,16 @@ public class Users {
 					out.println("Usuario encontrado:");
 					collect.get(0).Print();
 
-					out.print("\nDeseja selecionar esse usuario? [s|n]");
-					if (scan.nextLine().toLowerCase().equals("s")){
-						result = collect.get(0);
-						endSearch = true;
-					}
-					else {
-						out.println("Entao faca uma nova pesquisa.");
-					}
+                    if(select) {
+                        out.print("\nDeseja selecionar esse usuario? [s|n]");
+                        if (scan.nextLine().toLowerCase().equals("s")){
+                            result = collect.get(0);
+                            endSearch = true;
+                        }
+                        else {
+                            out.println("Entao faca uma nova pesquisa.");
+                        }
+                    }
 				}
 
 				else {		// Se encontrar mais resultados...
