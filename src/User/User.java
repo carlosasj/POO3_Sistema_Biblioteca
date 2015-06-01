@@ -17,20 +17,20 @@ abstract public class User {
 	protected int MaxLoans;
 	protected GregorianCalendar AllowedAt;
 
-	public String getType(){ return this.Type; }
-	public int getID(){ return this.ID; }
-	public String getName(){ return this.Name; }
-	public int getMaxDays() { return this.MaxDays; }
-	public int getMaxLoans() { return this.MaxLoans; }
-	public GregorianCalendar getAllowedAt() { return this.AllowedAt; }
+	public String getType(){ return Type; }
+	public int getID(){ return ID; }
+	public String getName(){ return Name; }
+	public int getMaxDays() { return MaxDays; }
+	public int getMaxLoans() { return MaxLoans; }
+	public GregorianCalendar getAllowedAt() { return AllowedAt; }
 
 	public boolean canLoan() {
-		if (!this.AllowedAt.before(TimeMachine.CurrentDate())){
+		if (!AllowedAt.before(TimeMachine.CurrentDate())){
 			out.println("Usuario bloqueado por possuir faltas de devolucao.");
 			return false;
 		}
 
-		if (!(Loans.getInstance().CountLoansUser(this.ID) < this.getMaxLoans())){
+		if (!(Loans.getInstance().CountLoansUser(ID) < getMaxLoans())){
 			out.println("Numero maximo de emprestimos efetuados.");
 			return false;
 		}
@@ -38,11 +38,11 @@ abstract public class User {
 		return true;
 	}
 
-    public void setAllowedAt (int fine) {
+	public void setAllowedAt (int fine) {
 
-        this.AllowedAt.add(Calendar.DAY_OF_MONTH, - fine);
+		AllowedAt.add(Calendar.DAY_OF_MONTH, - fine);
 
-    }
+	}
 
 	public void Print(){
 		out.printf("Tipo:\t%s\nID:\t\t%d\nNome:\t%s\n", Type, ID, Name);

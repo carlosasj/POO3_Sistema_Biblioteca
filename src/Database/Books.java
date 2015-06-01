@@ -3,8 +3,8 @@ package Database;
 import Book.Book;
 import Book.General;
 import Book.Text;
+import Loan.Loan;
 
-import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
@@ -13,29 +13,29 @@ import java.util.stream.Stream;
 
 import static java.lang.System.out;
 
-public class Books extends Database {
+public class Books {
 
 	private static Books booksDB;
 	private List<Book> books;
+	private int nextID;
 
 	// Singleton
 	public static Books getInstance() { return booksDB; }
-	protected static Books getInstance(String filename){
+	protected static Books getInstance(int next){
 		if (booksDB == null){
-			booksDB = new Books(filename);
+			booksDB = new Books(next);
 		}
 		return booksDB;
 	}
 
-	private Books (String filename){
-		this.nextID = 0;
-		this.path = "books.csv";
-		this.books = new LinkedList<Book>();
-		this.OpenFile(filename);
-		//this.ReadFile();
+	private Books (int next){
+		nextID = next;
+		books = new LinkedList<Book>();
 	}
 
-	protected void AddBook(String type, int id, String title, String author, String editor, int year, int totalquantity){
+	protected int getNextID() { return nextID; }
+
+	protected void Add(String type, int id, String title, String author, String editor, int year, int totalquantity){
 		Book book = Load(type, id, title, author, editor, year, totalquantity);
 		History.getInstance().logAdd(book);
 	}
@@ -48,16 +48,16 @@ public class Books extends Database {
 		} else {
 			book = new General(id, title, author, editor, year, totalquantity);
 		}
-		this.books.add(book);
+		books.add(book);
 		return book;
 	}
 
-	public void RegisterBook () {
+	public void Register () {
 
 		Scanner scan = new Scanner(System.in);
 
 		out.println("Cadastro de livro:");
-		out.print("ID:\t\t" + this.nextID);
+		out.print("ID:\t\t" + nextID);
 
 		out.print("Tipo:\t");
 		String type = scan.nextLine().toLowerCase();
@@ -109,8 +109,8 @@ public class Books extends Database {
 				case "general":
 					type = "Gen";
 			}
-			this.AddBook(type, this.nextID, Title, Author, Editor, Year, TotalQuantity);
-			this.nextID++;
+			Add(type, nextID, Title, Author, Editor, Year, TotalQuantity);
+			nextID++;
 			out.println("Registro cadastrado com sucesso!");
 		}
 		else {
@@ -118,15 +118,38 @@ public class Books extends Database {
 		}
 	}
 
+	public void Increase(){
+		Book b = Search();
+		Scanner scan = new Scanner(System.in);
+		int number;
+
+		out.println("Voce selecionou este livro:");
+		b.Print();
+
+		out.println("\nQuantos exemplare voce deseja adicionar?");
+		out.println("(digite um numero negativo para retirar exemplares)");
+		String input = scan.nextLine();
+		try {
+			number = Integer.parseInt(input);
+		}catch (NumberFormatException e){
+			out.println("Numero Invalido, digite outro:");
+			input = scan.nextLine();
+			number = Integer.parseInt(input);
+		}
+
+		b.increase(number, true);
+		History.getInstance().logInc(b, number);
+	}
+/*
 	protected void ReadFile(){
-		this.OpenReader();
+		OpenReader();
 
 		String line;
 		String splitSign = ",";
 
 		try {
 			if ((line = br.readLine()) != null) {
-				this.nextID = Integer.parseInt(line);
+				nextID = Integer.parseInt(line);
 				br.readLine();
 			}
 
@@ -140,15 +163,19 @@ public class Books extends Database {
 				int year = Integer.parseInt(readed[5]);
 				int totalquantity = Integer.parseInt(readed[6]);
 
-				this.AddBook(type, id, title, author, editor, year, totalquantity);
+				Load(type, id, title, author, editor, year, totalquantity);
 			}
 		} catch (IOException e) {
 			out.println("Erro na leitura do arquivo.");
 			e.printStackTrace();
 		}
-	}
+	}*/
 
 	public Book Search(){
+		return Search(false);
+	}
+
+	public Book Search(boolean select){
 		Scanner scan = new Scanner(System.in);
 		Boolean endSearch = false;
 		Book result = null;
@@ -195,7 +222,7 @@ public class Books extends Database {
 					try {
 						String[] command = cmd.split(" ", 2);	// Separa o comando do parametro
 						command[1] = command[1].trim();			// Retira espacos antes e depois
-						filtered = this.Filter(command[0], command[1], filtered, true);	// Filtra
+						filtered = Filter(command[0], command[1], filtered, true);	// Filtra
 					} catch (ArrayIndexOutOfBoundsException e){
 						out.printf("\n\t! (Comando \"%s\" faltando argumentos; Ignorado)\n", cmd);
 					}
@@ -247,17 +274,16 @@ public class Books extends Database {
 		}
 
 		return result;
-
 	}
 
 	public Book FindByID(int id){
-		Stream<Book> filtered = this.Filter("id", Integer.valueOf(id).toString(), false);
+		Stream<Book> filtered = Filter("id", Integer.valueOf(id).toString(), false);
 		return filtered.collect(Collectors.toList()).get(0);
 	}
 
 	public Stream<Book> Filter(String field, String param, Boolean printMsg) {	// Aplica o filtro num stream com todos os livros
 		Stream<Book> filtered = books.stream();
-		this.Filter(field, param, filtered, printMsg);
+		Filter(field, param, filtered, printMsg);
 		return filtered;
 	}
 
@@ -312,22 +338,37 @@ public class Books extends Database {
 		return filtered;
 	}
 
-    public void RemoveBook () {
-        Scanner scan = new Scanner(System.in);
-        out.println("Digite o ID do livro que deseja remover: ");
-        int bookid = Integer.parseInt(scan.nextLine());
-        Book b = this.FindByID(bookid);
-        out.println("Tem certeza que deseja remover esse livro?[s/n]");
-        String confirm = scan.nextLine();
-        switch (confirm) {
-            case "s":
-                books.remove(b);
-                break;
-            case "n":
-                break;
-        }
-    }
+	public void Remove () {
+		Scanner scan = new Scanner(System.in);
+		out.println("Procure o livro que deseja remover: ");
+		Book b = Search();
 
+		b.Print();
+
+		if (b.getAvaliableQuantity() < b.getTotalQuantity()) {
+			out.println("Ha exemplares emprestados desse livro, e essa acao vai");
+			out.println("excluir todos os emprestimos relacionados a esse livro.");
+		}
+		out.println("Tem certeza que deseja remover esse livro?[s/n]");
+		String confirm = scan.nextLine().toLowerCase();
+		if (confirm.equals("s")) {
+			Del(b.getID());
+			History.getInstance().logDel(b);
+
+		}
+	}
+
+	protected void Del (int id){
+		Book b = FindByID(id);
+		Stream<Loan> stream = Loans.getInstance()
+								.Filter("bookid", Integer.valueOf(b.getID()).toString(), false);
+
+		for (Loan l : stream.collect(Collectors.toList())){
+			Loans.getInstance().Del(l.getID());
+		}
+		books.remove(b);
+	}
+/*
 	protected void WriteFile() {
 		OpenWriter();
 		final String SEPARATOR = ",";
@@ -335,7 +376,7 @@ public class Books extends Database {
 		final String HEADER = "Type,ID,Title,Author,Editor,Year,TotalQuantity,AvaliableQuantity";
 
 		try {
-			fw.append(Integer.valueOf(this.nextID).toString());
+			fw.append(Integer.valueOf(nextID).toString());
 			fw.append(ENDLINE);
 			fw.flush();
 
@@ -374,5 +415,5 @@ public class Books extends Database {
 			out.println("Erro na escrita do arquivo.");
 			e.printStackTrace();
 		}
-	}
+	}*/
 }

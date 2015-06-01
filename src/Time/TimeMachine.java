@@ -12,6 +12,7 @@ public class TimeMachine {
 
 	private static TimeMachine timeMachine;
 	private static GregorianCalendar currentDate;
+    private static GregorianCalendar actualDate;
 
 	// Singleton
 	public static TimeMachine getInstance(){
@@ -35,6 +36,8 @@ public class TimeMachine {
 
 		//Armazena em um calendar a data digitada pelo usuario
 		currentDate = strToCalendar(d);
+        actualDate = new GregorianCalendar();
+
 	}
 
 	public void setDate(GregorianCalendar date){
@@ -65,6 +68,8 @@ public class TimeMachine {
 		return (GregorianCalendar) currentDate.clone();
 	}
 
+    public static GregorianCalendar ActualDate() { return (GregorianCalendar) actualDate.clone(); }
+
 	public static GregorianCalendar strToCalendar (String date) {
 		String[] split_date = date.split("/");
 
@@ -90,7 +95,6 @@ public class TimeMachine {
 		try {
 			form.parse(date);
 		} catch (ParseException e){
-			out.print("AQUI");
 			return false;
 		}
 

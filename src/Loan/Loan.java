@@ -1,12 +1,9 @@
 package Loan;
 
 import Database.Books;
-import Database.History;
 import Database.Users;
 import Time.TimeMachine;
-
 import java.util.GregorianCalendar;
-import java.util.Scanner;
 
 import static java.lang.System.out;
 
@@ -17,7 +14,6 @@ public class Loan {
 	private int UserID;
 
 	public GregorianCalendar Date;
-	public GregorianCalendar ReturnDate;
 	public GregorianCalendar ExpirationDate;
 
 	public Loan (int id, int bookid, int userid, GregorianCalendar date, GregorianCalendar expirationdate) {
@@ -26,7 +22,6 @@ public class Loan {
 		UserID = userid;
 		Date = date;
 		ExpirationDate = expirationdate;
-		History.getInstance().logAdd(this);
 	}
 
 	public int getID () { return ID; }
@@ -40,12 +35,12 @@ public class Loan {
 	public GregorianCalendar getExpirationDate () { return ExpirationDate; }
 
 	public void Print () {
-        out.printf("ID:\t\t\t%d\nUsuario:\t\t\t%s\nLivro:\t\t\t%s\nData:\t\t\t%s\nDevolucao:\t\t\t%s",
+		out.printf("ID:\t\t\t%d\nUsuario:\t\t\t%s\nLivro:\t\t\t%s\nData:\t\t\t%s\nDevolucao:\t\t\t%s",
 				ID,
-				Users.getInstance().FindByID(this.UserID).getName(),
-				Books.getInstance().FindByID(this.BookID).getTitle(),
+				Users.getInstance().FindByID(UserID).getName(),
+				Books.getInstance().FindByID(BookID).getTitle(),
 				TimeMachine.CalendarToStr(Date),
 				ExpirationDate.toString());
-    }
+	}
 
 }

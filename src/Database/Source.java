@@ -1,19 +1,19 @@
 package Database;
 
+import Time.TimeMachine;
+
 import java.io.IOException;
+import java.util.GregorianCalendar;
 
 import static java.lang.System.out;
 
 public class Source extends Database{
 
-	private Books booksDB;
-	private Loans loansDB;
-	private Users usersDB;
 	private History history;
 	private static Source sourceDB;
+	private GregorianCalendar maxDate;
 
 	// Singleton
-	public static Source getInstance() { return sourceDB; }
 	public static Source getInstance(String filename){
 		if (sourceDB == null){
 			sourceDB = new Source(filename);
@@ -22,14 +22,14 @@ public class Source extends Database{
 	}
 
 	private Source (String filename){
-		this.nextID = 0;
-		this.path = "source.csv";
-		this.OpenFile(filename);
-		this.ReadFile();
+		TimeMachine.getInstance(); // Cria|Inicializa os valores da TimeMachine
+		path = "source.csv";
+		OpenFile(filename);
+		ReadFile();
 	}
 
 	private void ReadFile(){
-		this.OpenReader();
+		OpenReader();
 
 		String line;
 		String splitSign = ",";
@@ -38,16 +38,16 @@ public class Source extends Database{
 			br.readLine();
 			if ((line = br.readLine()) != null) {
 				String[] splited = line.split(splitSign);
-				booksDB = Books.getInstance(splited[0]);
-				loansDB = Loans.getInstance(splited[1]);
-				usersDB = Users.getInstance(splited[2]);
+				Books.getInstance(Integer.parseInt(splited[0]));
+				Loans.getInstance(Integer.parseInt(splited[1]));
+				Users.getInstance(Integer.parseInt(splited[2]));
 				history = History.getInstance(splited[3]);
 			}
 			else {
 				String[] splited = path.split(".csv");
-				booksDB = Books.getInstance(splited[0] + "_books.csv");
-				loansDB = Loans.getInstance(splited[0] + "_loans.csv");
-				usersDB = Users.getInstance(splited[0] + "_users.csv");
+				Books.getInstance(0);
+				Loans.getInstance(0);
+				Users.getInstance(0);
 				history = History.getInstance(splited[0] + "_log.csv");
 			}
 		} catch (IOException e) {
@@ -56,22 +56,23 @@ public class Source extends Database{
 		}
 	}
 
-	private void WriteFile(){
+	public void WriteFile(){
+		if (History.getFuture()) return;	// Se existir operacoes no fututo, entao o Source nao pode ser alterado
 		OpenWriter();
 		final String SEPARATOR = ",";
 		final String ENDLINE = "\n";
-		final String HEADER = "BooksDB_path,LoansDB_path,UsersDB_path,Log_path";
+		final String HEADER = "nextIDbook,nextIDloan,nextIDuser,log_path";
 
 		try {
 			fw.append(HEADER);
 			fw.append(ENDLINE);
 			fw.flush();
 
-			fw.append(booksDB.path);
+			fw.append(Integer.valueOf(Books.getInstance().getNextID()).toString());
 			fw.append(SEPARATOR);
-			fw.append(loansDB.path);
+			fw.append(Integer.valueOf(Loans.getInstance().getNextID()).toString());
 			fw.append(SEPARATOR);
-			fw.append(usersDB.path);
+			fw.append(Integer.valueOf(Users.getInstance().getNextID()).toString());
 			fw.append(SEPARATOR);
 			fw.append(history.path);
 			fw.flush();
@@ -82,23 +83,9 @@ public class Source extends Database{
 		}
 	}
 
-	public void backup(){
-		booksDB.WriteFile();
-		loansDB.WriteFile();
-		usersDB.WriteFile();
-		this.WriteFile();
-	}
-
-	public void CloseFile(){
-		booksDB.CloseFile();
-		loansDB.CloseFile();
-		usersDB.CloseFile();
+	public void exit(){
+		WriteFile();
 		history.CloseFile();
-		try {
-			fw.close();
-			br.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		CloseFile();
 	}
 }

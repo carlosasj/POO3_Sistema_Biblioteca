@@ -1,41 +1,40 @@
 package Database;
 
+import Loan.Loan;
 import User.Comunity;
 import User.Student;
 import User.Teacher;
 import User.User;
-import Time.TimeMachine;
 
-import java.io.*;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static java.lang.System.out;
 
-public class Users extends Database {
+public class Users {
 
 	private static Users usersDB;
 	private List<User> users;
+	private int nextID;
 
 	// Singleton
 	public static Users getInstance() { return usersDB; }
-	protected static Users getInstance(String filename){
+	protected static Users getInstance(int next){
 		if (usersDB == null){
-			usersDB = new Users(filename);
+			usersDB = new Users(next);
 		}
 		return usersDB;
 	}
 
-	private Users (String filename) {
-		this.nextID = 0;
-		this.path = "users.csv";
-		this.users = new LinkedList<User>();
-		this.OpenFile(filename);
-		//this.ReadFile();
+	private Users (int next) {
+		nextID = next;
+		users = new LinkedList<User>();
 	}
 
-	public void RegisterUser () {
+	protected int getNextID() { return nextID; }
+
+	public void Register () {
 
 		Scanner scan = new Scanner(System.in);
 
@@ -49,11 +48,11 @@ public class Users extends Database {
 		out.println("Nome: ");
 		String Name = scan.nextLine();
 
-		this.AddUser(type, nextID, Name);
-		this.nextID++;
+		Add(type, nextID, Name);
+		nextID++;
 	}
 
-	protected void AddUser (String type, int ID, String name) {
+	protected void Add (String type, int ID, String name) {
 		User user = Load(type, ID, name);
 		History.getInstance().logAdd(user);
 	}
@@ -74,20 +73,20 @@ public class Users extends Database {
 				break;
 		}
 
-		this.users.add(user);
+		users.add(user);
 		return user;
 	}
-
+/*
 	protected void ReadFile() {
 
-		this.OpenReader();
+		OpenReader();
 
 		String line;
 		String splitBy = ",";
 
 		try {
 			if ((line = br.readLine()) != null) {
-				this.nextID = Integer.parseInt(line);
+				nextID = Integer.parseInt(line);
 				br.readLine();
 			}
 
@@ -98,15 +97,16 @@ public class Users extends Database {
 				int id = Integer.parseInt(userData[1]);
 				String name = userData[2];
 
-				this.AddUser(type, id, name);
+				Load(type, id, name);
 			}
 		}catch (IOException e){
 			out.println("Erro na leitura do arquivo.");
 			e.printStackTrace();
 		}
 	}
-
-	public User Search(){
+*/
+	public User Search(){ return Search(false); }
+	public User Search(boolean select){
 		Scanner scan = new Scanner(System.in);
 		Boolean endSearch = false;
 		User result = null;
@@ -117,13 +117,13 @@ public class Users extends Database {
 			String input = scan.nextLine();
 
 			// ----- Saida -----
-			if (input.toLowerCase().equals("exit") || input.toLowerCase().equals("\'exit\'")){	// Nunca confie na intelig�ncia do usu�rio
+			if (input.toLowerCase().equals("exit") || input.toLowerCase().equals("\'exit\'")){	// Nunca confie na inteligencia do usuario
 				out.println("Encerrando a busca.");
 				result = null;
 				endSearch = true;
 			}
 			// ----- Ajuda -----
-			else if (input.toLowerCase().equals("help") || input.toLowerCase().equals("\'help\'")) {	// Nunca confie na intelig�ncia do usu�rio
+			else if (input.toLowerCase().equals("help") || input.toLowerCase().equals("\'help\'")) {	// Nunca confie na inteligencia do usuario
 				out.println("Para pesquisar voce pode usar alguns comandos:");
 				out.println(splitSign + "id <id do usuario>");
 				out.println(splitSign + "type <student|teacher|community>");
@@ -150,7 +150,7 @@ public class Users extends Database {
 					try {
 						String[] command = cmd.split(" ", 2);	// Separa o comando do parametro
 						command[1] = command[1].trim();			// Retira espacos antes e depois
-						filtered = this.Filter(command[0], command[1], filtered, true);	// Filtra
+						filtered = Filter(command[0], command[1], filtered, true);	// Filtra
 					} catch (ArrayIndexOutOfBoundsException e){
 						out.printf("\n\t! (Comando \"%s\" faltando argumentos; Ignorado)\n", cmd);
 					}
@@ -200,19 +200,17 @@ public class Users extends Database {
 				}
 			}
 		}
-
 		return result;
-
 	}
 
 	public User FindByID(int id){
-		Stream<User> filtered = this.Filter("id", Integer.valueOf(id).toString(), false);
+		Stream<User> filtered = Filter("id", Integer.valueOf(id).toString(), false);
 		return filtered.collect(Collectors.toList()).get(0);
 	}
 
 	public Stream<User> Filter(String field, String param, Boolean printMsg) {		// Aplica o filtro num stream com todos os Usuarios
 		Stream<User> filtered = users.stream();
-		this.Filter(field, param, filtered, printMsg);
+		Filter(field, param, filtered, printMsg);
 		return filtered;
 	}
 
@@ -255,25 +253,41 @@ public class Users extends Database {
 		}
 		return filtered;
 	}
-
-    protected void RemoveUser (int userid) {
-		User u = this.FindByID(userid);
+/*
+	protected void Remove (int userid) {
+		User u = FindByID(userid);
 		History.getInstance().logDel(u);
 		users.remove(users.indexOf(u));
 	}
+*/
+	public void Remove () {
+		Scanner scan = new Scanner(System.in);
+		User u = Search();
+		u.Print();
 
-    public void RemoveUser () {
-        Scanner scan = new Scanner(System.in);
-        out.println("Digite o ID do usuario que deseja remover: ");
-        int userid = Integer.parseInt(scan.nextLine());
+		if (Loans.getInstance().CountLoansUser(u.getID()) > 0){
+			out.println("Esse usuario tem livros nao revolvidos, e essa acao vai");
+			out.println("excluir todos os emprestimos relacionados a esse usuario,");
+			out.println("e vai reduzir a Quantidade Total dos livros que estao com ele.");
+		}
+		out.println("Tem certeza que deseja remover esse usuario?[s/n]");
+		String confirm = scan.nextLine().toLowerCase();
+		if (confirm.equals("s")) {
+			Del(u.getID());
+			History.getInstance().logDel(u);
+		}
+	}
 
-		FindByID(userid).Print();
-
-        out.println("Tem certeza que deseja remover esse usuario?[s/n]");
-        String confirm = scan.nextLine().toLowerCase();
-        if (confirm.equals("s")) users.remove(userid);
-    }
-
+	protected void Del(int id){
+		User u = FindByID(id);
+		Stream<Loan> stream = Loans.getInstance()
+								.Filter("userid", Integer.valueOf(u.getID()).toString(), false);
+		for (Loan l : stream.collect(Collectors.toList())){
+			Loans.getInstance().Del(l.getID());
+		}
+		users.remove(id);
+	}
+/*
 	protected void WriteFile() {
 		OpenWriter();
 
@@ -282,7 +296,7 @@ public class Users extends Database {
 		final String HEADER = "Type,ID,Name";
 
 		try {
-			fw.append(Integer.valueOf(this.nextID).toString());
+			fw.append(Integer.valueOf(nextID).toString());
 			fw.append(ENDLINE);
 			fw.flush();
 
@@ -309,5 +323,5 @@ public class Users extends Database {
 			out.println("Outro erro na escrita do arquivo.");
 			f.printStackTrace();
 		}
-	}
+	}*/
 }
