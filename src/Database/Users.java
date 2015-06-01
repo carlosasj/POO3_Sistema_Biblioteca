@@ -254,13 +254,13 @@ public class Users {
 		return filtered;
 	}
 /*
-    protected void Remove (int userid) {
+	protected void Remove (int userid) {
 		User u = FindByID(userid);
 		History.getInstance().logDel(u);
 		users.remove(users.indexOf(u));
 	}
 */
-    public void Remove () {
+	public void Remove () {
 		Scanner scan = new Scanner(System.in);
 		User u = Search();
 		u.Print();
@@ -270,13 +270,13 @@ public class Users {
 			out.println("excluir todos os emprestimos relacionados a esse usuario,");
 			out.println("e vai reduzir a Quantidade Total dos livros que estao com ele.");
 		}
-        out.println("Tem certeza que deseja remover esse usuario?[s/n]");
-        String confirm = scan.nextLine().toLowerCase();
-        if (confirm.equals("s")) {
+		out.println("Tem certeza que deseja remover esse usuario?[s/n]");
+		String confirm = scan.nextLine().toLowerCase();
+		if (confirm.equals("s")) {
 			Del(u.getID());
 			History.getInstance().logDel(u);
 		}
-    }
+	}
 
 	protected void Del(int id){
 		User u = FindByID(id);

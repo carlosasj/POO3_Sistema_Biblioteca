@@ -88,7 +88,7 @@ public class Loans {
 	}
 
 	public void Remove() {
-        Loan l = Search();
+		Loan l = Search();
 		Del(l.getID(), true);
 		History.getInstance().logDel(l);
 	}

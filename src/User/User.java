@@ -38,11 +38,11 @@ abstract public class User {
 		return true;
 	}
 
-    public void setAllowedAt (int fine) {
+	public void setAllowedAt (int fine) {
 
-        AllowedAt.add(Calendar.DAY_OF_MONTH, - fine);
+		AllowedAt.add(Calendar.DAY_OF_MONTH, - fine);
 
-    }
+	}
 
 	public void Print(){
 		out.printf("Tipo:\t%s\nID:\t\t%d\nNome:\t%s\n", Type, ID, Name);

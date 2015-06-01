@@ -338,10 +338,10 @@ public class Books {
 		return filtered;
 	}
 
-    public void Remove () {
-        Scanner scan = new Scanner(System.in);
-        out.println("Procure o livro que deseja remover: ");
-        Book b = Search();
+	public void Remove () {
+		Scanner scan = new Scanner(System.in);
+		out.println("Procure o livro que deseja remover: ");
+		Book b = Search();
 
 		b.Print();
 
@@ -350,13 +350,13 @@ public class Books {
 			out.println("excluir todos os emprestimos relacionados a esse livro.");
 		}
 		out.println("Tem certeza que deseja remover esse livro?[s/n]");
-        String confirm = scan.nextLine().toLowerCase();
-        if (confirm.equals("s")) {
+		String confirm = scan.nextLine().toLowerCase();
+		if (confirm.equals("s")) {
 			Del(b.getID());
 			History.getInstance().logDel(b);
 
-        }
-    }
+		}
+	}
 
 	protected void Del (int id){
 		Book b = FindByID(id);
@@ -380,34 +380,34 @@ public class Books {
 			fw.append(ENDLINE);
 			fw.flush();
 
-            fw.append(HEADER);
-            fw.append(ENDLINE);
-            fw.flush();
+			fw.append(HEADER);
+			fw.append(ENDLINE);
+			fw.flush();
 
-            for (Book b : books) {
-                fw.append(b.getType());
-                fw.append(SEPARATOR);
+			for (Book b : books) {
+				fw.append(b.getType());
+				fw.append(SEPARATOR);
 
-                fw.append(Integer.valueOf(b.getID()).toString());
-                fw.append(SEPARATOR);
+				fw.append(Integer.valueOf(b.getID()).toString());
+				fw.append(SEPARATOR);
 
-                fw.append(b.getTitle());
-                fw.append(SEPARATOR);
+				fw.append(b.getTitle());
+				fw.append(SEPARATOR);
 
-                fw.append(b.getAuthor());
-                fw.append(SEPARATOR);
+				fw.append(b.getAuthor());
+				fw.append(SEPARATOR);
 
-                fw.append(b.getEditor());
-                fw.append(SEPARATOR);
+				fw.append(b.getEditor());
+				fw.append(SEPARATOR);
 
-                fw.append(Integer.valueOf(b.getYear()).toString());
-                fw.append(SEPARATOR);
+				fw.append(Integer.valueOf(b.getYear()).toString());
+				fw.append(SEPARATOR);
 
-                fw.append(Integer.valueOf(b.getTotalQuantity()).toString());
-                fw.append(SEPARATOR);
+				fw.append(Integer.valueOf(b.getTotalQuantity()).toString());
+				fw.append(SEPARATOR);
 
-                fw.append(Integer.valueOf(b.getAvaliableQuantity()).toString());
-                fw.append(ENDLINE);
+				fw.append(Integer.valueOf(b.getAvaliableQuantity()).toString());
+				fw.append(ENDLINE);
 
 				fw.flush();
 			}

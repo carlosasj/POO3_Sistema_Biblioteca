@@ -35,12 +35,12 @@ public class Loan {
 	public GregorianCalendar getExpirationDate () { return ExpirationDate; }
 
 	public void Print () {
-        out.printf("ID:\t\t\t%d\nUsuario:\t\t\t%s\nLivro:\t\t\t%s\nData:\t\t\t%s\nDevolucao:\t\t\t%s",
+		out.printf("ID:\t\t\t%d\nUsuario:\t\t\t%s\nLivro:\t\t\t%s\nData:\t\t\t%s\nDevolucao:\t\t\t%s",
 				ID,
 				Users.getInstance().FindByID(UserID).getName(),
 				Books.getInstance().FindByID(BookID).getTitle(),
 				TimeMachine.CalendarToStr(Date),
 				ExpirationDate.toString());
-    }
+	}
 
 }
