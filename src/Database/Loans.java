@@ -182,7 +182,8 @@ public class Loans {
 	}
 */
 	// Busca emprestimo com interface com o usuário
-	public Loan Search(){
+	public Loan Search() { return Search(false); }
+	public Loan Search(boolean select){
 		Scanner scan = new Scanner(System.in);
 		Boolean endSearch = false;
 		Loan result = null;
@@ -282,9 +283,7 @@ public class Loans {
 				}
 			}
 		}
-
 		return result;
-
 	}
 
 	// Busca emprestimo pelo ID fornecido

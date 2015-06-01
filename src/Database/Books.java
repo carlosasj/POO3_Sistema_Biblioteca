@@ -172,6 +172,10 @@ public class Books {
 	}*/
 
 	public Book Search(){
+		return Search(false);
+	}
+
+	public Book Search(boolean select){
 		Scanner scan = new Scanner(System.in);
 		Boolean endSearch = false;
 		Book result = null;
@@ -270,7 +274,6 @@ public class Books {
 		}
 
 		return result;
-
 	}
 
 	public Book FindByID(int id){
@@ -377,34 +380,34 @@ public class Books {
 			fw.append(ENDLINE);
 			fw.flush();
 
-			fw.append(HEADER);
-			fw.append(ENDLINE);
-			fw.flush();
+            fw.append(HEADER);
+            fw.append(ENDLINE);
+            fw.flush();
 
-			for (Book b : books) {
-				fw.append(b.getType());
-				fw.append(SEPARATOR);
+            for (Book b : books) {
+                fw.append(b.getType());
+                fw.append(SEPARATOR);
 
-				fw.append(Integer.valueOf(b.getID()).toString());
-				fw.append(SEPARATOR);
+                fw.append(Integer.valueOf(b.getID()).toString());
+                fw.append(SEPARATOR);
 
-				fw.append(b.getTitle());
-				fw.append(SEPARATOR);
+                fw.append(b.getTitle());
+                fw.append(SEPARATOR);
 
-				fw.append(b.getAuthor());
-				fw.append(SEPARATOR);
+                fw.append(b.getAuthor());
+                fw.append(SEPARATOR);
 
-				fw.append(b.getEditor());
-				fw.append(SEPARATOR);
+                fw.append(b.getEditor());
+                fw.append(SEPARATOR);
 
-				fw.append(Integer.valueOf(b.getYear()).toString());
-				fw.append(SEPARATOR);
+                fw.append(Integer.valueOf(b.getYear()).toString());
+                fw.append(SEPARATOR);
 
-				fw.append(Integer.valueOf(b.getTotalQuantity()).toString());
-				fw.append(SEPARATOR);
+                fw.append(Integer.valueOf(b.getTotalQuantity()).toString());
+                fw.append(SEPARATOR);
 
-				fw.append(Integer.valueOf(b.getAvaliableQuantity()).toString());
-				fw.append(ENDLINE);
+                fw.append(Integer.valueOf(b.getAvaliableQuantity()).toString());
+                fw.append(ENDLINE);
 
 				fw.flush();
 			}

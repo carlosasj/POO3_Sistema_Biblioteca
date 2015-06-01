@@ -105,7 +105,8 @@ public class Users {
 		}
 	}
 */
-	public User Search(){
+	public User Search(){ return Search(false); }
+	public User Search(boolean select){
 		Scanner scan = new Scanner(System.in);
 		Boolean endSearch = false;
 		User result = null;
@@ -199,9 +200,7 @@ public class Users {
 				}
 			}
 		}
-
 		return result;
-
 	}
 
 	public User FindByID(int id){
