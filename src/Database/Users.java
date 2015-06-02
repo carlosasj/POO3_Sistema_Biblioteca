@@ -142,7 +142,10 @@ public class Users {
 				// Transforma em uma lista
 				List<User> collect = filtered.collect(Collectors.toList());
 
-				if (collect.size() <= 1){	// Se soh encontrou 1 resultado...
+				if (collect.size() == 0){
+					out.println("\nNenhum resultado encontrado :(\n");
+				}
+				else if (collect.size() == 1){	// Se soh encontrou 1 resultado...
 					out.println("\n\nUsuario encontrado:\n");
 					collect.get(0).Print();
 

@@ -183,7 +183,10 @@ public class Loans {
 				// Transforma em uma lista
 				List<Loan> collect = filtered.collect(Collectors.toList());
 
-				if (collect.size() == 1){	// Se encontrou apenas 1 resultado...
+				if (collect.size() == 0){
+					out.println("\nNenhum resultado encontrado :(\n");
+				}
+				else if (collect.size() == 1){	// Se encontrou apenas 1 resultado...
 					out.println("Emprestimo encontrado:");
 					collect.get(0).Print();
 
