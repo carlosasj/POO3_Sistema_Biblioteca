@@ -43,7 +43,7 @@ public class Users {
 			out.print("Tipo <community|student|teacher>:\t");
 			type = scan.nextLine().toLowerCase();
 		}
-		out.println("Nome: ");
+		out.print("Nome:\t");
 		String Name = scan.nextLine();
 
 		out.println("Deseja inserir cadastro do usuario? [s|n]");
@@ -142,7 +142,7 @@ public class Users {
 				List<User> collect = filtered.collect(Collectors.toList());
 
 				if (collect.size() == 1){	// Se soh encontrou 1 resultado...
-					out.println("Usuario encontrado:");
+					out.println("\nUsuario encontrado:");
 					collect.get(0).Print();
 
 					out.print("\nDeseja selecionar esse usuario? [s|n]");

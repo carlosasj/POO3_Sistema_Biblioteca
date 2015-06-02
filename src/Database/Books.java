@@ -66,7 +66,7 @@ public class Books {
 		Scanner scan = new Scanner(System.in);
 
 		out.println("Cadastro de livro:");
-		out.print("ID:\t\t" + nextID);
+		out.println("ID:\t\t" + nextID);
 
 		out.print("Tipo:\t");
 		String type = scan.nextLine().toLowerCase();
@@ -213,7 +213,7 @@ public class Books {
 				List<Book> collect = filtered.collect(Collectors.toList());
 
 				if (collect.size() == 1){	// Se soh encontrou 1 resultado...
-					out.println("Livro encontrado:");
+					out.println("\nLivro encontrado:");
 					collect.get(0).Print();
 
 					out.print("\nDeseja usar esse livro? [s|n]");
