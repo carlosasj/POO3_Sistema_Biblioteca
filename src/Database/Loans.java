@@ -50,13 +50,20 @@ public class Loans {
 		Book book = Books.getInstance().Search();
 
 		// Verifica se o livro pode ser emprestado
+		String confirm = "n";
 		if (book == null || !book.canLoan()) {
 			return;
+		} else if (user.getType().equals("community")) {
+			if (book.getType().equals("text")) {
+				out.println("Usuario nao pode emprestar esse tipo de livro");
+			} else {
+				out.println("Deseja inserir esse emprestimo? [s|n]");
+				confirm = scan.nextLine();
+			}
+		} else {
+			out.println("Deseja inserir esse emprestimo? [s|n]");
+			confirm = scan.nextLine();
 		}
-
-		out.println("Deseja inserir esse emprestimo? [s|n]");
-		String confirm = scan.nextLine();
-
 		if (confirm.toLowerCase().equals("s") || confirm.equals("")) {
 			Add(nextID, book.getID(), user.getID());
 			nextID++;
@@ -65,7 +72,6 @@ public class Loans {
 		else {
 			out.println("Emprestimo nao cadastrado.");
 		}
-
 	}
 
 	// Repassa os parametros para o Load e escreve no Log
