@@ -46,8 +46,17 @@ public class Users {
 		out.println("Nome: ");
 		String Name = scan.nextLine();
 
-		Add(type, nextID, Name);
-		nextID++;
+		out.println("Deseja inserir cadastro do usuario? [s|n]");
+		String confirm = scan.nextLine();
+
+		if (confirm.toLowerCase().equals("s") || confirm.equals("\n")) {
+			Add(type, nextID, Name);
+			nextID++;
+			out.println("Usuario cadastrado com sucesso!");
+		}
+		else {
+			out.println("Usuario nao cadastrado.");
+		}
 	}
 
 	// Repassa os parametros para o Load e escreve no Log
@@ -78,6 +87,7 @@ public class Users {
 	}
 
 	public User Search(){ return Search(false); }
+
 	public User Search(boolean select){
 		Scanner scan = new Scanner(System.in);
 		Boolean endSearch = false;
