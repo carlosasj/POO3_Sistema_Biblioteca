@@ -100,13 +100,13 @@ public class Users {
 
 			// ----- Saida -----
 			if (input.toLowerCase().equals("exit") || input.toLowerCase().equals("\'exit\'")){	// Nunca confie na inteligencia do usuario
-				out.println("Encerrando a busca.");
+				out.println("\nEncerrando a busca.");
 				result = null;
 				endSearch = true;
 			}
 			// ----- Ajuda -----
 			else if (input.toLowerCase().equals("help") || input.toLowerCase().equals("\'help\'")) {	// Nunca confie na inteligencia do usuario
-				out.println("Para pesquisar voce pode usar alguns comandos:");
+				out.println("\nPara pesquisar voce pode usar alguns comandos:");
 				out.println(splitSign + "id <id do usuario>");
 				out.println(splitSign + "type <student|teacher|community>");
 				out.println(splitSign + "name <nome do usuario>");
@@ -126,7 +126,7 @@ public class Users {
 				String[] splited = input.split(splitSign);	// Separa os comandos
 				Stream<User> filtered = users.stream();		// Cria um Stream
 
-				out.print("Filtrando por:");
+				out.print("\nFiltrando por:");
 
 				for (String cmd : splited){					// Para cada comando...
 					try {
@@ -141,8 +141,8 @@ public class Users {
 				// Transforma em uma lista
 				List<User> collect = filtered.collect(Collectors.toList());
 
-				if (collect.size() == 1){	// Se soh encontrou 1 resultado...
-					out.println("Usuario encontrado:");
+				if (collect.size() <= 1){	// Se soh encontrou 1 resultado...
+					out.println("\n\nUsuario encontrado:\n");
 					collect.get(0).Print();
 
 					if (select) {
@@ -157,7 +157,7 @@ public class Users {
 				}
 
 				else {		// Se encontrar mais resultados...
-					out.println("Usuarios encontrados:");
+					out.println("\n\nUsuarios encontrados:");
 					out.println("==================================================");
 					int subID = 1;
 

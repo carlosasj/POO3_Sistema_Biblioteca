@@ -189,6 +189,7 @@ public class History extends Database {
 			fw.append(TimeMachine.CalendarToStr(TimeMachine.CurrentDate()));
 			fw.append(split);
 			fw.append(log);
+			fw.append("\n");
 			fw.flush();
 		} catch (IOException e) {
 			e.printStackTrace();

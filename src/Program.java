@@ -21,7 +21,7 @@ public class Program {
 			src = Source.getInstance(null);
 		}
 
-		out.println("Bem-vindo ao sistema de gerenciamento de bibliotecas.");
+		out.println("\nBem-vindo ao sistema de gerenciamento de bibliotecas.");
 
 		Scanner scan = new Scanner(System.in);
 		String cmd;
@@ -29,14 +29,14 @@ public class Program {
 		String splitSign = "/";
 
 		while (!endProgram) {
-			out.print("Digite um comando.\n(para ajuda, digite 'help'):");
+			out.println("\nDigite um comando.\n(para ajuda, digite 'help'):");
 			cmd = scan.nextLine();
 
 			if (cmd.toLowerCase().equals("exit")) {
-				out.println("Saindo do sistema...");
+				out.println("\nSaindo do sistema...");
 				endProgram = true;
 			} else if (cmd.toLowerCase().equals("help")) {
-				out.println("Comandos:");
+				out.println("\nComandos:");
 				if (History.canChangeData()) out.println(splitSign + "add <user|book|loan>     (Adicionar)");
 											 out.println(splitSign + "search <user|book|loan>  (Procurar)");
 				if (History.canChangeData()) out.println(splitSign + "del <user|book>          (Excluir)");
