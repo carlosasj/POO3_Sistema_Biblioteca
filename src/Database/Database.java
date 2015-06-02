@@ -48,7 +48,12 @@ abstract public class Database {
 	// Fecha o arquivo
 	protected void CloseFile(){
 		try {
-			fw.close();
+			br.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		try {
 			br.close();
 		} catch (IOException e) {
 			e.printStackTrace();
