@@ -37,6 +37,7 @@ public class Loans {
 	public void Register(){
 		Scanner scan = new Scanner(System.in);
 		out.println("--- Novo Emprestimo ---");
+		out.println("ID:\t\t" + nextID);
 		out.println("Primeiro, selecione o usuario.");
 		User user = Users.getInstance().Search();
 

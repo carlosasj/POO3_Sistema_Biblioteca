@@ -66,7 +66,7 @@ public class Books {
 		Scanner scan = new Scanner(System.in);
 
 		out.println("--- Novo Livro ---");
-		out.print("ID:\t\t" + nextID);
+		out.println("ID:\t\t" + nextID);
 
 		out.print("Tipo:\t");
 		String type = scan.nextLine().toLowerCase();
