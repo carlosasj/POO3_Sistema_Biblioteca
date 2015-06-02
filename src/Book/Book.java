@@ -23,7 +23,9 @@ abstract public class Book {
 	public int getTotalQuantity() { return TotalQuantity; }
 	public int getAvaliableQuantity() { return AvaliableQuantity; }
 
+	// Faz um emprestimo, diminui a quantia de disponivel do livro
 	public void goLoan() { AvaliableQuantity--; }
+	// Devolve um emprestimo, aumenta a quantia disponivel do livro
 	public void backLoan() { AvaliableQuantity++; }
 
 	public void Print(){
@@ -32,10 +34,12 @@ abstract public class Book {
 				 Type,        ID,          Title,         Author,       Editor,         Year,       TotalQuantity,AvaliableQuantity);
 	}
 
+    // Verifica se o livro pode ser emprestado
 	public boolean canLoan() {
 		return (AvaliableQuantity > 0);
 	}
 
+    // Modifica a quantia de livros disponiveis
 	public boolean increase (int n, boolean validate){
 		boolean result = (TotalQuantity+n >= 0) && (AvaliableQuantity+n >= 0);
 		if (validate){

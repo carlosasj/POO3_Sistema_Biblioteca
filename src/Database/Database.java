@@ -9,10 +9,11 @@ abstract public class Database {
 	protected FileWriter fw = null;
 	protected String path = null;
 
+	// Abre o arquivo
 	protected void OpenFile(String filename) {
 		if (filename != null) { path = filename; }
 
-		// Try open the file
+		// Tenta abrir o arquivo
 		file = new File(path);
 		if (!file.exists()){
 			try {
@@ -24,6 +25,7 @@ abstract public class Database {
 		}
 	}
 
+	// Abre o Buffered Reader
 	protected void OpenReader() {
 		try {
 			br = new BufferedReader(new FileReader(file));
@@ -33,15 +35,17 @@ abstract public class Database {
 		}
 	}
 
-	protected void OpenWriter() {
+	// Abre o File Writer
+	protected void OpenWriter(boolean append) {
 		try {
-			fw = new FileWriter(file);
+			fw = new FileWriter(file, append);
 		} catch (IOException e) {
 			out.println("Erro ao criar o File Writer.");
 			e.printStackTrace();
 		}
 	}
 
+	// Fecha o arquivo
 	protected void CloseFile(){
 		try {
 			fw.close();

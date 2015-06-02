@@ -35,23 +35,32 @@ public class Books {
 
 	protected int getNextID() { return nextID; }
 
+	// Repassa os parametros para o Load e escreve no Log
 	protected void Add(String type, int id, String title, String author, String editor, int year, int totalquantity){
 		Book book = Load(type, id, title, author, editor, year, totalquantity);
 		History.getInstance().logAdd(book);
 	}
 
+	// Cria um livro na lista
 	protected Book Load(String type, int id, String title, String author, String editor, int year, int totalquantity){
-		Book book;
+		Book book = null;
 
-		if(type.equals("Tex")){
-			book = new Text(id, title, author, editor, year, totalquantity);
-		} else {
-			book = new General(id, title, author, editor, year, totalquantity);
+		switch(type)
+		{
+			case "Tex":
+				book = new Text(id, title, author, editor, year, totalquantity);
+				break;
+
+			case "Gen":    // Se nao for "Tex", sempre sera "Gen" (verificacao feita anteriormente)
+				book = new General(id, title, author, editor, year, totalquantity);
+				break;
 		}
+
 		books.add(book);
 		return book;
 	}
 
+	// Registra um livro pela interface
 	public void Register () {
 
 		Scanner scan = new Scanner(System.in);
@@ -108,6 +117,7 @@ public class Books {
 					break;
 				case "general":
 					type = "Gen";
+					break;
 			}
 			Add(type, nextID, Title, Author, Editor, Year, TotalQuantity);
 			nextID++;
@@ -118,6 +128,7 @@ public class Books {
 		}
 	}
 
+	// Modifica a quantia disponivel de livros
 	public void Increase(){
 		Book b = Search();
 		Scanner scan = new Scanner(System.in);
@@ -126,7 +137,7 @@ public class Books {
 		out.println("Voce selecionou este livro:");
 		b.Print();
 
-		out.println("\nQuantos exemplare voce deseja adicionar?");
+		out.println("\nQuantos exemplares voce deseja adicionar?");
 		out.println("(digite um numero negativo para retirar exemplares)");
 		String input = scan.nextLine();
 		try {
@@ -140,36 +151,6 @@ public class Books {
 		b.increase(number, true);
 		History.getInstance().logInc(b, number);
 	}
-/*
-	protected void ReadFile(){
-		OpenReader();
-
-		String line;
-		String splitSign = ",";
-
-		try {
-			if ((line = br.readLine()) != null) {
-				nextID = Integer.parseInt(line);
-				br.readLine();
-			}
-
-			while ((line = br.readLine()) != null){
-				String[] readed = line.split(splitSign);
-				String type = readed[0];
-				int id = Integer.parseInt(readed[1]);
-				String title = readed[2];
-				String author = readed[3];
-				String editor = readed[4];
-				int year = Integer.parseInt(readed[5]);
-				int totalquantity = Integer.parseInt(readed[6]);
-
-				Load(type, id, title, author, editor, year, totalquantity);
-			}
-		} catch (IOException e) {
-			out.println("Erro na leitura do arquivo.");
-			e.printStackTrace();
-		}
-	}*/
 
 	public Book Search(){
 		return Search(false);
@@ -276,18 +257,21 @@ public class Books {
 		return result;
 	}
 
+	// Encontra o livro pelo ID
 	public Book FindByID(int id){
 		Stream<Book> filtered = Filter("id", Integer.valueOf(id).toString(), false);
 		return filtered.collect(Collectors.toList()).get(0);
 	}
 
-	public Stream<Book> Filter(String field, String param, Boolean printMsg) {	// Aplica o filtro num stream com todos os livros
+	// Aplica o filtro num stream com todos os livros
+	public Stream<Book> Filter(String field, String param, Boolean printMsg) {
 		Stream<Book> filtered = books.stream();
 		Filter(field, param, filtered, printMsg);
 		return filtered;
 	}
 
-	public Stream<Book> Filter(String field, String param, Stream<Book> filtered, Boolean printMsg) {	// Aplica o filtro num stream personalizado
+	// Aplica o filtro num stream personalizado
+	public Stream<Book> Filter(String field, String param, Stream<Book> filtered, Boolean printMsg) {
 		if (printMsg) out.printf("\n\t%s = %s", field, param);
 
 		switch (field){
@@ -338,6 +322,7 @@ public class Books {
 		return filtered;
 	}
 
+	// Remove um livro
 	public void Remove () {
 		Scanner scan = new Scanner(System.in);
 		out.println("Procure o livro que deseja remover: ");
@@ -358,6 +343,7 @@ public class Books {
 		}
 	}
 
+	// Deleta um livro
 	protected void Del (int id){
 		Book b = FindByID(id);
 		Stream<Loan> stream = Loans.getInstance()
@@ -368,52 +354,4 @@ public class Books {
 		}
 		books.remove(b);
 	}
-/*
-	protected void WriteFile() {
-		OpenWriter();
-		final String SEPARATOR = ",";
-		final String ENDLINE = "\n";
-		final String HEADER = "Type,ID,Title,Author,Editor,Year,TotalQuantity,AvaliableQuantity";
-
-		try {
-			fw.append(Integer.valueOf(nextID).toString());
-			fw.append(ENDLINE);
-			fw.flush();
-
-			fw.append(HEADER);
-			fw.append(ENDLINE);
-			fw.flush();
-
-			for (Book b : books) {
-				fw.append(b.getType());
-				fw.append(SEPARATOR);
-
-				fw.append(Integer.valueOf(b.getID()).toString());
-				fw.append(SEPARATOR);
-
-				fw.append(b.getTitle());
-				fw.append(SEPARATOR);
-
-				fw.append(b.getAuthor());
-				fw.append(SEPARATOR);
-
-				fw.append(b.getEditor());
-				fw.append(SEPARATOR);
-
-				fw.append(Integer.valueOf(b.getYear()).toString());
-				fw.append(SEPARATOR);
-
-				fw.append(Integer.valueOf(b.getTotalQuantity()).toString());
-				fw.append(SEPARATOR);
-
-				fw.append(Integer.valueOf(b.getAvaliableQuantity()).toString());
-				fw.append(ENDLINE);
-
-				fw.flush();
-			}
-		} catch (IOException e){
-			out.println("Erro na escrita do arquivo.");
-			e.printStackTrace();
-		}
-	}*/
 }

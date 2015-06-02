@@ -13,9 +13,9 @@ abstract public class User {
 	protected String Type;
 	protected int ID;
 	protected String Name;
-	protected int MaxDays;
-	protected int MaxLoans;
-	protected GregorianCalendar AllowedAt;
+	protected int MaxDays;  // Numero maximo de dias por emprestimo
+	protected int MaxLoans; // Numero maximo de emprestimos por usuario
+	protected GregorianCalendar AllowedAt;  // Proxima data permitida de emprestimo
 
 	public String getType(){ return Type; }
 	public int getID(){ return ID; }
