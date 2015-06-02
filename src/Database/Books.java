@@ -152,9 +152,7 @@ public class Books {
 		History.getInstance().logInc(b, number);
 	}
 
-	public Book Search(){
-		return Search(false);
-	}
+	public Book Search(){ return Search(true); }
 
 	public Book Search(boolean select){
 		Scanner scan = new Scanner(System.in);
@@ -216,13 +214,14 @@ public class Books {
 					out.println("Livro encontrado:");
 					collect.get(0).Print();
 
-					out.print("\nDeseja usar esse livro? [s|n]");
-					if (scan.nextLine().toLowerCase().equals("s")){
-						result = collect.get(0);
-						endSearch = true;
-					}
-					else {
-						out.println("Entao faca uma nova pesquisa.");
+					if (select) {
+						out.print("\nDeseja usar esse livro? [s|n]");
+						if (scan.nextLine().toLowerCase().equals("s")) {
+							result = collect.get(0);
+							endSearch = true;
+						} else {
+							out.println("Entao faca uma nova pesquisa.");
+						}
 					}
 				}
 
@@ -239,16 +238,18 @@ public class Books {
 					}
 					subID--; // Porque ele termina o For valendo (collect.size()+1)
 
-					out.print("Selecione o resultado pelo indice\nou digite 0 para uma nova busca: ");
-					int index = Integer.parseInt(scan.nextLine());
-					while (index > subID || index < 0){
-						out.print("Opcao invalida.\nDigite o indice ou 0 para uma nova busca: ");
-						index = Integer.parseInt(scan.nextLine());
-					}
+					if (select) {
+						out.print("Selecione o resultado pelo indice\nou digite 0 para uma nova busca: ");
+						int index = Integer.parseInt(scan.nextLine());
+						while (index > subID || index < 0) {
+							out.print("Opcao invalida.\nDigite o indice ou 0 para uma nova busca: ");
+							index = Integer.parseInt(scan.nextLine());
+						}
 
-					if (index != 0) {
-						result = collect.get(index-1);
-						endSearch = true;
+						if (index != 0) {
+							result = collect.get(index - 1);
+							endSearch = true;
+						}
 					}
 				}
 			}

@@ -86,7 +86,7 @@ public class Users {
 		return user;
 	}
 
-	public User Search(){ return Search(false); }
+	public User Search(){ return Search(true); }
 
 	public User Search(boolean select){
 		Scanner scan = new Scanner(System.in);
@@ -145,13 +145,14 @@ public class Users {
 					out.println("Usuario encontrado:");
 					collect.get(0).Print();
 
-					out.print("\nDeseja selecionar esse usuario? [s|n]");
-					if (scan.nextLine().toLowerCase().equals("s")){
-						result = collect.get(0);
-						endSearch = true;
-					}
-					else {
-						out.println("Entao faca uma nova pesquisa.");
+					if (select) {
+						out.print("\nDeseja selecionar esse usuario? [s|n]");
+						if (scan.nextLine().toLowerCase().equals("s")) {
+							result = collect.get(0);
+							endSearch = true;
+						} else {
+							out.println("Entao faca uma nova pesquisa.");
+						}
 					}
 				}
 
@@ -168,16 +169,18 @@ public class Users {
 					}
 					subID--; // Porque ele termina o For valendo (collect.size()+1)
 
-					out.print("Selecione o resultado pelo indice\nou digite 0 para uma nova busca: ");
-					int index = Integer.parseInt(scan.nextLine());
-					while (index > subID || index < 0){
-						out.print("Opcao invalida.\nDigite o indice ou 0 para uma nova busca: ");
-						index = Integer.parseInt(scan.nextLine());
-					}
+					if (select) {
+						out.print("Selecione o resultado pelo indice\nou digite 0 para uma nova busca: ");
+						int index = Integer.parseInt(scan.nextLine());
+						while (index > subID || index < 0) {
+							out.print("Opcao invalida.\nDigite o indice ou 0 para uma nova busca: ");
+							index = Integer.parseInt(scan.nextLine());
+						}
 
-					if (index != 0) {
-						result = collect.get(index-1);
-						endSearch = true;
+						if (index != 0) {
+							result = collect.get(index - 1);
+							endSearch = true;
+						}
 					}
 				}
 			}

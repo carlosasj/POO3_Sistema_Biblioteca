@@ -112,7 +112,7 @@ public class Loans {
 	}
 	
 	// Busca emprestimo com interface com o usuario
-	public Loan Search() { return Search(false); }
+	public Loan Search() { return Search(true); }
 	public Loan Search(boolean select){
 		Scanner scan = new Scanner(System.in);
 		Boolean endSearch = false;
@@ -176,13 +176,14 @@ public class Loans {
 					out.println("Emprestimo encontrado:");
 					collect.get(0).Print();
 
-					out.print("\nDeseja usar esse emprestimo? [s|n]");
-					if (scan.nextLine().toLowerCase().equals("s")){
-						result = collect.get(0);
-						endSearch = true;
-					}
-					else {
-						out.println("Entao faca uma nova pesquisa.");
+					if (select) {
+						out.print("\nDeseja usar esse emprestimo? [s|n]");
+						if (scan.nextLine().toLowerCase().equals("s")) {
+							result = collect.get(0);
+							endSearch = true;
+						} else {
+							out.println("Entao faca uma nova pesquisa.");
+						}
 					}
 				}
 
@@ -199,16 +200,18 @@ public class Loans {
 					}
 					subID--; // Porque ele termina o For valendo (collect.size()+1)
 
-					out.print("Selecione o resultado pelo indice\nou digite 0 para uma nova busca: ");
-					int index = Integer.parseInt(scan.nextLine());
-					while (index > subID || index < 0){
-						out.print("Opcao invalida.\nDigite o indice ou 0 para uma nova busca: ");
-						index = Integer.parseInt(scan.nextLine());
-					}
+					if (select) {
+						out.print("Selecione o resultado pelo indice\nou digite 0 para uma nova busca: ");
+						int index = Integer.parseInt(scan.nextLine());
+						while (index > subID || index < 0) {
+							out.print("Opcao invalida.\nDigite o indice ou 0 para uma nova busca: ");
+							index = Integer.parseInt(scan.nextLine());
+						}
 
-					if (index != 0) {
-						result = collect.get(index-1);
-						endSearch = true;
+						if (index != 0) {
+							result = collect.get(index - 1);
+							endSearch = true;
+						}
 					}
 				}
 			}

@@ -60,13 +60,13 @@ public class Program {
 						if (History.canChangeData()) Loans.getInstance().Register();
 						break;
 					case "search user":
-						Users.getInstance().Search();
+						Users.getInstance().Search(false);
 						break;
 					case "search book":
-						Books.getInstance().Search();
+						Books.getInstance().Search(false);
 						break;
 					case "search loan":
-						Loans.getInstance().Search();
+						Loans.getInstance().Search(false);
 						break;
 					case "del user":
 						if (History.canChangeData()) Users.getInstance().Remove();
