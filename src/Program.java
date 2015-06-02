@@ -37,11 +37,11 @@ public class Program {
 				endProgram = true;
 			} else if (cmd.toLowerCase().equals("help")) {
 				out.println("\nComandos:");
-				if (History.canChangeData()) out.println(splitSign + "add <user|book|loan>     (Adicionar)");
+				if (History.canChangeData(false)) out.println(splitSign + "add <user|book|loan>     (Adicionar)");
 											 out.println(splitSign + "search <user|book|loan>  (Procurar)");
-				if (History.canChangeData()) out.println(splitSign + "del <user|book>          (Excluir)");
-				if (History.canChangeData()) out.println(splitSign + "return loan              (Retornar um emprestimo)");
-				if (History.canChangeData()) out.println(splitSign + "inc book                 (Alterar a quantidade de exemplares de um livro)");
+				if (History.canChangeData(false)) out.println(splitSign + "del <user|book>          (Excluir)");
+				if (History.canChangeData(false)) out.println(splitSign + "return loan              (Retornar um emprestimo)");
+				if (History.canChangeData(false)) out.println(splitSign + "inc book                 (Alterar a quantidade de exemplares de um livro)");
 														out.println("help                      (Abrir esse menu de ajuda)");
 														out.println("exit                      (Sair do programa)");
 			} else if (!cmd.startsWith(splitSign)) {
@@ -51,13 +51,13 @@ public class Program {
 
 				switch (cmd) {
 					case "add user":
-						if (History.canChangeData()) Users.getInstance().Register();
+						if (History.canChangeData(true)) Users.getInstance().Register();
 						break;
 					case "add book":
-						if (History.canChangeData()) Books.getInstance().Register();
+						if (History.canChangeData(true)) Books.getInstance().Register();
 						break;
 					case "add loan":
-						if (History.canChangeData()) Loans.getInstance().Register();
+						if (History.canChangeData(true)) Loans.getInstance().Register();
 						break;
 					case "search user":
 						Users.getInstance().Search(false);
@@ -69,16 +69,16 @@ public class Program {
 						Loans.getInstance().Search(false);
 						break;
 					case "del user":
-						if (History.canChangeData()) Users.getInstance().Remove();
+						if (History.canChangeData(true)) Users.getInstance().Remove();
 						break;
 					case "del book":
-						if (History.canChangeData()) Books.getInstance().Remove();
+						if (History.canChangeData(true)) Books.getInstance().Remove();
 						break;
 					case "return loan":
-						if (History.canChangeData()) Loans.getInstance().Remove();
+						if (History.canChangeData(true)) Loans.getInstance().Remove();
 						break;
 					case "inc book":
-						if (History.canChangeData()) Books.getInstance().Increase();
+						if (History.canChangeData(true)) Books.getInstance().Increase();
 						break;
 					default:
 						out.println("Comando \"" + cmd + "\" Invalido");

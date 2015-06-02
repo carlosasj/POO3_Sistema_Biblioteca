@@ -199,8 +199,8 @@ public class History extends Database {
 
 	public static boolean getFuture() { return future; }
 
-	public static boolean canChangeData(){
-		if (future) out.println("\nVoce esta visitando o sistema numa data antiga, neste caso apenas consultas sao permitidas.");
+	public static boolean canChangeData(boolean print){
+		if (future && print) out.println("\nVoce esta visitando o sistema numa data antiga, neste caso apenas consultas sao permitidas.");
 		return !future;
 	}
 }
