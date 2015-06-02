@@ -10,7 +10,6 @@ import java.util.Scanner;
 
 import static java.lang.System.out;
 
-
 public class Program {
 	public static void main (String[] args) throws IOException {
 		TimeMachine.getInstance();
@@ -30,10 +29,11 @@ public class Program {
 		String splitSign = "/";
 
 		while (!endProgram) {
-			out.println("Digite um comando: \n(para ajuda, digite 'help'):");
+			out.print("Digite um comando.\n(para ajuda, digite 'help'):");
 			cmd = scan.nextLine();
 
 			if (cmd.toLowerCase().equals("exit")) {
+				out.println("Saindo do sistema...");
 				endProgram = true;
 			} else if (cmd.toLowerCase().equals("help")) {
 				out.println("Comandos:");
@@ -42,8 +42,8 @@ public class Program {
 				if (History.canChangeData()) out.println(splitSign + "del <user|book>          (Excluir)");
 				if (History.canChangeData()) out.println(splitSign + "return loan              (Retornar um emprestimo)");
 				if (History.canChangeData()) out.println(splitSign + "inc book                 (Alterar a quantidade de exemplares de um livro)");
-														out.println("help                      (Abre esse menu de ajuda)");
-														out.println("exit                      (Sai do programa)");
+														out.println("help                      (Abrir esse menu de ajuda)");
+														out.println("exit                      (Sair do programa)");
 			} else if (!cmd.startsWith(splitSign)) {
 				out.println("Comando invalido.");
 			} else {

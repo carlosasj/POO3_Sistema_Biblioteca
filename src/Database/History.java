@@ -5,7 +5,6 @@ import Book.Book;
 import Loan.Loan;
 import User.User;
 
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.GregorianCalendar;
 
@@ -13,7 +12,8 @@ import static java.lang.System.out;
 
 public class History extends Database {
 	private static History hist;
-	private static boolean future = false;	// Indica se h� alguma opera��o numa data maior que a "atual"
+	private static boolean future = false;	// Indica se ha alguma operacao numa data maior que a "atual"
+
 	private static String split = ",";
 
 	public static History getInstance() { return hist; }
@@ -30,22 +30,14 @@ public class History extends Database {
 		ReadFile();
 	}
 
-	protected void OpenWriter(){
-		try {
-			fw = new FileWriter(file, true);
-		} catch (IOException e) {
-			out.println("Erro ao criar o File Writer.");
-			e.printStackTrace();
-		}
-	}
-
+	// Le o arquivo
 	private void ReadFile(){
 		OpenReader();
 
 		String line;
 
 		try {
-			br.readLine(); // Pula o cabe�alho
+			br.readLine(); // Pula o cabecalho
 
 			GregorianCalendar date_backup = TimeMachine.CurrentDate();
 
@@ -121,6 +113,9 @@ public class History extends Database {
 		}
 	}
 
+	// logAdd
+	// Adiciona usuario, livro ou emprestimo no log
+
 	public void logAdd (User u){
 		String log = "Users" + split
 					+"add" + split
@@ -154,6 +149,9 @@ public class History extends Database {
 		WriteFile(log);
 	}
 
+	// logDel
+	// Remove usuario, livro ou emprestimo do log
+
 	public void logDel (User u){
 		String log = "Users" + split
 				+"del" + split
@@ -175,6 +173,7 @@ public class History extends Database {
 		WriteFile(log);
 	}
 
+	// Incrementa no log quantidade de livro disponivel
 	public void logInc (Book b, int inc){
 		String log = "Books" + split
 				+"inc" + split
@@ -183,8 +182,9 @@ public class History extends Database {
 		WriteFile(log);
 	}
 
+	// Escreve no log
 	private void WriteFile(String log){
-		OpenWriter();
+		OpenWriter(true);
 
 		try {
 			fw.append(TimeMachine.CalendarToStr(TimeMachine.CurrentDate()));

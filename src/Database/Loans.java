@@ -33,7 +33,7 @@ public class Loans {
 
 	protected int getNextID() { return nextID; }
 
-	// Registra um novo emprestimo
+	// Registra um emprestimo pela interface
 	public void Register(){
 		out.println("--- Novo Emprestimo ---");
 		out.println("Primeiro, selecione o usuario.");
@@ -56,14 +56,13 @@ public class Loans {
 		nextID++;
 	}
 
-	// Adiciona emprestimo
-
-	// Utilizado no ReadFile
+	// Repassa os parametros para o Load e escreve no Log
 	protected void Add(int loanid, int bookid, int userid) {
 		Loan l =  Load(loanid, bookid, userid);
 		History.getInstance().logAdd(l);
 	}
 
+	// Cria um emprestimo na lista
 	protected Loan Load(int loanid, int bookid, int userid) {
 		User u = Users.getInstance().FindByID(userid);
 		GregorianCalendar cal_date = TimeMachine.CurrentDate();
@@ -87,13 +86,14 @@ public class Loans {
 		return filter.count();
 	}
 
+	// Remove um emprestimo
 	public void Remove() {
 		Loan l = Search();
 		Del(l.getID(), true);
 		History.getInstance().logDel(l);
 	}
 
-	// Deletar Usuario ou Livro
+	// Deleta Usuario ou Livro
 	protected void Del(int id){
 		Del(id, false);
 		Loan l = FindByID(id);
@@ -110,78 +110,8 @@ public class Loans {
 		Books.getInstance().FindByID(l.getBookID()).backLoan();
 		loans.remove(l);
 	}
-/*
-	// Le arquivo e adiciona na lista
-	public void ReadFile(){
 
-		OpenReader();
-
-		String line;
-		String splitBy = ",";
-
-		try {
-			if ((line = br.readLine()) != null) {
-				nextID = Integer.parseInt(line);
-				br.readLine();
-			}
-
-			while ((line = br.readLine()) != null) {
-
-				String[] loanData = line.split(splitBy);
-				int id = Integer.parseInt(loanData[0]);
-				int bookid = Integer.parseInt(loanData[1]);
-				int userid = Integer.parseInt(loanData[2]);
-				String date = loanData[3];
-				String expirationdate = loanData[4];
-
-				//Load(id, bookid, userid, date, expirationdate);
-			}
-		} catch (IOException e){
-			out.println("Erro na leitura do arquivo.");
-			e.printStackTrace();
-		}
-	}
-
-	// Lê a lista e escreve no arquivo
-	public void WriteFile(){
-		OpenWriter();
-		String SEPARATOR = ",";
-		String ENDLINE = "\n";
-		String HEADER = "ID,BookID,UserID,Date,ExpirarionDate";
-
-		try {
-			fw.append(Integer.valueOf(nextID).toString());
-			fw.append(ENDLINE);
-			fw.flush();
-
-			fw.append(HEADER);
-			fw.append(ENDLINE);
-			fw.flush();
-
-			for (Loan l : loans) {
-				fw.append(Integer.valueOf(l.getID()).toString());
-				fw.append(SEPARATOR);
-
-				fw.append(Integer.valueOf(l.getBookID()).toString());
-				fw.append(SEPARATOR);
-
-				fw.append(Integer.valueOf(l.getUserID()).toString());
-				fw.append(SEPARATOR);
-
-				fw.append(l.getDate().toString());
-				fw.append(SEPARATOR);
-
-				fw.append(l.getExpirationDate().toString());
-				fw.append(ENDLINE);
-				fw.flush();
-			}
-		} catch (IOException e){
-			out.println("Erro na escrita do arquivo.");
-			e.printStackTrace();
-		}
-	}
-*/
-	// Busca emprestimo com interface com o usuário
+	// Busca emprestimo com interface com o usuario
 	public Loan Search() { return Search(false); }
 	public Loan Search(boolean select){
 		Scanner scan = new Scanner(System.in);

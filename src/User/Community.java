@@ -3,9 +3,9 @@ package User;
 import java.util.Calendar;
 import Time.TimeMachine;
 
-public class Comunity extends User {
+public class Community extends User {
 
-	public Comunity (int id, String name) {
+	public Community(int id, String name) {
 		Type = "community";
 		ID = id;
 		Name = name;

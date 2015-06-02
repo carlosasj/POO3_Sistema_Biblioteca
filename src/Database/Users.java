@@ -1,10 +1,7 @@
 package Database;
 
 import Loan.Loan;
-import User.Comunity;
-import User.Student;
-import User.Teacher;
-import User.User;
+import User.*;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -34,6 +31,7 @@ public class Users {
 
 	protected int getNextID() { return nextID; }
 
+	// Registra um usuario pela interface
 	public void Register () {
 
 		Scanner scan = new Scanner(System.in);
@@ -48,20 +46,31 @@ public class Users {
 		out.println("Nome: ");
 		String Name = scan.nextLine();
 
-		Add(type, nextID, Name);
-		nextID++;
+		out.println("Deseja inserir cadastro do usuario? [s|n]");
+		String confirm = scan.nextLine();
+
+		if (confirm.toLowerCase().equals("s") || confirm.equals("\n")) {
+			Add(type, nextID, Name);
+			nextID++;
+			out.println("Usuario cadastrado com sucesso!");
+		}
+		else {
+			out.println("Usuario nao cadastrado.");
+		}
 	}
 
+	// Repassa os parametros para o Load e escreve no Log
 	protected void Add (String type, int ID, String name) {
 		User user = Load(type, ID, name);
 		History.getInstance().logAdd(user);
 	}
 
+	// Cria um usuario na lista
 	protected User Load (String type, int ID, String name) {
 		User user = null;
 		switch (type) {
 			case "community":
-				user = new Comunity(ID, name);
+				user = new Community(ID, name);
 				break;
 
 			case "student":
@@ -76,36 +85,9 @@ public class Users {
 		users.add(user);
 		return user;
 	}
-/*
-	protected void ReadFile() {
 
-		OpenReader();
-
-		String line;
-		String splitBy = ",";
-
-		try {
-			if ((line = br.readLine()) != null) {
-				nextID = Integer.parseInt(line);
-				br.readLine();
-			}
-
-			while ((line = br.readLine()) != null) {
-
-				String[] userData = line.split(splitBy);
-				String type = userData[0];
-				int id = Integer.parseInt(userData[1]);
-				String name = userData[2];
-
-				Load(type, id, name);
-			}
-		}catch (IOException e){
-			out.println("Erro na leitura do arquivo.");
-			e.printStackTrace();
-		}
-	}
-*/
 	public User Search(){ return Search(false); }
+
 	public User Search(boolean select){
 		Scanner scan = new Scanner(System.in);
 		Boolean endSearch = false;
@@ -209,18 +191,21 @@ public class Users {
 		return result;
 	}
 
+	// Encontra um usuario com o ID fornecido
 	public User FindByID(int id){
 		Stream<User> filtered = Filter("id", Integer.valueOf(id).toString(), false);
 		return filtered.collect(Collectors.toList()).get(0);
 	}
 
-	public Stream<User> Filter(String field, String param, Boolean printMsg) {		// Aplica o filtro num stream com todos os Usuarios
+	// Aplica o filtro num stream com todos os Usuarios
+	public Stream<User> Filter(String field, String param, Boolean printMsg) {
 		Stream<User> filtered = users.stream();
 		Filter(field, param, filtered, printMsg);
 		return filtered;
 	}
 
-	public Stream<User> Filter(String field, String param, Stream<User> filtered, Boolean printMsg) {	// Aplica o filtro num stream personalizado
+	// Aplica o filtro num stream personalizado
+	public Stream<User> Filter(String field, String param, Stream<User> filtered, Boolean printMsg) {
 		if (printMsg) out.printf("\n\t%s = %s", field, param);
 
 		switch (field){
@@ -259,13 +244,8 @@ public class Users {
 		}
 		return filtered;
 	}
-/*
-	protected void Remove (int userid) {
-		User u = FindByID(userid);
-		History.getInstance().logDel(u);
-		users.remove(users.indexOf(u));
-	}
-*/
+
+	// Remove um usuario
 	public void Remove () {
 		Scanner scan = new Scanner(System.in);
 		User u = Search();
@@ -284,6 +264,7 @@ public class Users {
 		}
 	}
 
+	// Deleta um usuario
 	protected void Del(int id){
 		User u = FindByID(id);
 		Stream<Loan> stream = Loans.getInstance()
@@ -293,41 +274,4 @@ public class Users {
 		}
 		users.remove(id);
 	}
-/*
-	protected void WriteFile() {
-		OpenWriter();
-
-		final String SEPARATOR = ",";
-		final String ENDLINE = "\n";
-		final String HEADER = "Type,ID,Name";
-
-		try {
-			fw.append(Integer.valueOf(nextID).toString());
-			fw.append(ENDLINE);
-			fw.flush();
-
-			fw.append(HEADER);
-			fw.append(ENDLINE);
-			fw.flush();
-
-			for (User u : users) {
-				fw.append(u.getType());
-				fw.append(SEPARATOR);
-
-				fw.append(Integer.valueOf(u.getID()).toString());
-				fw.append(SEPARATOR);
-
-				fw.append(u.getName());
-				fw.append(ENDLINE);
-
-				fw.flush();
-			}
-		} catch (IOException e){
-			out.println("Erro na escrita do arquivo.");
-			e.printStackTrace();
-		} catch (NullPointerException f){
-			out.println("Outro erro na escrita do arquivo.");
-			f.printStackTrace();
-		}
-	}*/
 }
