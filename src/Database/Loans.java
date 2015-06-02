@@ -56,10 +56,12 @@ public class Loans {
 			if (book.getType().equals("text")) {
 				out.println("Usuario nao pode emprestar esse tipo de livro");
 			} else {
+				out.println("Deseja inserir esse emprestimo? [s|n]");
 				confirm = scan.nextLine();
 			}
 		} else {
-			
+			out.println("Deseja inserir esse emprestimo? [s|n]");
+			confirm = scan.nextLine();
 		}
 		if (confirm.toLowerCase().equals("s") || confirm.equals("")) {
 			Add(nextID, book.getID(), user.getID());
