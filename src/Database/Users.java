@@ -36,7 +36,7 @@ public class Users {
 
 		Scanner scan = new Scanner(System.in);
 		out.println("--- Novo Usuario ---");
-		out.print("ID:\t\t" + nextID);
+		out.println("ID:\t\t" + nextID);
 		out.print("Tipo:\t");
 		String type = scan.nextLine().toLowerCase();
 		while (!type.equals("community") && !type.equals("student") && !type.equals("teacher")){
