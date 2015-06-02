@@ -13,7 +13,7 @@ import static java.lang.System.out;
 
 public class History extends Database {
 	private static History hist;
-	private static boolean future = false;	// Indica se há alguma operação numa data maior que a "atual"
+	private static boolean future = false;	// Indica se hï¿½ alguma operaï¿½ï¿½o numa data maior que a "atual"
 	private static String split = ",";
 
 	public static History getInstance() { return hist; }
@@ -45,7 +45,7 @@ public class History extends Database {
 		String line;
 
 		try {
-			br.readLine(); // Pula o cabeçalho
+			br.readLine(); // Pula o cabeï¿½alho
 
 			GregorianCalendar date_backup = TimeMachine.CurrentDate();
 
@@ -189,7 +189,7 @@ public class History extends Database {
 		try {
 			fw.append(TimeMachine.CalendarToStr(TimeMachine.CurrentDate()));
 			fw.append(split);
-			fw.append(log);
+			fw.append(log + "\n");
 			fw.flush();
 		} catch (IOException e) {
 			e.printStackTrace();
