@@ -210,7 +210,10 @@ public class Books {
 				// Transforma em uma lista
 				List<Book> collect = filtered.collect(Collectors.toList());
 
-				if (collect.size() == 1){	// Se soh encontrou 1 resultado...
+				if (collect.size() == 0){
+					out.println("\nNenhum resultado encontrado :(\n");
+				}
+				else if (collect.size() == 1){	// Se soh encontrou 1 resultado...
 					out.println("Livro encontrado:");
 					collect.get(0).Print();
 
