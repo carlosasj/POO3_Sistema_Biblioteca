@@ -56,9 +56,10 @@ public class Source extends Database{
 		}
 	}
 
+	// Escreve no arquivo
 	public void WriteFile(){
 		if (History.getFuture()) return;	// Se existir operacoes no fututo, entao o Source nao pode ser alterado
-		OpenWriter();
+		OpenWriter(false);
 		final String SEPARATOR = ",";
 		final String ENDLINE = "\n";
 		final String HEADER = "nextIDbook,nextIDloan,nextIDuser,log_path";

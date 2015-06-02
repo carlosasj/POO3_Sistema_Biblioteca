@@ -43,14 +43,15 @@ public class Books {
 
 	// Cria um livro na lista
 	protected Book Load(String type, int id, String title, String author, String editor, int year, int totalquantity){
-		Book book;
+		Book book = null;
 
 		switch(type)
 		{
 			case "Tex":
 				book = new Text(id, title, author, editor, year, totalquantity);
 				break;
-			case "Gen":
+
+			case "Gen":    // Se nao for "Tex", sempre sera "Gen" (verificacao feita anteriormente)
 				book = new General(id, title, author, editor, year, totalquantity);
 				break;
 		}
@@ -321,6 +322,7 @@ public class Books {
 		return filtered;
 	}
 
+	// Remove um livro
 	public void Remove () {
 		Scanner scan = new Scanner(System.in);
 		out.println("Procure o livro que deseja remover: ");

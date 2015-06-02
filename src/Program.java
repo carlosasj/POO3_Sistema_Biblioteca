@@ -42,8 +42,8 @@ public class Program {
 				if (History.canChangeData()) out.println(splitSign + "del <user|book>          (Excluir)");
 				if (History.canChangeData()) out.println(splitSign + "return loan              (Retornar um emprestimo)");
 				if (History.canChangeData()) out.println(splitSign + "inc book                 (Alterar a quantidade de exemplares de um livro)");
-														out.println("help                      (Abre esse menu de ajuda)");
-														out.println("exit                      (Sai do programa)");
+														out.println("help                      (Abrir esse menu de ajuda)");
+														out.println("exit                      (Sair do programa)");
 			} else if (!cmd.startsWith(splitSign)) {
 				out.println("Comando invalido.");
 			} else {

@@ -34,7 +34,7 @@ public class TimeMachine {
 			d = scan.nextLine();
 		} while (!validate(d));
 
-		//Armazena em um calendar a data digitada pelo usuario
+		// Armazena em um calendar a data digitada pelo usuario
 		currentDate = strToCalendar(d);
         actualDate = new GregorianCalendar();
 
@@ -70,6 +70,7 @@ public class TimeMachine {
 
     public static GregorianCalendar ActualDate() { return (GregorianCalendar) actualDate.clone(); }
 
+	// String para GregorianCalendar
 	public static GregorianCalendar strToCalendar (String date) {
 		String[] split_date = date.split("/");
 

@@ -33,7 +33,7 @@ public class Loans {
 
 	protected int getNextID() { return nextID; }
 
-	// Registra um novo emprestimo
+	// Registra um emprestimo pela interface
 	public void Register(){
 		out.println("--- Novo Emprestimo ---");
 		out.println("Primeiro, selecione o usuario.");
@@ -56,14 +56,13 @@ public class Loans {
 		nextID++;
 	}
 
-	// Adiciona emprestimo
-
-	// Utilizado no ReadFile
+	// Repassa os parametros para o Load e escreve no Log
 	protected void Add(int loanid, int bookid, int userid) {
 		Loan l =  Load(loanid, bookid, userid);
 		History.getInstance().logAdd(l);
 	}
 
+	// Cria um emprestimo na lista
 	protected Loan Load(int loanid, int bookid, int userid) {
 		User u = Users.getInstance().FindByID(userid);
 		GregorianCalendar cal_date = TimeMachine.CurrentDate();
@@ -87,13 +86,14 @@ public class Loans {
 		return filter.count();
 	}
 
+	// Remove um emprestimo
 	public void Remove() {
 		Loan l = Search();
 		Del(l.getID(), true);
 		History.getInstance().logDel(l);
 	}
 
-	// Deletar Usuario ou Livro
+	// Deleta Usuario ou Livro
 	protected void Del(int id){
 		Del(id, false);
 		Loan l = FindByID(id);
@@ -111,7 +111,7 @@ public class Loans {
 		loans.remove(l);
 	}
 
-	// Busca emprestimo com interface com o usuário
+	// Busca emprestimo com interface com o usuario
 	public Loan Search() { return Search(false); }
 	public Loan Search(boolean select){
 		Scanner scan = new Scanner(System.in);
