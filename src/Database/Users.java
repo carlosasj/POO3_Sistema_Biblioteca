@@ -151,6 +151,8 @@ public class Users {
 						String[] command = cmd.split(" ", 2);	// Separa o comando do parametro
 						command[1] = command[1].trim();			// Retira espacos antes e depois
 						filtered = Filter(command[0], command[1], filtered, true);	// Filtra
+						if (filtered == null)
+							out.println("teste");
 					} catch (ArrayIndexOutOfBoundsException e){
 						out.printf("\n\t! (Comando \"%s\" faltando argumentos; Ignorado)\n", cmd);
 					}
@@ -159,7 +161,9 @@ public class Users {
 				// Transforma em uma lista
 				List<User> collect = filtered.collect(Collectors.toList());
 
-				if (collect.size() == 1){	// Se soh encontrou 1 resultado...
+				if (collect.size() == 0){
+					out.println("Nenhum usuario encontrado");
+				} else if (collect.size() == 1){	// Se soh encontrou 1 resultado...
 					out.println("Usuario encontrado:");
 					collect.get(0).Print();
 
@@ -173,9 +177,7 @@ public class Users {
                             out.println("Entao faca uma nova pesquisa.");
                         }
                     }
-				}
-
-				else {		// Se encontrar mais resultados...
+				} else {		// Se encontrar mais resultados...
 					out.println("Usuarios encontrados:");
 					out.println("==================================================");
 					int subID = 1;
@@ -188,16 +190,18 @@ public class Users {
 					}
 					subID--; // Porque ele termina o For valendo (collect.size()+1)
 
-					out.print("Selecione o resultado pelo indice\nou digite 0 para uma nova busca: ");
-					int index = Integer.parseInt(scan.nextLine());
-					while (index > subID || index < 0){
-						out.print("Opcao invalida.\nDigite o indice ou 0 para uma nova busca: ");
-						index = Integer.parseInt(scan.nextLine());
-					}
+					if(select) {
 
-					if (index != 0) {
-						result = collect.get(index-1);
-						endSearch = true;
+						out.print("Selecione o resultado pelo indice\nou digite 0 para uma nova busca: ");
+						int index = Integer.parseInt(scan.nextLine());
+						while (index > subID || index < 0){
+							out.print("Opcao invalida.\nDigite o indice ou 0 para uma nova busca: ");
+							index = Integer.parseInt(scan.nextLine());
+						}
+						if (index != 0) {
+							result = collect.get(index-1);
+							endSearch = true;
+						}
 					}
 				}
 			}

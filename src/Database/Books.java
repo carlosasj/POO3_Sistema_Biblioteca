@@ -260,16 +260,18 @@ public class Books {
 					}
 					subID--; // Porque ele termina o For valendo (collect.size()+1)
 
-					out.print("Selecione o resultado pelo indice\nou digite 0 para uma nova busca: ");
-					int index = Integer.parseInt(scan.nextLine());
-					while (index > subID || index < 0){
-						out.print("Opcao invalida.\nDigite o indice ou 0 para uma nova busca: ");
-						index = Integer.parseInt(scan.nextLine());
-					}
+					if(select) {
+						out.print("Selecione o resultado pelo indice\nou digite 0 para uma nova busca: ");
+						int index = Integer.parseInt(scan.nextLine());
+						while (index > subID || index < 0){
+							out.print("Opcao invalida.\nDigite o indice ou 0 para uma nova busca: ");
+							index = Integer.parseInt(scan.nextLine());
+						}
 
-					if (index != 0) {
-						result = collect.get(index-1);
-						endSearch = true;
+						if (index != 0) {
+							result = collect.get(index-1);
+							endSearch = true;
+						}
 					}
 				}
 			}
