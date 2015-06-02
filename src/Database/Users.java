@@ -181,13 +181,15 @@ public class Users {
 		return filtered.collect(Collectors.toList()).get(0);
 	}
 
-	public Stream<User> Filter(String field, String param, Boolean printMsg) {		// Aplica o filtro num stream com todos os Usuarios
+	// Aplica o filtro num stream com todos os Usuarios
+	public Stream<User> Filter(String field, String param, Boolean printMsg) {
 		Stream<User> filtered = users.stream();
 		Filter(field, param, filtered, printMsg);
 		return filtered;
 	}
 
-	public Stream<User> Filter(String field, String param, Stream<User> filtered, Boolean printMsg) {	// Aplica o filtro num stream personalizado
+	// Aplica o filtro num stream personalizado
+	public Stream<User> Filter(String field, String param, Stream<User> filtered, Boolean printMsg) {
 		if (printMsg) out.printf("\n\t%s = %s", field, param);
 
 		switch (field){
