@@ -20,5 +20,4 @@ A descricao dos comandos do menu inicial, pode ser encontrada com o comando help
 Para comandos utilizar '/' nos comandos do menu principal (exceto para 'help' e 'exit').
 
 - 7:
-
-
+Para sair da busca ou fechar o programa, utilize o comando 'exit'.
