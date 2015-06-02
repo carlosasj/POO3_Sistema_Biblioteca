@@ -35,6 +35,7 @@ public class Loans {
 
 	// Registra um emprestimo pela interface
 	public void Register(){
+		Scanner scan = new Scanner(System.in);
 		out.println("--- Novo Emprestimo ---");
 		out.println("Primeiro, selecione o usuario.");
 		User user = Users.getInstance().Search();
@@ -52,8 +53,18 @@ public class Loans {
 			return;
 		}
 
-		Add(nextID, book.getID(), user.getID());
-		nextID++;
+		out.println("Deseja inserir esse emprestimo? [s|n]");
+		String confirm = scan.nextLine();
+
+		if (confirm.toLowerCase().equals("s") || confirm.equals("")) {
+			Add(nextID, book.getID(), user.getID());
+			nextID++;
+			out.println("Emprestimo cadastrado com sucesso!");
+		}
+		else {
+			out.println("Emprestimo nao cadastrado.");
+		}
+
 	}
 
 	// Repassa os parametros para o Load e escreve no Log

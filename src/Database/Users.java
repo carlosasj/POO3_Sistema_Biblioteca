@@ -35,7 +35,8 @@ public class Users {
 	public void Register () {
 
 		Scanner scan = new Scanner(System.in);
-
+		out.println("--- Novo Usuario ---");
+		out.print("ID:\t\t" + nextID);
 		out.print("Tipo:\t");
 		String type = scan.nextLine().toLowerCase();
 		while (!type.equals("community") && !type.equals("student") && !type.equals("teacher")){
@@ -43,13 +44,13 @@ public class Users {
 			out.print("Tipo <community|student|teacher>:\t");
 			type = scan.nextLine().toLowerCase();
 		}
-		out.println("Nome: ");
+		out.print("Nome:\t");
 		String Name = scan.nextLine();
 
 		out.println("Deseja inserir cadastro do usuario? [s|n]");
 		String confirm = scan.nextLine();
 
-		if (confirm.toLowerCase().equals("s") || confirm.equals("\n")) {
+		if (confirm.toLowerCase().equals("s") || confirm.equals("")) {
 			Add(type, nextID, Name);
 			nextID++;
 			out.println("Usuario cadastrado com sucesso!");

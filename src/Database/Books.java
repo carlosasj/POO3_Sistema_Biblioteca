@@ -65,7 +65,7 @@ public class Books {
 
 		Scanner scan = new Scanner(System.in);
 
-		out.println("Cadastro de livro:");
+		out.println("--- Novo Livro ---");
 		out.print("ID:\t\t" + nextID);
 
 		out.print("Tipo:\t");
@@ -110,7 +110,7 @@ public class Books {
 		out.println("Deseja inserir cadastro do livro? [s|n]");
 		String confirm = scan.nextLine();
 
-		if (confirm.toLowerCase().equals("s") || confirm.equals("\n")) {
+		if (confirm.toLowerCase().equals("s") || confirm.equals("")) {
 			switch (type){
 				case "text":
 					type = "Tex";
